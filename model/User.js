@@ -4,7 +4,6 @@ const userSchema = new Schema({
   username: {
     type: String,
     trim: true,
-    maxlength: 15,
   },
   name: {
     type: String,
@@ -20,7 +19,10 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    maxlength: 9,
+  },
+  profile: {
+    type: Schema.Types.ObjectId,
+    reg: "profile",
   },
   date: {
     type: Date,
