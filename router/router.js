@@ -1,9 +1,14 @@
 const user = require("./user");
+const profile = require("./profile");
 
 const routers = [
   {
     path: "/user",
     hedelar: user,
+  },
+  {
+    path: "/profile",
+    hedelar: profile,
   },
 ];
 

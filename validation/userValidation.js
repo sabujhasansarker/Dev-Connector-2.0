@@ -33,8 +33,3 @@ exports.registerValidator = [
     .withMessage("Please enter a password with min 5 to max 9 characters")
     .trim(),
 ];
-
-// // Login validation
-// exports.loginValidation = [
-//   check('email')
-// ]

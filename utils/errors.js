@@ -5,6 +5,6 @@ exports.serverError = (res, err) => {
 };
 
 // Express validation
-exports.expValidation = (res, errors) => {
+exports.validationErrors = (res, errors) => {
   res.status(400).json({ errors: errors.array() });
 };

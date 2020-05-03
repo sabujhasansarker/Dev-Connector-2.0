@@ -5,14 +5,14 @@ const config = require("config");
 const gravatar = require("gravatar");
 
 const User = require("../model/User");
-const { serverError, expValidation } = require("../utils/errors");
+const { serverError, validationErrors } = require("../utils/errors");
 
 // Register user
 
 exports.registerUserController = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return expValidation(res, errors);
+    return validationErrors(res, errors);
   }
   // if not errors
   let { firstName, lastName, email, password } = req.body;

@@ -5,7 +5,7 @@ const middleares = require("./middleware/middleware");
 middleares(app);
 
 // Routers
-const routers = require("./router/routers");
+const routers = require("./router/router");
 routers(app);
 
 // Database connacted
