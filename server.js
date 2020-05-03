@@ -8,6 +8,10 @@ middleares(app);
 const routers = require("./router/routers");
 routers(app);
 
+// Database connacted
+const connectDB = require("./config/DB");
+connectDB();
+
 // App start on port 5000
 const PORT = process.env.PORT | 5000;
 app.listen(PORT, () => console.log(`Server Start on Port ${PORT}`));
