@@ -20,6 +20,9 @@ const userSchema = new Schema({
     trim: true,
     required: true,
   },
+  profilePic: {
+    type: String,
+  },
   profile: {
     type: Schema.Types.ObjectId,
     reg: "profile",

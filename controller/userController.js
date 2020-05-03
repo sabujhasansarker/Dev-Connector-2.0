@@ -2,15 +2,17 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const gravatar = require("gravatar");
 
 const User = require("../model/User");
+const { serverError, expValidation } = require("../utils/errors");
 
 // Register user
 
 exports.registerUserController = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return expValidation(res, errors);
   }
   // if not errors
   let { firstName, lastName, email, password } = req.body;
@@ -30,9 +32,14 @@ exports.registerUserController = async (req, res) => {
     // hash password
     password = bcrypt.hashSync(password, 10);
 
+    // add gravetar image
+    const profilePic = gravatar.url(email, { s: "200", r: "pg", d: "mm" });
+
+    // create profile
     const newUser = new User({
       name: firstName + " " + lastName,
       username,
+      profilePic,
       email,
       password,
     });
@@ -43,7 +50,7 @@ exports.registerUserController = async (req, res) => {
     // Json Web token
     jwt.sign(
       { user: { id: newUser.id, username: newUser.username } },
-      config.get("jwtwebtoken"),
+      config.get("jsonwebtoken"),
       {
         expiresIn: "1h",
       },
@@ -54,10 +61,48 @@ exports.registerUserController = async (req, res) => {
       }
     );
   } catch (err) {
-    console.log(err.message);
-    res.status(500).send("Server Error");
+    serverError(res, err);
   }
 };
 exports.loginUserController = (req, res) => {
   res.send("user ");
+};
+
+// Login user
+
+exports.loginUserController = async (req, res) => {
+  const { email, username, password } = req.body;
+
+  // find user with username and email
+  const userFindByEmail = await User.findOne({ email });
+  const userFindByUsername = await User.findOne({ username });
+  const user = userFindByUsername || userFindByEmail;
+  try {
+    // Chack user
+    if (!user) {
+      return res.status(400).json({ errors: { msg: "Sorry, user not found" } });
+    }
+
+    // Match password
+    const matchPassword = bcrypt.compareSync(password, user.password);
+    if (!matchPassword) {
+      return res
+        .status(400)
+        .json({ errors: { msg: "Sorry, password dose not match" } });
+    }
+
+    // sign in token
+    jwt.sign(
+      { user: { id: user.id, username: user.username } },
+      config.get("jsonwebtoken"),
+      { expiresIn: "1h" },
+      (err, usertoken) => {
+        if (!err) {
+          res.json({ usertoken });
+        }
+      }
+    );
+  } catch (err) {
+    serverError(res, err);
+  }
 };

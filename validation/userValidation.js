@@ -2,6 +2,8 @@ const { check } = require("express-validator");
 
 const User = require("../model/User");
 
+// Register Validation
+
 exports.registerValidator = [
   // Name validation
   check("firstName", "First Name is required").exists(),
@@ -31,3 +33,8 @@ exports.registerValidator = [
     .withMessage("Please enter a password with min 5 to max 9 characters")
     .trim(),
 ];
+
+// // Login validation
+// exports.loginValidation = [
+//   check('email')
+// ]
