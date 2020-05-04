@@ -5,8 +5,12 @@ const {
   loginUserController,
   registerUserController,
   deleteUser,
+  updateUser,
 } = require("../controller/userController");
-const { registerValidator } = require("../validation/userValidation");
+const {
+  registerValidator,
+  userUpdateValidator,
+} = require("../validation/userValidation");
 
 //? @ Path   :   /user/register
 //* @ decs   :   Register user
@@ -24,5 +28,10 @@ router.post("/login", loginUserController);
 //* @ decs   :   Delete User
 //! @ access :   Privet
 router.delete("/delete/me", auth, deleteUser);
+
+//? @ Path   :   /user/update
+//* @ decs   :  Update User
+//! @ access :   Privet
+router.put("/update", auth, userUpdateValidator, updateUser);
 
 module.exports = router;

@@ -13,3 +13,10 @@ exports.educationValidator = [
   check("from", "From is required").exists(),
   check("fieldofstudy", "Field of study is required").exists(),
 ];
+
+// experience validaton
+exports.experienceValidator = [
+  check("title", "title is requird").exists(),
+  check("company", "company is requird").exists(),
+  check("from", "From is required").exists(),
+];

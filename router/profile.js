@@ -7,6 +7,7 @@ const {
   getCurrentProfile,
   deleteProfile,
   addeducation,
+  addexperience,
 } = require("../controller/profileController");
 
 const {
@@ -33,5 +34,10 @@ router.put("/delete/me", auth, deleteProfile);
 //* @ decs   :   add educaion in profile
 //! @ access :   Privat
 router.put("/education", auth, educationValidator, addeducation);
+
+//? @ Path   :   /profile/experience
+//* @ decs   :   add experience in profile
+//! @ access :   Privat
+router.put("/experience", auth, experienceValidator, addexperience);
 
 module.exports = router;

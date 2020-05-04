@@ -33,3 +33,21 @@ exports.registerValidator = [
     .withMessage("Please enter a password with min 5 to max 9 characters")
     .trim(),
 ];
+
+// Update user Validation
+
+exports.userUpdateValidator = [
+  // Name validation
+  check("firstName", "First Name is required").exists(),
+  check("lastName", "Last Name is required").exists(),
+
+  //   E-mail Validation
+  check("email", "E-mail is required")
+    .exists()
+    .bail()
+    // ? bail() use like return
+    .isEmail()
+    .withMessage("Please provide a valid E-mail")
+    .normalizeEmail()
+    .trim(),
+];

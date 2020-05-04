@@ -9,6 +9,9 @@ const profileSchema = new Schema({
     type: String,
     trim: true,
   },
+  birthday: {
+    type: Date,
+  },
   profilePic: {
     type: String,
   },
@@ -56,7 +59,7 @@ const profileSchema = new Schema({
       },
       current: {
         type: Boolean,
-        default: false,
+        default: true,
       },
       description: {
         type: String,

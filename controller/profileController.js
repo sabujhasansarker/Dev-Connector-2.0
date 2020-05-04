@@ -11,7 +11,7 @@ exports.getCurrentProfile = async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
-    }).populate("user", ["username", "name", "email"]);
+    }).populate("user", ["username", "firstName", "lastName", "email"]);
     if (!profile) {
       res.status(400).json({ errors: { msg: "Profile dose not found" } });
     }
@@ -132,20 +132,12 @@ exports.addeducation = async (req, res) => {
   if (!errors.isEmpty()) {
     return validationErrors(res, errors);
   }
-  const {
-    school,
-    degree,
-    from,
-    to,
-    current,
-    fieldofstudy,
-    description,
-  } = req.body;
+  const { school, degree, from, to, current, location, description } = req.body;
 
   const newEdu = {
     school,
     degree,
-    fieldofstudy,
+    location,
     from,
     to,
     current,
@@ -162,6 +154,40 @@ exports.addeducation = async (req, res) => {
       return res.status(404).json({ msg: "Profile not found" });
     }
     profile.education.unshift(newEdu);
+    await profile.save();
+    res.status(200).json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Add experience
+exports.addexperience = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return validationErrors(res, errors);
+  }
+  const { title, compnay, from, to, current, description } = req.body;
+
+  const newExp = {
+    title,
+    compnay,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (!profile) {
+      return res.status(404).json({ msg: "Profile not found" });
+    }
+    profile.experience.unshift(newExp);
     await profile.save();
     res.status(200).json({ profile });
   } catch (err) {

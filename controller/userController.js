@@ -38,7 +38,8 @@ exports.registerUserController = async (req, res) => {
 
     // create profile
     const newUser = new User({
-      name: firstName + " " + lastName,
+      firstName,
+      lastName,
       username,
       profilePic,
       email,
@@ -118,6 +119,66 @@ exports.deleteUser = async (req, res) => {
     await User.findByIdAndDelete(req.user.id);
     await Profile.findOneAndRemove({ user: req.user.id });
     res.status(200).json({ msg: "Delete User" });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// edit user
+exports.updateUser = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return validationErrors(res, errors);
+  }
+
+  let {
+    firstName,
+    lastName,
+    email,
+    password,
+    oldPassword,
+    username,
+  } = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // if old password match
+    const matchPassword = await bcrypt.compareSync(oldPassword, matchPassword);
+    if (matchPassword) {
+      return res
+        .status(400)
+        .json({ errors: { msg: "Current Password dose not match" } });
+    } else {
+      if (email !== user.email) {
+        user = await User.findOne({ email });
+        if (user) {
+          return res
+            .status(400)
+            .json({ errors: { msg: "Email already used" } });
+        }
+      }
+      if (username !== user.username) {
+        user = await User.findOne({ username });
+        if (user) {
+          return res.status(400).json({ errors: { msg: "user already used" } });
+        }
+      }
+
+      firstName = firstName ? firstName : user.firstName;
+      lastName = lastName ? lastName : user.lastName;
+      email = email ? email : user.email;
+      username = username ? username : user.username;
+      password = password
+        ? await bcrypt.hashSync(password, 10)
+        : bcrypt.hashSync(oldPassword, 10);
+      await User.findByIdAndUpdate(req.user.id, {
+        $set: { firstName, lastName, email, username, password },
+      });
+      res.json({ user });
+    }
   } catch (err) {
     serverError(res, err);
   }
