@@ -21,6 +21,18 @@ exports.getCurrentProfile = async (req, res) => {
   }
 };
 
+// get all profile
+exports.getAllProfiles = async (req, res) => {
+  try {
+    const profile = await Profile.find();
+    res.json(profile);
+  } catch (err) {
+    serverError(err);
+  }
+};
+
+// * PROFILE
+
 // post create profile
 exports.createProfile = async (req, res) => {
   const errors = validationResult(req);
@@ -48,7 +60,7 @@ exports.createProfile = async (req, res) => {
   if (status) profileFileds.status = status;
   if (bio) profileFileds.bio = bio;
   if (compnay) profileFileds.compnay = compnay;
-  if (website) profileFileds.website = website;
+  // if (website) profileFileds.website = website;
   if (githubusername) profileFileds.githubusername = githubusername;
   if (address) profileFileds.address = address;
 
@@ -57,11 +69,10 @@ exports.createProfile = async (req, res) => {
 
   try {
     const user = await User.findById(req.user.id);
-
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-
+    profileFileds.website = website === "" ? null : website;
     // Profile pic change
     profilePic = profilePic
       ? profilePic
@@ -126,6 +137,8 @@ exports.deleteProfile = async (req, res) => {
   }
 };
 
+// * EDUCATION
+
 // Add education
 exports.addeducation = async (req, res) => {
   const errors = validationResult(req);
@@ -161,17 +174,19 @@ exports.addeducation = async (req, res) => {
   }
 };
 
+// * EXPERIENCE
+
 // Add experience
 exports.addexperience = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return validationErrors(res, errors);
   }
-  const { title, compnay, from, to, current, description } = req.body;
+  const { title, company, from, to, current, description } = req.body;
 
   const newExp = {
     title,
-    compnay,
+    company,
     from,
     to,
     current,

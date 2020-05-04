@@ -8,12 +8,19 @@ const {
   deleteProfile,
   addeducation,
   addexperience,
+  getAllProfiles,
 } = require("../controller/profileController");
 
 const {
   createProfileValidation,
   educationValidator,
+  experienceValidator,
 } = require("../validation/profileValidation");
+
+//? @ Path   :   /profile
+//* @ decs   :   get all user
+//! @ access :   Public
+router.get("/", getAllProfiles);
 
 //? @ Path   :   /profile/me
 //* @ decs   :   get current user

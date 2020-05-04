@@ -66,9 +66,6 @@ exports.registerUserController = async (req, res) => {
     serverError(res, err);
   }
 };
-exports.loginUserController = (req, res) => {
-  res.send("user ");
-};
 
 // Login user
 
@@ -140,29 +137,29 @@ exports.updateUser = async (req, res) => {
     username,
   } = req.body;
   try {
-    const user = await User.findById(req.user.id);
+    let user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
     // if old password match
-    const matchPassword = await bcrypt.compareSync(oldPassword, matchPassword);
-    if (matchPassword) {
+    const matchPassword = bcrypt.compareSync(oldPassword, user.password);
+    if (!matchPassword) {
       return res
         .status(400)
         .json({ errors: { msg: "Current Password dose not match" } });
     } else {
       if (email !== user.email) {
-        user = await User.findOne({ email });
-        if (user) {
+        let eUser = await User.findOne({ email });
+        if (eUser) {
           return res
             .status(400)
             .json({ errors: { msg: "Email already used" } });
         }
       }
-      if (username !== user.username) {
-        user = await User.findOne({ username });
-        if (user) {
+      if (username && username !== user.username) {
+        let usernameUser = await User.findOne({ username });
+        if (usernameUser) {
           return res.status(400).json({ errors: { msg: "user already used" } });
         }
       }
@@ -174,9 +171,13 @@ exports.updateUser = async (req, res) => {
       password = password
         ? await bcrypt.hashSync(password, 10)
         : bcrypt.hashSync(oldPassword, 10);
-      await User.findByIdAndUpdate(req.user.id, {
-        $set: { firstName, lastName, email, username, password },
-      });
+      await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          $set: { firstName, lastName, email, username, password },
+        },
+        { new: true }
+      );
       res.json({ user });
     }
   } catch (err) {

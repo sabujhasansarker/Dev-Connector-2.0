@@ -1,9 +1,20 @@
-const { check, validator } = require("express-validator");
+const { check, body } = require("express-validator");
+
+const validator = require("validator");
 
 exports.createProfileValidation = [
   check("status", "Status is requird").exists(),
   check("skills", "Skills is requird").exists(),
-  check("website").optional().isURL().withMessage("Invalid Url"),
+  // url chack
+  body("website").custom((value) => {
+    if (value) {
+      if (!validator.isURL(value)) {
+        throw new Error("Pleace enter a valid url");
+      }
+    }
+    return true;
+  }),
+  // .isURL().withMessage("Invalid Url"),
 ];
 
 // educaion validaton
