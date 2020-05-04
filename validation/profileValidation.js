@@ -2,18 +2,27 @@ const { check, body } = require("express-validator");
 
 const validator = require("validator");
 
-exports.createProfileValidation = [
-  check("status", "Status is requird").exists(),
-  check("skills", "Skills is requird").exists(),
-  // url chack
-  body("website").custom((value) => {
+const customvalidaton = (value) => {
+  {
     if (value) {
       if (!validator.isURL(value)) {
         throw new Error("Pleace enter a valid url");
       }
     }
     return true;
-  }),
+  }
+};
+
+exports.createProfileValidation = [
+  check("status", "Status is requird").exists(),
+  check("skills", "Skills is requird").exists(),
+  // url chack
+  body("website").custom(customvalidaton),
+  body("facebook").custom(customvalidaton),
+  body("twitter").custom(customvalidaton),
+  body("instagram").custom(customvalidaton),
+  body("youtube").custom(customvalidaton),
+  body("linkedin").custom(customvalidaton),
   // .isURL().withMessage("Invalid Url"),
 ];
 

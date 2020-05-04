@@ -5,6 +5,8 @@ const { validationErrors, serverError } = require("../utils/errors");
 const Profile = require("../model/Profile");
 const User = require("../model/User");
 
+// * PROFILE
+
 // get cuttent user profile
 
 exports.getCurrentProfile = async (req, res) => {
@@ -13,7 +15,9 @@ exports.getCurrentProfile = async (req, res) => {
       user: req.user.id,
     }).populate("user", ["username", "firstName", "lastName", "email"]);
     if (!profile) {
-      res.status(400).json({ errors: { msg: "Profile dose not found" } });
+      return res
+        .status(400)
+        .json({ errors: { msg: "Profile dose not found" } });
     }
     res.json(profile);
   } catch (err) {
@@ -31,7 +35,39 @@ exports.getAllProfiles = async (req, res) => {
   }
 };
 
-// * PROFILE
+// get Single Profile By Username
+
+exports.getSingleProfileByUsername = async (req, res) => {
+  try {
+    const profile = await User.findOne({
+      username: req.params.username,
+    })
+      .populate("profile", [
+        "bio",
+        "birthday",
+        "website",
+        "status",
+        "skills",
+        "company",
+        "address",
+        "githubusername",
+        "experience",
+        "education",
+        "social",
+        "date",
+      ])
+      .select(["-password", "-_id", "-username"]);
+
+    if (!profile) {
+      return res
+        .status(400)
+        .json({ errors: { msg: "Profile dose not found" } });
+    }
+    res.json(profile);
+  } catch (err) {
+    serverError(res, err);
+  }
+};
 
 // post create profile
 exports.createProfile = async (req, res) => {
@@ -47,10 +83,16 @@ exports.createProfile = async (req, res) => {
     skills,
     bio,
     compnay,
+    birthday,
     website,
     githubusername,
     profilePic,
     address,
+    youtube,
+    facebook,
+    twitter,
+    instagram,
+    linkedin,
   } = req.body;
 
   // Set profile filefileds
@@ -60,12 +102,20 @@ exports.createProfile = async (req, res) => {
   if (status) profileFileds.status = status;
   if (bio) profileFileds.bio = bio;
   if (compnay) profileFileds.compnay = compnay;
-  // if (website) profileFileds.website = website;
+  if (birthday) profileFileds.birthday = birthday;
   if (githubusername) profileFileds.githubusername = githubusername;
   if (address) profileFileds.address = address;
 
   skills = skills.split(",").map((skill) => skill.trim());
   if (skills) profileFileds.skills = skills;
+
+  // Build social object
+  profileFileds.social = {};
+  if (youtube) profileFileds.social.youtube = youtube;
+  if (facebook) profileFileds.social.facebook = facebook;
+  if (twitter) profileFileds.social.twitter = twitter;
+  if (linkedin) profileFileds.social.linkedin = linkedin;
+  if (instagram) profileFileds.social.instagram = instagram;
 
   try {
     const user = await User.findById(req.user.id);
@@ -145,11 +195,21 @@ exports.addeducation = async (req, res) => {
   if (!errors.isEmpty()) {
     return validationErrors(res, errors);
   }
-  const { school, degree, from, to, current, location, description } = req.body;
+  const {
+    school,
+    degree,
+    from,
+    to,
+    current,
+    location,
+    description,
+    fieldofstudy,
+  } = req.body;
 
   const newEdu = {
     school,
     degree,
+    fieldofstudy,
     location,
     from,
     to,
@@ -169,6 +229,82 @@ exports.addeducation = async (req, res) => {
     profile.education.unshift(newEdu);
     await profile.save();
     res.status(200).json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Edit Education
+
+exports.editEducation = async (req, res) => {
+  const {
+    school,
+    degree,
+    from,
+    to,
+    current,
+    location,
+    description,
+    fieldofstudy,
+  } = req.body;
+
+  let profile = await Profile.findOne({ user: req.user.id });
+  let updateEdu = profile.education.filter(
+    (item) => item.id === req.params.edu_id
+  );
+
+  // Set update data
+  updateEdu[0].school = school ? school : updateEdu[0].school;
+  updateEdu[0].degree = degree ? degree : updateEdu[0].degree;
+  updateEdu[0].from = from ? from : updateEdu[0].from;
+  updateEdu[0].to = to ? to : updateEdu[0].to;
+  updateEdu[0].current = current ? current : updateEdu[0].current;
+  updateEdu[0].location = location ? location : updateEdu[0].location;
+  updateEdu[0].description = description
+    ? description
+    : updateEdu[0].description;
+  updateEdu[0].fieldofstudy = fieldofstudy
+    ? fieldofstudy
+    : updateEdu[0].fieldofstudy;
+
+  // Errors chack
+  if (school === "")
+    return res.status(400).json({ errors: { msg: "School is requird" } });
+  if (degree === "")
+    return res.status(400).json({ errors: { msg: "degree is requird" } });
+  if (from === "")
+    return res.status(400).json({ errors: { msg: "from is requird" } });
+  if (fieldofstudy === "")
+    return res
+      .status(400)
+      .json({ errors: { msg: "Field of study is requird" } });
+  try {
+    updateEdu = profile = profile.education.map((e) =>
+      e._id === updateEdu._id ? updateEdu : e
+    );
+
+    // Save upddate data
+    profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: { education: updateEdu } },
+      { new: true }
+    );
+    res.json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Delete Education
+exports.deleteEducation = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+    const removeIndex = profile.education
+      .map((item) => item.id)
+      .indexOf(req.params.edu_id);
+    profile.education.splice(removeIndex, 1);
+    await profile.save();
+    res.json(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -205,6 +341,68 @@ exports.addexperience = async (req, res) => {
     profile.experience.unshift(newExp);
     await profile.save();
     res.status(200).json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Delete exp
+
+exports.deleteexperience = async (req, res) => {
+  try {
+    let profile = await Profile.findOne({ user: req.user.id });
+
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.exp_id);
+    profile.experience.splice(removeIndex, 1);
+    await profile.save();
+    res.json(profile);
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Edit editexperience
+
+exports.editexperience = async (req, res) => {
+  const { title, company, from, to, current, description } = req.body;
+
+  let profile = await Profile.findOne({ user: req.user.id });
+  let updateExp = profile.experience.filter(
+    (item) => item.id === req.params.exp_id
+  );
+
+  // Set update data
+  updateExp[0].title = title ? title : updateExp[0].title;
+  updateExp[0].company = company ? company : updateExp[0].company;
+  updateExp[0].from = from ? from : updateExp[0].from;
+  updateExp[0].to = to ? to : updateExp[0].to;
+  updateExp[0].current = current ? current : updateExp[0].current;
+  updateExp[0].description = description
+    ? description
+    : updateExp[0].description;
+
+  // Errors chack
+  if (title === "")
+    return res.status(400).json({ errors: { msg: "title is requird" } });
+  if (company === "")
+    return res.status(400).json({ errors: { msg: "company is requird" } });
+  if (from === "")
+    return res.status(400).json({ errors: { msg: "from is requird" } });
+
+  try {
+    updateExp = profile = profile.experience.map((e) =>
+      e._id === updateExp._id ? updateExp : e
+    );
+
+    // Save upddate data
+    profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $set: { experience: updateExp } },
+      { new: true }
+    );
+    res.json({ profile });
   } catch (err) {
     serverError(res, err);
   }

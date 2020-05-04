@@ -5,6 +5,10 @@ const userSchema = new Schema({
     type: String,
     trim: true,
   },
+  profile: {
+    type: Schema.Types.ObjectId,
+    ref: "Profile",
+  },
   firstName: {
     type: String,
     trim: true,
@@ -27,10 +31,6 @@ const userSchema = new Schema({
   },
   profilePic: {
     type: String,
-  },
-  profile: {
-    type: Schema.Types.ObjectId,
-    reg: "Profile",
   },
   date: {
     type: Date,
