@@ -125,3 +125,46 @@ exports.deleteProfile = async (req, res) => {
     serverError(res, err);
   }
 };
+
+// Add education
+exports.addeducation = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return validationErrors(res, errors);
+  }
+  const {
+    school,
+    degree,
+    from,
+    to,
+    current,
+    fieldofstudy,
+    description,
+  } = req.body;
+
+  const newEdu = {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (!profile) {
+      return res.status(404).json({ msg: "Profile not found" });
+    }
+    profile.education.unshift(newEdu);
+    await profile.save();
+    res.status(200).json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};

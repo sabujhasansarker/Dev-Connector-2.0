@@ -6,9 +6,13 @@ const {
   createProfile,
   getCurrentProfile,
   deleteProfile,
+  addeducation,
 } = require("../controller/profileController");
 
-const { createProfileValidation } = require("../validation/profileValidation");
+const {
+  createProfileValidation,
+  educationValidator,
+} = require("../validation/profileValidation");
 
 //? @ Path   :   /profile/me
 //* @ decs   :   get current user
@@ -24,5 +28,10 @@ router.post("/create-profile", auth, createProfileValidation, createProfile);
 //* @ decs   :   delete profile
 //! @ access :   Privat
 router.put("/delete/me", auth, deleteProfile);
+
+//? @ Path   :   /profile/education
+//* @ decs   :   add educaion in profile
+//! @ access :   Privat
+router.put("/education", auth, educationValidator, addeducation);
 
 module.exports = router;
