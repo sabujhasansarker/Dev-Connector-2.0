@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const gravatar = require("gravatar");
 
 const { validationErrors, serverError } = require("../utils/errors");
 const Profile = require("../model/Profile");
@@ -7,11 +8,10 @@ const User = require("../model/User");
 // get cuttent user profile
 
 exports.getCurrentProfile = async (req, res) => {
-  const profile = await Profile.findOne({ user: req.user.id }).populate(
-    "user",
-    ["name", "username", "email", "profilePic"]
-  );
   try {
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["username", "name", "email"]);
     if (!profile) {
       res.status(400).json({ errors: { msg: "Profile dose not found" } });
     }
@@ -56,18 +56,19 @@ exports.createProfile = async (req, res) => {
   if (skills) profileFileds.skills = skills;
 
   try {
-    // update user if profilePic
-    if (profilePic) {
-      let user = await User.findByIdAndUpdate(
-        req.user.id,
-        { $set: { profilePic } },
-        { new: true }
-      );
-      profileFileds.profilePic = user.profilePic;
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
     }
 
-    // Profile update
+    // Profile pic change
+    profilePic = profilePic
+      ? profilePic
+      : gravatar.url(user.email, { s: "200", r: "pg", d: "mm" });
+    profileFileds.profilePic = profilePic;
 
+    // Profile update
     let profile = await Profile.findOne({ user: req.user.id });
     if (!profile) {
       // Create Profile
@@ -82,7 +83,44 @@ exports.createProfile = async (req, res) => {
       { $set: profileFileds },
       { new: true }
     );
-    return res.status(200).json({ profile });
+    res.status(200).json({ profile });
+
+    // update user
+
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { profilePic, profile: profile._id } },
+      { new: true }
+    );
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Delete Profile
+exports.deleteProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (!profile) {
+      return res.status(404).json({ msg: "Profile not found" });
+    }
+    await Profile.findByIdAndDelete(profile._id);
+
+    // update user
+
+    // Profile pic change
+    let profilePic = gravatar.url(user.email, { s: "200", r: "pg", d: "mm" });
+
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: { profilePic, profile: null } },
+      { new: true }
+    );
+    res.status(200).json({ msg: "Delete Profile" });
   } catch (err) {
     serverError(res, err);
   }

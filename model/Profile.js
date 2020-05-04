@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const profileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   bio: {
     type: String,
@@ -126,4 +126,4 @@ const profileSchema = new Schema({
   },
 });
 
-module.exports = model("profile", profileSchema);
+module.exports = model("Profile", profileSchema);

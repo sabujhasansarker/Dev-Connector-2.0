@@ -5,6 +5,7 @@ const config = require("config");
 const gravatar = require("gravatar");
 
 const User = require("../model/User");
+const Profile = require("../model/Profile");
 const { serverError, validationErrors } = require("../utils/errors");
 
 // Register user
@@ -102,6 +103,21 @@ exports.loginUserController = async (req, res) => {
         }
       }
     );
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// Delete User
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    await User.findByIdAndDelete(req.user.id);
+    await Profile.findOneAndRemove({ user: req.user.id });
+    res.status(200).json({ msg: "Delete User" });
   } catch (err) {
     serverError(res, err);
   }
