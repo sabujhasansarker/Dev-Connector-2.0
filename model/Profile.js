@@ -9,6 +9,9 @@ const profileSchema = new Schema({
     type: String,
     trim: true,
   },
+  profilePic: {
+    type: String,
+  },
   address: {
     type: String,
     trim: true,
