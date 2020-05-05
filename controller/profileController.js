@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator");
 const gravatar = require("gravatar");
+const config = require("config");
+const request = require("request");
 
 const { validationErrors, serverError } = require("../utils/errors");
 const Profile = require("../model/Profile");
@@ -101,6 +103,7 @@ exports.createProfile = async (req, res) => {
 
   if (status) profileFileds.status = status;
   if (bio) profileFileds.bio = bio;
+  // if (website) profileFileds.website = website;
   if (compnay) profileFileds.compnay = compnay;
   if (birthday) profileFileds.birthday = birthday;
   if (githubusername) profileFileds.githubusername = githubusername;
@@ -402,7 +405,30 @@ exports.editexperience = async (req, res) => {
       { $set: { experience: updateExp } },
       { new: true }
     );
-    res.json({ profile });
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+// get gitHub repos
+exports.getGitHubRepos = async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        "githubClientId"
+      )}&client_secret=${config.get("githubSecret")}`,
+      method: "GET",
+      headers: { "user-agent": "node.js" },
+    };
+    request(options, (error, response, body) => {
+      if (error) console.log(error);
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: "No Github profile found" });
+      }
+      res.json(JSON.parse(body));
+    });
   } catch (err) {
     serverError(res, err);
   }

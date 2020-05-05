@@ -14,6 +14,7 @@ const {
   editEducation,
   deleteexperience,
   editexperience,
+  getGitHubRepos,
 } = require("../controller/profileController");
 
 const {
@@ -76,5 +77,10 @@ router.delete("/experience/:exp_id", auth, deleteexperience);
 //* @ decs   :   delete experience in profile
 //! @ access :   Privat
 router.put("/experience/:exp_id", auth, editexperience);
+
+//? @ Path   :   /profile/github/:username
+//* @ decs   :    github repos in profile
+//! @ access :   Privat
+router.get("/github/:username", auth, getGitHubRepos);
 
 module.exports = router;

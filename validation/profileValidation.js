@@ -17,12 +17,12 @@ exports.createProfileValidation = [
   check("status", "Status is requird").exists(),
   check("skills", "Skills is requird").exists(),
   // url chack
-  body("website").custom(customvalidaton),
-  body("facebook").custom(customvalidaton),
-  body("twitter").custom(customvalidaton),
-  body("instagram").custom(customvalidaton),
-  body("youtube").custom(customvalidaton),
-  body("linkedin").custom(customvalidaton),
+  check("website").custom(customvalidaton),
+  check("facebook").custom(customvalidaton),
+  check("twitter").custom(customvalidaton),
+  check("instagram").custom(customvalidaton),
+  check("youtube").custom(customvalidaton),
+  check("linkedin").custom(customvalidaton),
   // .isURL().withMessage("Invalid Url"),
 ];
 
