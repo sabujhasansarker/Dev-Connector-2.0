@@ -34,7 +34,7 @@ const App = () => {
           <Alert />
           <Switch>
             <Route exact path="/login" component={Login} />
-            <PrivetRouter exact path="/deshboard" component={Deshboard} />
+            <PrivetRouter exact path="/:username" component={Deshboard} />
             <PrivetRouter exact path="/" component={Posts} />
             <Route exact path="/register" component={Register} />
             <Route exact component={Notfound} />

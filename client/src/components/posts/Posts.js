@@ -1,6 +1,12 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
 
-const Posts = () => {
+import Spnnier from "../layouts/Spnnier";
+
+const Posts = ({ loading }) => {
+  if (loading) {
+    return <Spnnier />;
+  }
   return (
     <Fragment>
       <h1>Post's</h1>
@@ -8,4 +14,8 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+});
+
+export default connect(mapStateToProps)(Posts);
