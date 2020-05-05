@@ -19,7 +19,10 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
   const loginUser = (
     <Fragment>
       <li>
-        <Link to="/user_name" style={{ textTransform: "capitalize" }}>
+        <Link
+          to={`/${user && user.username}`}
+          style={{ textTransform: "capitalize" }}
+        >
           {user && user.firstName + " " + user.lastName}
         </Link>
       </li>

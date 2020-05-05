@@ -14,6 +14,8 @@ import Alert from "./components/layouts/Alert";
 
 import { loadUser } from "./action/auth";
 import setAuthToken from "./utils/SetToken";
+import PrivetRouter from "./components/routers/PrivetRouter";
+import Deshboard from "./components/deshboard/Deshboard";
 
 if (localStorage.usertoken) {
   setAuthToken(localStorage.usertoken);
@@ -32,6 +34,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Posts} />
             <Route exact path="/login" component={Login} />
+            <PrivetRouter exact path="/deshboard" component={Deshboard} />
             <Route exact path="/register" component={Register} />
           </Switch>
         </div>

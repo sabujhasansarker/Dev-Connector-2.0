@@ -38,6 +38,7 @@ export default (state = initialState, action) => {
     case GET_USER_ERROR:
     case LOGIN_ERROR:
     case REGISTER_ERROR:
+    case LOGOUT:
       localStorage.removeItem("usertoken");
       return {
         ...state,
