@@ -287,4 +287,18 @@ header .inner nav label::after {
 .register p {
   margin-right: 130px;
 }
+
+.notfound img {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+
+.notfound .btn {
+  text-align: center;
+  margin: 0 auto;
+  width: 31%;
+  display: block;
+  margin-top: 20px;
+}
 /*# sourceMappingURL=App.css.map */
