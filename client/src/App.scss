@@ -91,6 +91,42 @@ form {
   }
 }
 
+// * alert
+.alert {
+  padding: 0px 0.8rem;
+  margin: 0 auto;
+  width: 70%;
+  transition: all 0.5s;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+  background: var(--light);
+  color: #333;
+  border-radius: 3px;
+  font-size: 20px;
+  border: 1px solid #30323d;
+  height: 50px;
+  i {
+    cursor: pointer;
+  }
+}
+.alert-success {
+  background: var(--success);
+  color: #fff;
+}
+.btn-danger,
+.bg-danger,
+.badge-danger,
+.alert-danger {
+  background: var(--danger);
+  color: #fff;
+}
+// * display flex
+.d-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 // * Media Queries
 @mixin phone {
   @media (max-width: 599px) {
@@ -115,6 +151,7 @@ header {
   transition: 1s all;
   height: 80px;
   background: #30323d;
+  z-index: 99;
   a {
     color: white;
   }

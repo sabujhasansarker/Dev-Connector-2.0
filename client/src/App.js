@@ -10,6 +10,7 @@ import Navbar from "./components/layouts/Navbar";
 import Posts from "./components/posts/Posts";
 import Login from "./components/users/Login";
 import Register from "./components/users/Register";
+import Alert from "./components/layouts/Alert";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Router>
         <Navbar />
         <div className="container pt-100">
+          <Alert />
           <Switch>
             <Route exact path="/" component={Posts} />
             <Route exact path="/login" component={Login} />

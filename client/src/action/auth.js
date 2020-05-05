@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { LOGIN_ERROR, LOGIN, REGISTER, REGISTER_ERROR } from "./Type";
 
+import { setAlert } from "./alert";
+
 // login user
 export const login = (data) => async (dispatch) => {
   const config = {
@@ -14,13 +16,12 @@ export const login = (data) => async (dispatch) => {
 
   try {
     const res = await axios.post("/user/login", body, config);
-    console.log(res.data);
     dispatch({
       type: LOGIN,
       payload: res.data,
     });
   } catch (err) {
-    console.log(err.response.data.errors);
+    dispatch(setAlert(err.response.data.errors.msg, "danger"));
     dispatch({
       type: LOGIN_ERROR,
     });
