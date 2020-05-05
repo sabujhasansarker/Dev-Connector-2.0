@@ -65,9 +65,17 @@ form .form-group {
   margin: 10px 0px;
 }
 
+form .form-group :first-child {
+  margin-left: 0px;
+}
+
+form .form-group :last-child {
+  margin-right: -10px;
+}
+
 form .form-group input {
   border: 0px;
-  margin: 10px 0px;
+  margin: 10px 10px;
   padding: 10px 5px;
   background: none;
   border-bottom: 1.5px solid #30323d;

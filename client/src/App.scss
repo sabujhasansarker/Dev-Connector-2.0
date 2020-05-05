@@ -58,15 +58,22 @@ form {
   margin: 0 auto;
   .form-group {
     margin: 10px 0px;
+    :first-child {
+      margin-left: 0px;
+    }
+    :last-child {
+      margin-right: -10px;
+    }
     input {
       border: 0px;
-      margin: 10px 0px;
+      margin: 10px 10px;
       padding: 10px 5px;
       background: none;
       border-bottom: 1.5px solid #30323d;
       width: 100%;
       font-family: auto;
       font-size: 17px;
+
       &:focus {
         border: 0px;
         border-bottom: 1.5px solid #30323d;
