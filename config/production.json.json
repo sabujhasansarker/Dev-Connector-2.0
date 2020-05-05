@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://sabujhasansarker:sabuj1103@cluster0-jkysd.mongodb.net/test?retryWrites=true&w=majority",
+  "jsonwebtoken": "asldfkjslfkjs",
+  "githubClientId": "8075e9207f9c200bbdf3",
+  "githubSecret": "63422fec7899dba935640b3b1e8eeba64a9378d7"
+}
