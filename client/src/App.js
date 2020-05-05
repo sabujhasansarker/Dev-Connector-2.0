@@ -16,7 +16,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Navbar />
-        <div className="container pt-80">
+        <div className="container pt-100">
           <Switch>
             <Route exact path="/" component={Posts} />
             <Route exact path="/login" component={Login} />

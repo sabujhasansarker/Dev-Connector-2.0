@@ -25,25 +25,72 @@ h6 {
   padding: 0;
 }
 .title {
-  font-family: "Cookie", cursive;
-  text-align: center;
-  text-transform: lowercase;
-  font-size: 67px;
+  font-size: 40px;
   font-weight: 100;
   margin: 0;
+  margin-bottom: 20px;
+}
+.text-center {
+  text-align: center;
+  margin: 0 auto;
 }
 a {
   text-decoration: none;
-  color: black;
 }
 ul {
   li {
     list-style: none;
   }
 }
-.pt-80 {
-  padding-top: 80px;
+.pt-100 {
+  padding-top: 100px;
 }
+.top-bottom-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// from
+form {
+  width: 50%;
+  margin: 0 auto;
+  .form-group {
+    margin: 10px 0px;
+    input {
+      border: 0px;
+      margin: 10px 0px;
+      padding: 10px 5px;
+      background: none;
+      border-bottom: 1.5px solid #30323d;
+      width: 100%;
+      font-family: auto;
+      font-size: 17px;
+      &:focus {
+        border: 0px;
+        border-bottom: 1.5px solid #30323d;
+      }
+    }
+  }
+}
+
+.btn {
+  border: 1px solid #30323d;
+  padding: 10px;
+  width: 100px;
+  background: #30323d;
+  color: white;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #30323d;
+    background: none;
+    color: #30323d;
+  }
+}
+
 // * Media Queries
 @mixin phone {
   @media (max-width: 599px) {
@@ -145,5 +192,16 @@ header {
         }
       }
     }
+  }
+}
+
+// * login page
+.login,
+.register {
+  .btn {
+    float: left;
+  }
+  p {
+    margin-right: 130px;
   }
 }

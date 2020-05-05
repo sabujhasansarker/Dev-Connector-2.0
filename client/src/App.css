@@ -25,25 +25,77 @@ h6 {
 }
 
 .title {
-  font-family: "Cookie", cursive;
-  text-align: center;
-  text-transform: lowercase;
-  font-size: 67px;
+  font-size: 40px;
   font-weight: 100;
   margin: 0;
+  margin-bottom: 20px;
+}
+
+.text-center {
+  text-align: center;
+  margin: 0 auto;
 }
 
 a {
   text-decoration: none;
-  color: black;
 }
 
 ul li {
   list-style: none;
 }
 
-.pt-80 {
-  padding-top: 80px;
+.pt-100 {
+  padding-top: 100px;
+}
+
+.top-bottom-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+form .form-group {
+  margin: 10px 0px;
+}
+
+form .form-group input {
+  border: 0px;
+  margin: 10px 0px;
+  padding: 10px 5px;
+  background: none;
+  border-bottom: 1.5px solid #30323d;
+  width: 100%;
+  font-family: auto;
+  font-size: 17px;
+}
+
+form .form-group input:focus {
+  border: 0px;
+  border-bottom: 1.5px solid #30323d;
+}
+
+.btn {
+  border: 1px solid #30323d;
+  padding: 10px;
+  width: 100px;
+  background: #30323d;
+  color: white;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border: 1px solid #30323d;
+  background: none;
+  color: #30323d;
 }
 
 header.fix_header {
@@ -169,5 +221,15 @@ header .inner nav label::after {
     cursor: pointer;
     z-index: 9999;
   }
+}
+
+.login .btn,
+.register .btn {
+  float: left;
+}
+
+.login p,
+.register p {
+  margin-right: 130px;
 }
 /*# sourceMappingURL=App.css.map */
