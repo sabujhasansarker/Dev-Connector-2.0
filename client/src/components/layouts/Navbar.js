@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 
-const Navbar = ({ auth: { isAutination, user } }) => {
+import { logout } from "../../action/auth";
+
+const Navbar = ({ auth: { isAutination, user }, logout }) => {
   const gustuser = (
     <Fragment>
       <li>
@@ -19,6 +21,14 @@ const Navbar = ({ auth: { isAutination, user } }) => {
       <li>
         <Link to="/user_name" style={{ textTransform: "capitalize" }}>
           {user && user.firstName + " " + user.lastName}
+        </Link>
+      </li>
+      <li>
+        <Link to="/">Posts</Link>
+      </li>
+      <li>
+        <Link to="/" onClick={() => logout()}>
+          Logout
         </Link>
       </li>
       <li>
@@ -46,4 +56,4 @@ const mapToStateProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapToStateProps)(Navbar);
+export default connect(mapToStateProps, { logout })(Navbar);

@@ -5,6 +5,7 @@ import {
   REGISTER_ERROR,
   GET_USER,
   GET_USER_ERROR,
+  LOGOUT,
 } from "../action/Type";
 
 const initialState = {

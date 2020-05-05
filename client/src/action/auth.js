@@ -7,6 +7,7 @@ import {
   REGISTER_ERROR,
   GET_USER_ERROR,
   GET_USER,
+  LOGOUT,
 } from "./Type";
 
 import { setAlert } from "./alert";
@@ -54,6 +55,11 @@ export const login = (data) => async (dispatch) => {
       type: LOGIN_ERROR,
     });
   }
+};
+
+// Logout
+export const logout = () => (dispatch) => {
+  dispatch({ type: LOGOUT });
 };
 
 // Register user
