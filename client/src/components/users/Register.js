@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { setAlert } from "../../action/alert";
 import { register } from "../../action/auth";
 
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAutination }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +25,9 @@ const Register = ({ setAlert, register }) => {
       register(formData);
     }
   };
+  if (isAutination) {
+    return <Redirect to="/deshboard" />;
+  }
   return (
     <div className="text-center register ">
       <h1 className="title">Register account</h1>
@@ -33,12 +36,14 @@ const Register = ({ setAlert, register }) => {
           <input
             type="text"
             name="firstName"
+            value={firstName}
             placeholder="Enter Your First Name"
             onChange={(e) => onchange(e)}
           />{" "}
           <input
             type="text"
             name="lastName"
+            value={lastName}
             placeholder="Enter Your Last Name"
             onChange={(e) => onchange(e)}
           />
@@ -46,6 +51,7 @@ const Register = ({ setAlert, register }) => {
         <div className="form-group ">
           <input
             type="email"
+            value={email}
             name="email"
             placeholder="Enter Your Valid Email"
             onChange={(e) => onchange(e)}
@@ -74,4 +80,8 @@ const Register = ({ setAlert, register }) => {
   );
 };
 
-export default connect(null, { setAlert, register })(Register);
+const mapToStateProps = (state) => ({
+  isAutination: state.auth.isAutination,
+});
+
+export default connect(mapToStateProps, { setAlert, register })(Register);

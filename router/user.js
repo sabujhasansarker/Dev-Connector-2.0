@@ -6,6 +6,7 @@ const {
   registerUserController,
   deleteUser,
   updateUser,
+  getCurrentUser,
 } = require("../controller/userController");
 const {
   registerValidator,
@@ -33,5 +34,10 @@ router.delete("/delete/me", auth, deleteUser);
 //* @ decs   :  Update User
 //! @ access :   Privet
 router.put("/update", auth, userUpdateValidator, updateUser);
+
+//? @ Path   :   /user
+//* @ decs   :  Update User
+//! @ access :   Privet
+router.get("/", auth, getCurrentUser);
 
 module.exports = router;

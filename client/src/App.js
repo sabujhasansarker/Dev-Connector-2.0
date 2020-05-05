@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Redux
@@ -12,7 +12,17 @@ import Login from "./components/users/Login";
 import Register from "./components/users/Register";
 import Alert from "./components/layouts/Alert";
 
-function App() {
+import { loadUser } from "./action/auth";
+import setAuthToken from "./utils/SetToken";
+
+if (localStorage.usertoken) {
+  setAuthToken(localStorage.usertoken);
+}
+
+const App = () => {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  });
   return (
     <Provider store={store}>
       <Router>
@@ -28,6 +38,6 @@ function App() {
       </Router>
     </Provider>
   );
-}
+};
 
 export default App;

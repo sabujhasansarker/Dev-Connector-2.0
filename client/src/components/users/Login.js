@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { login } from "../../action/auth";
 
-const Login = ({ login }) => {
+const Login = ({ login, isAutination }) => {
   const [fromData, setFromData] = useState();
   const user = useRef("");
   const password = useRef("");
@@ -29,6 +29,9 @@ const Login = ({ login }) => {
     e.preventDefault();
     login(fromData);
   };
+  if (isAutination) {
+    return <Redirect to="/deshboard" />;
+  }
   return (
     <div className="text-center login ">
       <h1 className="title">Login your account</h1>
@@ -59,4 +62,8 @@ const Login = ({ login }) => {
   );
 };
 
-export default connect(null, { login })(Login);
+const mapToStateProps = (state) => ({
+  isAutination: state.auth.isAutination,
+});
+
+export default connect(mapToStateProps, { login })(Login);

@@ -1,7 +1,31 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+import { connect } from "react-redux";
+
+const Navbar = ({ auth: { isAutination, user } }) => {
+  const gustuser = (
+    <Fragment>
+      <li>
+        <Link to="/login">Login</Link>
+      </li>
+      <li>
+        <Link to="/register">Register</Link>
+      </li>
+    </Fragment>
+  );
+  const loginUser = (
+    <Fragment>
+      <li>
+        <Link to="/user_name" style={{ textTransform: "capitalize" }}>
+          {user && user.firstName + " " + user.lastName}
+        </Link>
+      </li>
+      <li>
+        <Link to="/setting">usersetting</Link>
+      </li>
+    </Fragment>
+  );
   return (
     <header>
       <div className="inner container">
@@ -11,18 +35,15 @@ const Navbar = () => {
           </Link>
           <input type="checkbox" name="" id="nav" />{" "}
           <label htmlFor="nav"></label>
-          <ul>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-          </ul>
+          <ul>{isAutination ? loginUser : gustuser}</ul>
         </nav>
       </div>
     </header>
   );
 };
 
-export default Navbar;
+const mapToStateProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapToStateProps)(Navbar);
