@@ -127,19 +127,21 @@ exports.createProfile = async (req, res) => {
     }
     profileFileds.website = website === "" ? null : website;
     // Profile pic change
-    profilePic = profilePic
-      ? profilePic
-      : gravatar.url(user.email, { s: "200", r: "pg", d: "mm" });
-    profileFileds.profilePic = profilePic;
 
     // Profile update
     let profile = await Profile.findOne({ user: req.user.id });
     if (!profile) {
+      profileFileds.profilePic = profilePic
+        ? profilePic
+        : gravatar.url(user.email, { s: "200", r: "pg", d: "mm" });
+
       // Create Profile
       profile = new Profile(profileFileds);
       profile.save();
       return res.status(200).json({ profile });
     }
+
+    profileFileds.profilePic = profilePic ? profilePic : profile.profilePic;
 
     // Update Profile
     profile = await Profile.findOneAndUpdate(
@@ -153,7 +155,7 @@ exports.createProfile = async (req, res) => {
 
     await User.findByIdAndUpdate(
       req.user.id,
-      { $set: { profilePic, profile: profile._id } },
+      { $set: { profilePic: profileFileds.profilePic, profile: profile._id } },
       { new: true }
     );
   } catch (err) {

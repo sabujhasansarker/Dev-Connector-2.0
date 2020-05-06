@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import Spnnier from "../layouts/Spnnier";
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import Notfound from "../layouts/Notfound";
-import ProfileLeft from "./ProfileLeft";
+import TimeLine from "./timeLine/TimeLine";
 
 const Profile = ({ auth: { loading, user }, match }) => {
   if (loading) {
@@ -15,6 +15,9 @@ const Profile = ({ auth: { loading, user }, match }) => {
   }
   const profileFound = (
     <ul>
+      <li>
+        <Link to={`/${user && user.username}`}>TimeLine</Link>
+      </li>
       <li>
         <a href="">About</a>
       </li>
@@ -41,11 +44,7 @@ const Profile = ({ auth: { loading, user }, match }) => {
       <div className="profile-menu">
         {profile ? profileFound : profileNotFound}
       </div>
-
-      <div className="body">
-        {" "}
-        <ProfileLeft profile={profile} />
-      </div>
+      <TimeLine profile={profile} />
     </div>
   );
 };

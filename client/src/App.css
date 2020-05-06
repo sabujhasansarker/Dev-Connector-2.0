@@ -397,6 +397,21 @@ header .inner nav label::after {
   padding-top: 20px;
 }
 
+.profile .body .skills {
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.profile .body hr {
+  background: #e9ebee;
+  border: none;
+  height: 1px;
+}
+
 .profile .body .intro-text {
   font-size: 16px;
   font-family: "Quattrocento Sans", sans-serif;
