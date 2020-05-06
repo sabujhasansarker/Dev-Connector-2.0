@@ -8,6 +8,8 @@ import {
   GET_USER_ERROR,
   GET_USER,
   LOGOUT,
+  UPDATE_USER,
+  USER_UPDATE_ERROR,
 } from "./Type";
 
 import { setAlert } from "./alert";
@@ -81,9 +83,35 @@ export const register = (data) => async (dispatch) => {
   } catch (err) {
     err.response.data.errors.map((e) => {
       dispatch(setAlert(e.msg, "danger"));
-      dispatch({
-        type: REGISTER_ERROR,
-      });
+    });
+    dispatch({
+      type: REGISTER_ERROR,
+    });
+  }
+};
+
+// Update user
+export const updateUser = (fromdata) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(fromdata);
+  try {
+    const res = await axios.put("/user/update", body, config);
+    dispatch({
+      type: UPDATE_USER,
+      payload: res.data,
+    });
+    dispatch(setAlert("User Update Successfully", "success"));
+  } catch (err) {
+    console.log(err.response.data);
+    err.response.data.errors &&
+      dispatch(setAlert(err.response.data.errors.msg, "danger"));
+
+    dispatch({
+      type: USER_UPDATE_ERROR,
     });
   }
 };

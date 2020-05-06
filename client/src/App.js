@@ -8,15 +8,12 @@ import store from "./store";
 import "./App.css";
 import Navbar from "./components/layouts/Navbar";
 import Posts from "./components/posts/Posts";
-import Login from "./components/users/Login";
-import Register from "./components/users/Register";
 import Alert from "./components/layouts/Alert";
 
 import { loadUser } from "./action/auth";
 import setAuthToken from "./utils/setAuthToken";
 import PrivetRouter from "./components/routers/PrivetRouter";
-import Deshboard from "./components/deshboard/Deshboard";
-import Notfound from "./components/layouts/Notfound";
+import Routes from "./components/routers/Routes";
 
 if (localStorage.usertoken) {
   setAuthToken(localStorage.usertoken);
@@ -33,11 +30,8 @@ const App = () => {
         <div className="container pt-100">
           <Alert />
           <Switch>
-            <Route exact path="/login" component={Login} />
-            <PrivetRouter exact path="/:username" component={Deshboard} />
             <PrivetRouter exact path="/" component={Posts} />
-            <Route exact path="/register" component={Register} />
-            <Route exact component={Notfound} />
+            <Route component={Routes} />
           </Switch>
         </div>
       </Router>

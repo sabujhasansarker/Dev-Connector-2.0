@@ -1,5 +1,7 @@
 const { check } = require("express-validator");
 
+const validator = require("validator");
+
 const User = require("../model/User");
 
 // Register Validation
@@ -50,8 +52,4 @@ exports.userUpdateValidator = [
     .withMessage("Please provide a valid E-mail")
     .normalizeEmail()
     .trim(),
-  check("password")
-    .optional()
-    .isLength({ min: 5, max: 9 })
-    .withMessage("Please enter a password with min 5 to max 9 characters"),
 ];

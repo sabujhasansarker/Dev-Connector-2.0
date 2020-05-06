@@ -14,3 +14,7 @@ export const LOGOUT = "LOGOUT";
 // get current user
 export const GET_USER = "GET_USER";
 export const GET_USER_ERROR = "GET_USER_ERROR";
+
+// user update
+export const UPDATE_USER = "UPDATE_USER";
+export const USER_UPDATE_ERROR = "USER_UPDATE_ERROR";

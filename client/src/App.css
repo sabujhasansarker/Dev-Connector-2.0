@@ -212,10 +212,25 @@ header .inner nav ul {
   }
 }
 
+header .inner nav ul p {
+  color: white;
+}
+
+header .inner nav ul p .fas {
+  margin-top: -7px;
+  margin-left: 25px;
+}
+
 header .inner nav ul li {
   text-align: center;
   margin-left: 20px;
   position: relative;
+}
+
+header .inner nav ul li .nav-user > img {
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 header .inner nav ul li a {
@@ -300,5 +315,20 @@ header .inner nav label::after {
   width: 31%;
   display: block;
   margin-top: 20px;
+}
+
+.setting input.btn {
+  width: 150px;
+}
+
+.setting .btn_cencel {
+  margin-left: 20px;
+  background: no-repeat;
+  color: #30323d;
+}
+
+.setting .btn_cencel:hover {
+  background: #30323d;
+  color: white;
 }
 /*# sourceMappingURL=App.css.map */

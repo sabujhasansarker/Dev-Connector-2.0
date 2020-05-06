@@ -20,22 +20,26 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
     <Fragment>
       <li>
         <Link
+          className="d-flex nav-user"
           to={`/${user && user.username}`}
           style={{ textTransform: "capitalize" }}
         >
-          {user && user.firstName + " " + user.lastName}
+          <img src={user && user.profilePic} alt="" />
+          {user && user.firstName}
         </Link>
       </li>
       <li>
         <Link to="/">Posts</Link>
       </li>
       <li>
-        <Link to="/" onClick={() => logout()}>
-          Logout
+        <Link to="/setting">
+          Setting <i className="fas fa-user-cog setting-icon"></i>
         </Link>
       </li>
       <li>
-        <Link to="/setting">usersetting</Link>
+        <Link to="/" onClick={() => logout()}>
+          Logout <i className="fas fa-sign-out-alt"></i>
+        </Link>
       </li>
     </Fragment>
   );
@@ -44,7 +48,7 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
       <div className="inner container">
         <nav>
           <Link to="/" className="logo">
-            Logo
+            <i className="fas fa-code"></i> Logo
           </Link>
           <input type="checkbox" name="" id="nav" />{" "}
           <label htmlFor="nav"></label>

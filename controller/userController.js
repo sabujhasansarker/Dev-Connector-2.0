@@ -142,6 +142,16 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
+    if (
+      firstName === user.firstName &&
+      lastName === user.lastName &&
+      email === user.email &&
+      username === user.username &&
+      password.length === 0
+    ) {
+      return res.status(404).json({ errors: { msg: "Noting to change" } });
+    }
+
     // if old password match
     const matchPassword = bcrypt.compareSync(oldPassword, user.password);
     if (!matchPassword) {
@@ -160,10 +170,18 @@ exports.updateUser = async (req, res) => {
       if (username && username !== user.username) {
         let usernameUser = await User.findOne({ username });
         if (usernameUser) {
-          return res.status(400).json({ errors: { msg: "user already used" } });
+          return res
+            .status(400)
+            .json({ errors: { msg: "username already used" } });
         }
       }
-
+      if (password.length < 5 || password.length > 9) {
+        return res.status(400).json({
+          errors: {
+            msg: "Please enter a password with min 5 to max 9 characters",
+          },
+        });
+      }
       firstName = firstName ? firstName : user.firstName;
       lastName = lastName ? lastName : user.lastName;
       email = email ? email : user.email;
@@ -178,6 +196,7 @@ exports.updateUser = async (req, res) => {
         },
         { new: true }
       );
+      user = await User.findById(req.user.id).select("-password");
       res.json({ user });
     }
   } catch (err) {

@@ -29,6 +29,7 @@ const Login = ({ login, isAutination }) => {
     e.preventDefault();
     login(fromData);
   };
+
   if (isAutination) {
     return <Redirect to="/" />;
   }
