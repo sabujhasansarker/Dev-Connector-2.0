@@ -18,3 +18,6 @@ export const GET_USER_ERROR = "GET_USER_ERROR";
 // user update
 export const UPDATE_USER = "UPDATE_USER";
 export const USER_UPDATE_ERROR = "USER_UPDATE_ERROR";
+
+// profile
+export const GET_PROFILE_BY_USERNAME = "GET_PROFILE_BY_USERNAME";

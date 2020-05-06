@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { logout } from "../../action/auth";
 
 const Navbar = ({ auth: { isAutination, user }, logout }) => {
+  const username = user && user.firstName.split(" ").map((e) => e.trim());
+
   const gustuser = (
     <Fragment>
       <li>
@@ -25,7 +27,7 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
           style={{ textTransform: "capitalize" }}
         >
           <img src={user && user.profilePic} alt="" />
-          {user && user.firstName}
+          {user && username[0]}
         </Link>
       </li>
       <li>

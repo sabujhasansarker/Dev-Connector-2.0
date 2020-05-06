@@ -98,6 +98,7 @@ export const updateUser = (fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
+  console.log(body);
   try {
     const res = await axios.put("/user/update", body, config);
     dispatch({
@@ -105,6 +106,7 @@ export const updateUser = (fromdata) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(setAlert("User Update Successfully", "success"));
+    dispatch(loadUser());
   } catch (err) {
     console.log(err.response.data);
     err.response.data.errors &&

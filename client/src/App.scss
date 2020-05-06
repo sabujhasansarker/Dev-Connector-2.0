@@ -7,6 +7,7 @@ body {
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
   font-size: 18px;
+  background: #e9ebee;
 }
 // font-family: 'Open Sans Condensed', sans-serif;
 // font-family: 'Cookie', cursive;
@@ -102,7 +103,7 @@ form {
 .alert {
   padding: 0px 0.8rem;
   margin: 0 auto;
-  width: 70%;
+  width: 76%;
   transition: all 0.5s;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -113,6 +114,8 @@ form {
   font-size: 20px;
   border: 1px solid #30323d;
   height: 50px;
+  position: fixed;
+  z-index: 9;
   i {
     cursor: pointer;
   }
@@ -289,6 +292,82 @@ header {
     &:hover {
       background: #30323d;
       color: white;
+    }
+  }
+}
+
+// Single Profile
+.profile {
+  margin-top: -20px;
+
+  .banner {
+    background: #17a2b8;
+    height: 300px;
+    position: relative;
+  }
+
+  .profile-pic {
+    border-radius: 50%;
+    height: 250px;
+    width: 250px;
+    border: 2px solid white;
+    position: absolute;
+    right: 82%;
+    left: 18%;
+    transform: translate(-18%, -82%);
+  }
+  .profile-menu {
+    text-align: right;
+    background: #ffffff;
+    padding: 2px 10px;
+    -webkit-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+    box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+    ul {
+      display: flex;
+      justify-content: flex-end;
+      li {
+        margin: 0px 10px;
+        a {
+          color: #30323d;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+
+  @import url("https://fonts.googleapis.com/css2?family=Quattrocento+Sans&display=swap");
+
+  .body {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: "intro post";
+    grid-gap: 1rem;
+    padding-top: 20px;
+    .intro-text {
+      font-size: 16px;
+      font-family: "Quattrocento Sans", sans-serif;
+      color: #1d2129;
+      font-weight: 100;
+    }
+    .p-20 {
+      padding: 20px;
+    }
+    .shadwo {
+      box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+      background: white;
+    }
+    .intro {
+      grid-area: intro;
+      p .fas {
+        font-weight: 900;
+        margin-right: 15px;
+      }
+    }
+    .post_area {
+      grid-area: post;
     }
   }
 }

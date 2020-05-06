@@ -7,6 +7,7 @@ import {
   GET_USER_ERROR,
   LOGOUT,
   UPDATE_USER,
+  GET_PROFILE_BY_USERNAME,
 } from "../action/Type";
 
 const initialState = {
@@ -21,6 +22,7 @@ export default (state = initialState, action) => {
   switch (type) {
     case GET_USER:
     case UPDATE_USER:
+    case GET_PROFILE_BY_USERNAME:
       return {
         ...state,
         user: payload,

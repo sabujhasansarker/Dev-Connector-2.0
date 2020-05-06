@@ -168,6 +168,13 @@ exports.updateUser = async (req, res) => {
         }
       }
       if (username && username !== user.username) {
+        if (username.length < 5 || username.length > 15) {
+          return res.status(400).json({
+            errors: {
+              msg: "Please enter a username with min 5 to max 15 characters",
+            },
+          });
+        }
         let usernameUser = await User.findOne({ username });
         if (usernameUser) {
           return res
@@ -175,12 +182,14 @@ exports.updateUser = async (req, res) => {
             .json({ errors: { msg: "username already used" } });
         }
       }
-      if (password.length < 5 || password.length > 9) {
-        return res.status(400).json({
-          errors: {
-            msg: "Please enter a password with min 5 to max 9 characters",
-          },
-        });
+      if (password.length !== 0) {
+        if (password.length < 5 || password.length > 9) {
+          return res.status(400).json({
+            errors: {
+              msg: "Please enter a password with min 5 to max 9 characters",
+            },
+          });
+        }
       }
       firstName = firstName ? firstName : user.firstName;
       lastName = lastName ? lastName : user.lastName;
@@ -206,7 +215,22 @@ exports.updateUser = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id)
+      .populate("profile", [
+        "bio",
+        "birthday",
+        "website",
+        "status",
+        "skills",
+        "company",
+        "address",
+        "githubusername",
+        "experience",
+        "education",
+        "social",
+        "date",
+      ])
+      .select(["-password"]);
     res.json(user);
   } catch (err) {
     serverError(res, err);
