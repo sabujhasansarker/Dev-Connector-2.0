@@ -13,7 +13,7 @@ import Register from "./components/users/Register";
 import Alert from "./components/layouts/Alert";
 
 import { loadUser } from "./action/auth";
-import setAuthToken from "./utils/SetToken";
+import setAuthToken from "./utils/setAuthToken";
 import PrivetRouter from "./components/routers/PrivetRouter";
 import Deshboard from "./components/deshboard/Deshboard";
 import Notfound from "./components/layouts/Notfound";
@@ -25,7 +25,7 @@ if (localStorage.usertoken) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
-  });
+  }, []);
   return (
     <Provider store={store}>
       <Router>

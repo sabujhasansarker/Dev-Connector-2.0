@@ -12,13 +12,13 @@ import {
 
 import { setAlert } from "./alert";
 
-import setAuthToken from "../utils/SetToken";
+import setAuthToken from "../utils/setAuthToken";
 
 // get user by id
 
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
+  if (localStorage.usertoken) {
+    setAuthToken(localStorage.usertoken);
   }
 
   try {

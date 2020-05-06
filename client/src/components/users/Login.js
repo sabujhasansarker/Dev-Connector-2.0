@@ -30,7 +30,7 @@ const Login = ({ login, isAutination }) => {
     login(fromData);
   };
   if (isAutination) {
-    return <Redirect to="/deshboard" />;
+    return <Redirect to="/" />;
   }
   return (
     <div className="text-center login ">
