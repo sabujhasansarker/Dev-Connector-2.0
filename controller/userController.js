@@ -195,9 +195,13 @@ exports.updateUser = async (req, res) => {
       lastName = lastName ? lastName : user.lastName;
       email = email ? email : user.email;
       username = username ? username : user.username;
+
+      // Hase new  password
       password = password
         ? await bcrypt.hashSync(password, 10)
         : bcrypt.hashSync(oldPassword, 10);
+
+      // update user
       await User.findByIdAndUpdate(
         req.user.id,
         {
@@ -206,6 +210,14 @@ exports.updateUser = async (req, res) => {
         { new: true }
       );
       user = await User.findById(req.user.id).select("-password");
+
+      // Update Profile Username
+      await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: { username: user.username } },
+        { new: true }
+      );
+
       res.json({ user });
     }
   } catch (err) {
@@ -215,22 +227,7 @@ exports.updateUser = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .populate("profile", [
-        "bio",
-        "birthday",
-        "website",
-        "status",
-        "skills",
-        "company",
-        "address",
-        "githubusername",
-        "experience",
-        "education",
-        "social",
-        "date",
-      ])
-      .select(["-password"]);
+    const user = await User.findById(req.user.id).select(["-password"]);
     res.json(user);
   } catch (err) {
     serverError(res, err);

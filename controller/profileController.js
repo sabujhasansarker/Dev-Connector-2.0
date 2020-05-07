@@ -41,24 +41,9 @@ exports.getAllProfiles = async (req, res) => {
 
 exports.getSingleProfileByUsername = async (req, res) => {
   try {
-    const profile = await User.findOne({
+    const profile = await Profile.findOne({
       username: req.params.username,
-    })
-      .populate("profile", [
-        "bio",
-        "birthday",
-        "website",
-        "status",
-        "skills",
-        "company",
-        "address",
-        "githubusername",
-        "experience",
-        "education",
-        "social",
-        "date",
-      ])
-      .select(["-password", "-_id", "-username"]);
+    });
 
     if (!profile) {
       return res
@@ -126,7 +111,8 @@ exports.createProfile = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
     profileFileds.website = website === "" ? null : website;
-    // Profile pic change
+
+    profileFileds.username = user.username;
 
     // Profile update
     let profile = await Profile.findOne({ user: req.user.id });
@@ -138,7 +124,7 @@ exports.createProfile = async (req, res) => {
       // Create Profile
       profile = new Profile(profileFileds);
       profile.save();
-      return res.status(200).json({ profile });
+      return res.status(200).json(profile);
     }
 
     profileFileds.profilePic = profilePic ? profilePic : profile.profilePic;
@@ -149,7 +135,7 @@ exports.createProfile = async (req, res) => {
       { $set: profileFileds },
       { new: true }
     );
-    res.status(200).json({ profile });
+    res.status(200).json(profile);
 
     // update user
 

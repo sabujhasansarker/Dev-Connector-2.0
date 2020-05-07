@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import Spnnier from "../layouts/Spnnier";
 import { Route, Link } from "react-router-dom";
+
 import Notfound from "../layouts/Notfound";
 import TimeLine from "./timeLine/TimeLine";
+import { getprofilebyusername } from "../../action/profile";
 
-const Profile = ({ auth: { loading, user }, match }) => {
+const Profile = ({
+  profile: { profile, loading },
+  match,
+  getprofilebyusername,
+}) => {
+  console.log(profile && profile);
+  useEffect(() => {
+    getprofilebyusername(match.params.username);
+  }, [getprofilebyusername]);
+
   if (loading) {
     return <Spnnier />;
   }
 
-  if (user && user.username !== match.params.username) {
+  if (profile && profile.username !== match.params.username) {
     return <Route exact component={Notfound} />;
   }
+
   const profileFound = (
     <ul>
       <li>
-        <Link to={`/${user && user.username}`}>TimeLine</Link>
+        <Link to={`/${profile && profile.username}`}>TimeLine</Link>
       </li>
       <li>
         <a href="">About</a>
@@ -36,20 +48,20 @@ const Profile = ({ auth: { loading, user }, match }) => {
       </li>
     </ul>
   );
-  const { profilePic, profile } = user && user;
+  // const { profilePic } = profile && profile;
   return (
     <div className="profile">
       <div className="banner"></div>
-      <img className="profile-pic" src={profilePic} alt="" />
+      <img className="profile-pic" src={profile && profile.profilePic} alt="" />
       <div className="profile-menu">
         {profile ? profileFound : profileNotFound}
       </div>
-      <TimeLine profile={profile} />
+      <TimeLine profile={profile && profile} />
     </div>
   );
 };
 const mapStateToProps = (state) => ({
-  auth: state.auth,
+  profile: state.profile,
 });
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { getprofilebyusername })(Profile);

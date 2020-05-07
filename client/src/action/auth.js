@@ -108,9 +108,7 @@ export const updateUser = (fromdata) => async (dispatch) => {
     dispatch(setAlert("User Update Successfully", "success"));
     dispatch(loadUser());
   } catch (err) {
-    console.log(err.response.data);
-    err.response.data.errors &&
-      dispatch(setAlert(err.response.data.errors.msg, "danger"));
+    err.response && dispatch(setAlert(err.response.data.errors.msg, "danger"));
 
     dispatch({
       type: USER_UPDATE_ERROR,

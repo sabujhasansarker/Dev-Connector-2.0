@@ -5,6 +5,7 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  username: String,
   bio: {
     type: String,
     trim: true,
