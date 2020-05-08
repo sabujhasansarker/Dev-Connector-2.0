@@ -1,8 +1,12 @@
 import React, { Fragment } from "react";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const Overview = ({ profile }) => {
+import { setPopup, removePopup } from "../../../action/popup";
+import EducationFrom from "../update/EducationFrom";
+
+const Overview = ({ profile, setPopup, removePopup, popup }) => {
   let { education, address, experience, social, website } = profile;
 
   return (
@@ -12,13 +16,13 @@ const Overview = ({ profile }) => {
         <div className="left">
           <div className="experience">
             <div className="top">
-              <i className="fas fa-plus"></i>
+              <i className="fas fa-plus" onClick={(e) => setPopup()}></i>
               <h6 className="add">Add Experience</h6>
             </div>
             {experience.map((e) => (
-              <Fragment>
+              <Fragment key={e._id}>
                 {!e.to && (
-                  <div className="d-flex single-view" key={e._id}>
+                  <div className="d-flex single-view">
                     <i className="fas fa-user-graduate single-icon"></i>
                     <div className="single-details">
                       <p>Work at {e.company}</p>
@@ -45,7 +49,7 @@ const Overview = ({ profile }) => {
               <h6 className="add">Add Education</h6>
             </div>
             {education.map((e) => (
-              <Fragment>
+              <Fragment key={e._id}>
                 {!e.to && (
                   <div className="d-flex single-view" key={e._id}>
                     <i className="fas fa-user-graduate single-icon"></i>
@@ -136,8 +140,13 @@ const Overview = ({ profile }) => {
           </div>
         </div>
       </div>
+      {popup && <EducationFrom />}
     </div>
   );
 };
 
-export default Overview;
+const mapStateToProps = (state) => ({
+  popup: state.popup,
+});
+
+export default connect(mapStateToProps, { setPopup, removePopup })(Overview);

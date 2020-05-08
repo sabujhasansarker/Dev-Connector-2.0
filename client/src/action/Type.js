@@ -2,6 +2,10 @@
 export const SET_ALERT = "SET_ALERT";
 export const REMOVE_ALERT = "REMOVE_ALERT";
 
+// Popup
+export const SET_POPUP = "SET_POPUP";
+export const REMOVE_POPUP = "REMOVE_POPUP";
+
 // REGISTER
 export const REGISTER = "REGISTER";
 export const REGISTER_ERROR = "REGISTER_ERROR";
