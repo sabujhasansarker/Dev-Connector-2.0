@@ -576,17 +576,14 @@ header .inner nav label::after {
 
 .mouse-in-out {
   opacity: 0;
+  cursor: pointer;
 }
 
 .mouse-in-out:hover {
   opacity: 1;
 }
 
-.mouse-in-out a {
-  padding: 0px !important;
-}
-
-.mouse-in-out a.mr-10 {
+.mouse-in-out .mr-10 {
   margin-right: 10px;
 }
 
@@ -604,12 +601,28 @@ header .inner nav label::after {
 
 .popup_inner {
   position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  bottom: 25%;
+  left: 20%;
+  right: 20%;
+  top: 15%;
   margin: auto;
   border-radius: 20px;
   background: white;
+  bottom: 10%;
+  overflow: auto;
+  padding: 20px 0px;
+}
+
+.popup_inner .form-group {
+  margin: 20px 0px;
+}
+
+.popup_inner .form-group input {
+  margin: 0 !important;
+}
+
+input[type="checkbox"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
 }
 /*# sourceMappingURL=App.css.map */

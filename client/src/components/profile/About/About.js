@@ -4,8 +4,10 @@ import Overview from "./Overview";
 import Education from "./Education";
 import Experience from "./Experience";
 import ContactAndBasic from "./ContactAndBasic";
+import { connect } from "react-redux";
+import EducationFrom from "../update/EducationFrom";
 
-const About = ({ profile }) => {
+const About = ({ profile, popup }) => {
   const [toggle, setToggle] = useState({
     overview: true,
     education: false,
@@ -15,6 +17,7 @@ const About = ({ profile }) => {
 
   return (
     <div id="about">
+      {popup && <EducationFrom />}
       <h1>About</h1>
       <div className="grid">
         <div className="left">
@@ -88,4 +91,8 @@ const About = ({ profile }) => {
   );
 };
 
-export default About;
+const mapStateToProps = (state) => ({
+  popup: state.popup,
+});
+
+export default connect(mapStateToProps, {})(About);

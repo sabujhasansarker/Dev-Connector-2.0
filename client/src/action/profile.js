@@ -5,6 +5,8 @@ import {
   PROFILE_UPDATE,
   GET_PROFILE_ERROR,
   PROFILE_UPDATE_ERROR,
+  SET_CURRENT,
+  REMOVE_CURRENT,
 } from "./Type";
 
 export const getprofilebyusername = (username) => async (dispatch) => {
@@ -38,4 +40,19 @@ export const profileUpdate = (fromdata) => async (dispatch) => {
       type: PROFILE_UPDATE_ERROR,
     });
   }
+};
+
+// set current
+export const getCurrent = (e) => (dispatch) => {
+  dispatch({
+    type: SET_CURRENT,
+    payload: e,
+  });
+};
+
+// REMOVE CURRENT
+export const removeCurrent = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_CURRENT,
+  });
 };

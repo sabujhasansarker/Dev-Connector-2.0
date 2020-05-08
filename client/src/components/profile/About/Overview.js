@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { setPopup, removePopup } from "../../../action/popup";
-import EducationFrom from "../update/EducationFrom";
+import { getCurrent } from "../../../action/profile";
 
-const Overview = ({ profile, setPopup, removePopup, popup }) => {
+const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
   let { education, address, experience, social, website } = profile;
 
   return (
@@ -30,7 +30,7 @@ const Overview = ({ profile, setPopup, removePopup, popup }) => {
                         Start in <Moment format="YYYY">{e.from}</Moment>
                       </p>
                       <div className="mouse-in-out d-flex">
-                        <Link to="/" className="mr-10">
+                        <Link to="/#educaion" className="mr-10">
                           {" "}
                           Edit{" "}
                         </Link>
@@ -48,21 +48,26 @@ const Overview = ({ profile, setPopup, removePopup, popup }) => {
               <i className="fas fa-plus"></i>
               <h6 className="add">Add Education</h6>
             </div>
-            {education.map((e) => (
-              <Fragment key={e._id}>
-                {!e.to && (
-                  <div className="d-flex single-view" key={e._id}>
+            {education.map((edu) => (
+              <Fragment key={edu._id}>
+                {!edu.to && (
+                  <div className="d-flex single-view" key={edu._id}>
                     <i className="fas fa-user-graduate single-icon"></i>
                     <div className="single-details">
-                      <p>Studied at {e.school}</p>
+                      <p>Studied at {edu.school}</p>
                       <p>
-                        Start in <Moment format="YYYY">{e.from}</Moment>
+                        Start in <Moment format="YYYY">{edu.from}</Moment>
                       </p>
                       <div className="mouse-in-out d-flex">
-                        <Link to="/" className="mr-10">
-                          {" "}
-                          Edit{" "}
-                        </Link>
+                        <p
+                          className="mr-10"
+                          onClick={(e) => {
+                            getCurrent({ edu: edu });
+                            setPopup();
+                          }}
+                        >
+                          Edit
+                        </p>
                         <Link to="/"> Delete </Link>
                       </div>
                     </div>
@@ -140,7 +145,6 @@ const Overview = ({ profile, setPopup, removePopup, popup }) => {
           </div>
         </div>
       </div>
-      {popup && <EducationFrom />}
     </div>
   );
 };
@@ -149,4 +153,6 @@ const mapStateToProps = (state) => ({
   popup: state.popup,
 });
 
-export default connect(mapStateToProps, { setPopup, removePopup })(Overview);
+export default connect(mapStateToProps, { setPopup, removePopup, getCurrent })(
+  Overview
+);

@@ -480,13 +480,12 @@ header {
 }
 .mouse-in-out {
   opacity: 0;
+  cursor: pointer;
   &:hover {
     opacity: 1;
   }
-  a {
-    padding: 0px !important;
-  }
-  a.mr-10 {
+
+  .mr-10 {
     margin-right: 10px;
   }
 }
@@ -504,11 +503,25 @@ header {
 }
 .popup_inner {
   position: absolute;
-  left: 25%;
-  right: 25%;
-  top: 25%;
-  bottom: 25%;
+  left: 20%;
+  right: 20%;
+  top: 15%;
   margin: auto;
   border-radius: 20px;
   background: white;
+  bottom: 10%;
+  overflow: auto;
+  padding: 20px 0px;
+  .form-group {
+    margin: 20px 0px;
+
+    input {
+      margin: 0 !important;
+    }
+  }
+}
+input[type="checkbox"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
 }
