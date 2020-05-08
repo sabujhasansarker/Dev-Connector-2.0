@@ -7,11 +7,25 @@ import { removePopup } from "../../../action/popup";
 import { removeCurrent } from "../../../action/profile";
 
 const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
-  const { school, to, degree, from, fieldofstudy, description, current } =
-    currentData && currentData.edu;
+  const {
+    school,
+    to,
+    degree,
+    from,
+    fieldofstudy,
+    description,
+    current,
+  } = currentData ? currentData : "";
+  const [fromData, setFromData] = useState({
+    school: school ? school : "",
+    to: to ? to : "",
+    from: from ? from : "",
+    description: description ? description : "",
+    degree: degree ? degree : "",
+    fieldofstudy: fieldofstudy ? fieldofstudy : "",
+    current: current ? current : "",
+  });
 
-  const [fromData, setFromData] = useState(currentData.edu);
-  const [toggle, setToggle] = useState(fromData.current);
   const onchange = (e) => {
     setFromData({ ...fromData, [e.target.name]: e.target.value });
   };
@@ -22,6 +36,7 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
   return (
     <div className="popup">
       <div className="popup_inner">
+        <h2>Education</h2>
         <form onSubmit={onsubmit}>
           <div className="form-group d-flex">
             <input
@@ -127,7 +142,7 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
 };
 
 const mapStateToProps = (state) => ({
-  currentData: state.profile.current,
+  currentData: state.profile.current !== null ? state.profile.current.edu : " ",
 });
 
 export default connect(mapStateToProps, { removeCurrent, removePopup })(

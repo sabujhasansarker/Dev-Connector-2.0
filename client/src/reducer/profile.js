@@ -6,6 +6,8 @@ import {
   GET_PROFILE_ERROR,
   SET_CURRENT,
   REMOVE_CURRENT,
+  UPDATE_EDU,
+  DELETE_EDU,
 } from "../action/Type";
 
 const inisialState = {
@@ -20,7 +22,9 @@ export default (state = inisialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case GET_PROFILE_BY_USERNAME:
+    case UPDATE_EDU:
     case PROFILE_UPDATE:
+    case DELETE_EDU:
       return {
         ...state,
         loading: false,

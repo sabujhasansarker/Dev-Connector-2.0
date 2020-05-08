@@ -7,6 +7,9 @@ import {
   PROFILE_UPDATE_ERROR,
   SET_CURRENT,
   REMOVE_CURRENT,
+  UPDATE_EDU,
+  ADD_EDU,
+  DELETE_EDU,
 } from "./Type";
 
 export const getprofilebyusername = (username) => async (dispatch) => {
@@ -26,7 +29,6 @@ export const profileUpdate = (fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
-  console.log(body);
   try {
     const res = await axios.post("/profile/create-profile", body, config);
 
@@ -55,4 +57,53 @@ export const removeCurrent = () => (dispatch) => {
   dispatch({
     type: REMOVE_CURRENT,
   });
+};
+
+// update educaion
+export const updateEducaion = (id, fromdata) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(fromdata);
+  console.log(body);
+
+  try {
+    const res = await axios.put(`/profile/education/${id}`, body, config);
+    dispatch({
+      type: UPDATE_EDU,
+      payload: res.data,
+    });
+  } catch (err) {}
+};
+
+// ADD Educaion
+export const addEducaion = (fromdata) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(fromdata);
+  console.log(body);
+
+  try {
+    const res = await axios.put(`/profile/education`, body, config);
+    dispatch({
+      type: ADD_EDU,
+      payload: res.data,
+    });
+  } catch (err) {}
+};
+
+// update educaion
+export const deleteEducaion = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/profile/education/${id}`);
+    dispatch({
+      type: DELETE_EDU,
+      payload: res.data,
+    });
+  } catch (err) {}
 };

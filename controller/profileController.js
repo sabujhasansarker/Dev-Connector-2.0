@@ -219,7 +219,7 @@ exports.addeducation = async (req, res) => {
     }
     profile.education.unshift(newEdu);
     await profile.save();
-    res.status(200).json({ profile });
+    res.status(200).json(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -280,7 +280,7 @@ exports.editEducation = async (req, res) => {
       { $set: { education: updateEdu } },
       { new: true }
     );
-    res.json({ profile });
+    res.json(profile);
   } catch (err) {
     serverError(res, err);
   }

@@ -612,6 +612,11 @@ header .inner nav label::after {
   padding: 20px 0px;
 }
 
+.popup_inner h2 {
+  text-align: center;
+  font-size: 36px;
+}
+
 .popup_inner .form-group {
   margin: 20px 0px;
 }

@@ -32,3 +32,8 @@ export const PROFILE_UPDATE_ERROR = " PROFILE_UPDATE_ERROR";
 // Edit profile
 export const SET_CURRENT = "SET_CURRENT";
 export const REMOVE_CURRENT = "REMOVE_CURRENT";
+
+// Edit education
+export const UPDATE_EDU = "UPDATE_EDU";
+export const ADD_EDU = "ADD_EDU";
+export const DELETE_EDU = "DELETE_EDU";

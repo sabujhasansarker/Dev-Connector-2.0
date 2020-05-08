@@ -16,7 +16,7 @@ const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
         <div className="left">
           <div className="experience">
             <div className="top">
-              <i className="fas fa-plus" onClick={(e) => setPopup()}></i>
+              <i className="fas fa-plus"></i>
               <h6 className="add">Add Experience</h6>
             </div>
             {experience.map((e) => (
@@ -45,7 +45,7 @@ const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
           </div>
           <div className="education">
             <div className="top">
-              <i className="fas fa-plus"></i>
+              <i className="fas fa-plus" onClick={(e) => setPopup()}></i>
               <h6 className="add">Add Education</h6>
             </div>
             {education.map((edu) => (
