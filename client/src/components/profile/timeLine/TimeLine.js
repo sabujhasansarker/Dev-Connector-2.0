@@ -4,7 +4,7 @@ import ProfileRight from "./ProfileRight";
 
 const TimeLine = ({ profile }) => {
   return (
-    <div className="body">
+    <div className="body" id="timeline">
       <ProfileLeft profile={profile} />
       <ProfileRight />
     </div>

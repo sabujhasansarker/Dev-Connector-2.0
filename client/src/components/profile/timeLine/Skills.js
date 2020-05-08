@@ -22,8 +22,6 @@ const Skills = ({ skills, status, profileUpdate }) => {
   };
   return (
     <div className="text-center skill ">
-      <h6>Skills</h6>
-
       {!toggle ? (
         <Fragment>
           <div className="skills">

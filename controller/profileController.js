@@ -43,7 +43,7 @@ exports.getSingleProfileByUsername = async (req, res) => {
   try {
     const profile = await Profile.findOne({
       username: req.params.username,
-    });
+    }).populate("user", "email");
 
     if (!profile) {
       return res

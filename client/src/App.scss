@@ -16,6 +16,12 @@ body {
   width: 90%;
   margin: 0 auto;
 }
+.p-10 {
+  padding: 10px;
+}
+.p-20 {
+  padding: 20px;
+}
 h1,
 h2,
 h3,
@@ -51,6 +57,12 @@ ul {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+hr {
+  background: #e9ebee;
+  border: none;
+  height: 1px;
 }
 
 // from
@@ -323,6 +335,7 @@ header {
     -webkit-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
     box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+    margin-bottom: 20px;
     ul {
       display: flex;
       justify-content: flex-end;
@@ -338,25 +351,19 @@ header {
 
   @import url("https://fonts.googleapis.com/css2?family=Quattrocento+Sans&display=swap");
 
-  .body {
+  #timeline {
     display: grid;
     grid-template-columns: 0.5fr 1fr;
     grid-template-rows: 1fr;
     gap: 1px 1px;
     grid-template-areas: "intro post";
     grid-gap: 1rem;
-    padding-top: 20px;
     .skills {
       text-transform: uppercase;
       display: flex;
       justify-content: space-around;
     }
 
-    hr {
-      background: #e9ebee;
-      border: none;
-      height: 1px;
-    }
     .intro-text {
       font-size: 16px;
       font-family: "Quattrocento Sans", sans-serif;
@@ -366,6 +373,7 @@ header {
     .p-20 {
       padding: 20px;
     }
+
     .shadwo {
       box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
       background: white;
@@ -380,5 +388,105 @@ header {
     .post_area {
       grid-area: post;
     }
+  }
+}
+
+// About
+#about {
+  h1 {
+    background: rgb(245, 246, 247);
+    padding: 10px;
+    font-size: 30px;
+    border: 1px solid rgb(211, 214, 219);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 1px 1px;
+    grid-template-areas: "left right";
+    grid-gap: 0rem;
+    background: rgb(255, 255, 255);
+    .left {
+      grid-area: left;
+      border-right: 1px solid rgb(211, 214, 219);
+      a {
+        display: block;
+        padding: 15px;
+      }
+    }
+    .right {
+      grid-area: right;
+      .top {
+        display: flex;
+        margin-bottom: 25px;
+        h6.add {
+          font-size: 19px;
+          font-weight: 500;
+        }
+        i.fas {
+          border: 1.5px dashed;
+          color: rgb(66, 103, 178);
+          padding: 10px;
+          margin-right: 11px;
+        }
+      }
+      .single-icon {
+        background: rgb(211, 214, 219);
+        color: white;
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .d-flex {
+        justify-content: start;
+        align-items: normal;
+      }
+      #overview {
+        .p-20 {
+          display: grid;
+          grid-template-columns: 1fr 0.5fr;
+          grid-template-rows: 1fr;
+          grid-gap: 1px 1px;
+          gap: 1px 1px;
+          grid-template-areas: "left right";
+          grid-gap: 1rem;
+          .left {
+            border: 0;
+            grid-area: left;
+          }
+          .right {
+            border: 0;
+            right: right;
+          }
+        }
+      }
+    }
+  }
+}
+.single-view {
+  height: 80px;
+
+  .single-details {
+    margin-left: 10px;
+    line-height: 4px;
+    font-size: 15px;
+    font-weight: 300;
+  }
+}
+.mouse-in-out {
+  opacity: 0;
+  &:hover {
+    opacity: 1;
+  }
+  a {
+    padding: 0px !important;
+  }
+  a.mr-10 {
+    margin-right: 10px;
   }
 }

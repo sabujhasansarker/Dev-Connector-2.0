@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import PrivetRouter from "./PrivetRouter";
@@ -12,13 +12,17 @@ import Profile from "../profile/Profile";
 
 const Routes = ({ loading }) => {
   return (
-    <Switch>
-      {!loading && <PrivetRouter exact path="/setting" component={Settings} />}
-      <Route exact path="/register" component={Register} />
-      <Route exact path="/login" component={Login} />
-      <PrivetRouter exact path="/:username" component={Profile} />
-      <Route exact component={Notfound} />
-    </Switch>
+    <Fragment>
+      <Switch>
+        {!loading && (
+          <PrivetRouter exact path="/setting" component={Settings} />
+        )}
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <PrivetRouter exact path="/:username" component={Profile} />
+        <Route exact component={Notfound} />
+      </Switch>
+    </Fragment>
   );
 };
 

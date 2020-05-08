@@ -16,6 +16,14 @@ body {
   margin: 0 auto;
 }
 
+.p-10 {
+  padding: 10px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
 h1,
 h2,
 h3,
@@ -56,6 +64,12 @@ ul li {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+hr {
+  background: #e9ebee;
+  border: none;
+  height: 1px;
 }
 
 form {
@@ -364,6 +378,7 @@ header .inner nav label::after {
   padding: 2px 10px;
   -webkit-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
   box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
+  margin-bottom: 20px;
 }
 
 .profile .profile-menu ul {
@@ -384,7 +399,7 @@ header .inner nav label::after {
   text-transform: capitalize;
 }
 
-.profile .body {
+.profile #timeline {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 0.5fr 1fr;
@@ -394,10 +409,9 @@ header .inner nav label::after {
   gap: 1px 1px;
       grid-template-areas: "intro post";
   grid-gap: 1rem;
-  padding-top: 20px;
 }
 
-.profile .body .skills {
+.profile #timeline .skills {
   text-transform: uppercase;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -406,43 +420,173 @@ header .inner nav label::after {
       justify-content: space-around;
 }
 
-.profile .body hr {
-  background: #e9ebee;
-  border: none;
-  height: 1px;
-}
-
-.profile .body .intro-text {
+.profile #timeline .intro-text {
   font-size: 16px;
   font-family: "Quattrocento Sans", sans-serif;
   color: #1d2129;
   font-weight: 100;
 }
 
-.profile .body .p-20 {
+.profile #timeline .p-20 {
   padding: 20px;
 }
 
-.profile .body .shadwo {
+.profile #timeline .shadwo {
   -webkit-box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
           box-shadow: -5px 1px 24px -20px rgba(0, 0, 0, 0.75);
   background: white;
 }
 
-.profile .body .intro {
+.profile #timeline .intro {
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: intro;
 }
 
-.profile .body .intro p .fas {
+.profile #timeline .intro p .fas {
   font-weight: 900;
   margin-right: 15px;
 }
 
-.profile .body .post_area {
+.profile #timeline .post_area {
   -ms-grid-row: 1;
   -ms-grid-column: 2;
   grid-area: post;
+}
+
+#about h1 {
+  background: #f5f6f7;
+  padding: 10px;
+  font-size: 30px;
+  border: 1px solid #d3d6db;
+}
+
+#about .grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 0.5fr 1fr;
+      grid-template-columns: 0.5fr 1fr;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  gap: 1px 1px;
+      grid-template-areas: "left right";
+  grid-gap: 0rem;
+  background: white;
+}
+
+#about .grid .left {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: left;
+  border-right: 1px solid #d3d6db;
+}
+
+#about .grid .left a {
+  display: block;
+  padding: 15px;
+}
+
+#about .grid .right {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: right;
+}
+
+#about .grid .right .top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 25px;
+}
+
+#about .grid .right .top h6.add {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+#about .grid .right .top i.fas {
+  border: 1.5px dashed;
+  color: #4267b2;
+  padding: 10px;
+  margin-right: 11px;
+}
+
+#about .grid .right .single-icon {
+  background: #d3d6db;
+  color: white;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 10px;
+}
+
+#about .grid .right .d-flex {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: normal;
+      -ms-flex-align: normal;
+          align-items: normal;
+}
+
+#about .grid .right #overview .p-20 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 0.5fr;
+      grid-template-columns: 1fr 0.5fr;
+  -ms-grid-rows: 1fr;
+      grid-template-rows: 1fr;
+  grid-gap: 1px 1px;
+  gap: 1px 1px;
+      grid-template-areas: "left right";
+  grid-gap: 1rem;
+}
+
+#about .grid .right #overview .p-20 .left {
+  border: 0;
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: left;
+}
+
+#about .grid .right #overview .p-20 .right {
+  border: 0;
+  right: right;
+}
+
+.single-view {
+  height: 80px;
+}
+
+.single-view .single-details {
+  margin-left: 10px;
+  line-height: 4px;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.mouse-in-out {
+  opacity: 0;
+}
+
+.mouse-in-out:hover {
+  opacity: 1;
+}
+
+.mouse-in-out a {
+  padding: 0px !important;
+}
+
+.mouse-in-out a.mr-10 {
+  margin-right: 10px;
 }
 /*# sourceMappingURL=App.css.map */

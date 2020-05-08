@@ -14,6 +14,8 @@ import { loadUser } from "./action/auth";
 import setAuthToken from "./utils/setAuthToken";
 import PrivetRouter from "./components/routers/PrivetRouter";
 import Routes from "./components/routers/Routes";
+import Profile from "./components/profile/Profile";
+import About from "./components/profile/About/About";
 
 if (localStorage.usertoken) {
   setAuthToken(localStorage.usertoken);
@@ -33,6 +35,8 @@ const App = () => {
             <PrivetRouter exact path="/" component={Posts} />
             <Route component={Routes} />
           </Switch>
+          {/* <PrivetRouter exact path="/:username" component={Profile} />
+          <PrivetRouter exact path="/:username/about" component={About} /> */}
         </div>
       </Router>
     </Provider>
