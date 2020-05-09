@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const ContactAndBasic = ({ profile }) => {
+const ContactAndBasic = ({ profile, user }) => {
+  const [toggle, setToggle] = useState(false);
   const { social } = profile && profile;
   return (
     <div className="contact">
       <h1>Contact and Basic Information</h1>
       <div className="p-20">
-        <p>Email : {profile.user.email}</p>
+        <p>Email : {user.email}</p>
         <hr />
         <p>
           Username :{" "}

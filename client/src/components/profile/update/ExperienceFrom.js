@@ -6,34 +6,26 @@ import { removePopup } from "../../../action/popup";
 
 import {
   removeCurrent,
-  updateEducaion,
-  addEducaion,
+  editExperience,
+  addExperience,
 } from "../../../action/profile";
 
 const ExperienceFrom = ({
   removeCurrent,
   removePopup,
-  updateEducaion,
-  addEducaion,
+  editExperience,
+  addExperience,
   currentData,
 }) => {
-  const {
-    school,
-    to,
-    degree,
-    from,
-    fieldofstudy,
-    description,
-    current,
-    _id,
-  } = currentData ? currentData : "";
+  const { title, to, company, from, description, current, _id } = currentData
+    ? currentData
+    : "";
   const [fromData, setFromData] = useState({
-    school: school ? school : "",
+    title: title ? title : "",
     to: to ? to : "",
     from: from ? from : "",
     description: description ? description : "",
-    degree: degree ? degree : "",
-    fieldofstudy: fieldofstudy ? fieldofstudy : "",
+    company: company ? company : "",
     current: current ? current : false,
   });
 
@@ -42,7 +34,7 @@ const ExperienceFrom = ({
   };
   const onsubmit = (e) => {
     e.preventDefault();
-    currentData.school ? updateEducaion(_id, fromData) : addEducaion(fromData);
+    currentData.title ? editExperience(_id, fromData) : addExperience(fromData);
     removePopup();
     removeCurrent();
   };
@@ -50,33 +42,24 @@ const ExperienceFrom = ({
   return (
     <div className="popup">
       <div className="popup_inner">
-        <h2>Education</h2>
+        <h2>Experience</h2>
         <form onSubmit={onsubmit}>
           <div className="form-group d-flex">
             <input
               type="text"
-              name="school"
-              value={fromData.school}
+              name="title"
+              value={fromData.title}
               onChange={(e) => onchange(e)}
-              placeholder="Enter Your School name"
+              placeholder="Enter Your title name"
             />
           </div>
           <div className="form-group ">
             <input
               type="text"
-              value={fromData.degree}
+              value={fromData.company}
               onChange={(e) => onchange(e)}
-              name="degree"
-              placeholder="Enter Your Degree"
-            />
-          </div>
-          <div className="form-group ">
-            <input
-              type="text"
-              value={fromData.fieldofstudy}
-              onChange={(e) => onchange(e)}
-              placeholder="Enter your field of study"
-              name="fieldofstudy"
+              name="company"
+              placeholder="Enter Your company"
             />
           </div>
           <div className="form-group ">
@@ -84,7 +67,9 @@ const ExperienceFrom = ({
             <input
               type="date"
               name="from"
-              value={from && moment(fromData.form).format("YYYY-MM-DD")}
+              value={
+                fromData.form && moment(fromData.form).format("YYYY-MM-DD")
+              }
               onChange={(e) => onchange(e)}
             />
           </div>
@@ -108,7 +93,7 @@ const ExperienceFrom = ({
                 type="date"
                 name="to"
                 onChange={(e) => onchange(e)}
-                value={to && moment(fromData.to).format("YYYY-MM-DD")}
+                value={fromData.to && moment(fromData.to).format("YYYY-MM-DD")}
               />
             </div>
           )}
@@ -122,7 +107,7 @@ const ExperienceFrom = ({
             />
           </div>
           <div className="d-flex">
-            {currentData.school ? (
+            {currentData.title ? (
               <input type="submit" value="Update" />
             ) : (
               <input type="submit" value="Add education" />
@@ -144,12 +129,12 @@ const ExperienceFrom = ({
 };
 
 const mapStateToProps = (state) => ({
-  currentData: state.profile.current !== null ? state.profile.current.edu : " ",
+  currentData: state.profile.current !== null ? state.profile.current.exp : " ",
 });
 
 export default connect(mapStateToProps, {
   removeCurrent,
   removePopup,
-  updateEducaion,
-  addEducaion,
+  editExperience,
+  addExperience,
 })(ExperienceFrom);

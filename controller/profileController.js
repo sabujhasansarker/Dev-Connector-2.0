@@ -244,20 +244,6 @@ exports.editEducation = async (req, res) => {
     (item) => item.id === req.params.edu_id
   );
 
-  // Set update data
-  updateEdu[0].school = school ? school : updateEdu[0].school;
-  updateEdu[0].degree = degree ? degree : updateEdu[0].degree;
-  updateEdu[0].from = from ? from : updateEdu[0].from;
-  updateEdu[0].to = to ? to : updateEdu[0].to;
-  updateEdu[0].current = current ? current : updateEdu[0].current;
-  updateEdu[0].location = location ? location : updateEdu[0].location;
-  updateEdu[0].description = description
-    ? description
-    : updateEdu[0].description;
-  updateEdu[0].fieldofstudy = fieldofstudy
-    ? fieldofstudy
-    : updateEdu[0].fieldofstudy;
-
   // Errors chack
   if (school === "")
     return res.status(400).json({ errors: { msg: "School is requird" } });
@@ -265,10 +251,27 @@ exports.editEducation = async (req, res) => {
     return res.status(400).json({ errors: { msg: "degree is requird" } });
   if (from === "")
     return res.status(400).json({ errors: { msg: "from is requird" } });
+  if (current === false && to === "")
+    return res.status(400).json({ errors: { msg: "to is requird" } });
   if (fieldofstudy === "")
     return res
       .status(400)
       .json({ errors: { msg: "Field of study is requird" } });
+
+  // Set update data
+  updateEdu[0].school = school ? school : updateEdu[0].school;
+  updateEdu[0].degree = degree ? degree : updateEdu[0].degree;
+  updateEdu[0].from = from ? from : updateEdu[0].from;
+  updateEdu[0].current = current ? current : false;
+  updateEdu[0].location = location ? location : updateEdu[0].location;
+  updateEdu[0].description = description
+    ? description
+    : updateEdu[0].description;
+  updateEdu[0].fieldofstudy = fieldofstudy
+    ? fieldofstudy
+    : updateEdu[0].fieldofstudy;
+  updateEdu[0].to = updateEdu[0].current ? "" : to;
+
   try {
     updateEdu = profile = profile.education.map((e) =>
       e._id === updateEdu._id ? updateEdu : e
@@ -331,7 +334,7 @@ exports.addexperience = async (req, res) => {
     }
     profile.experience.unshift(newExp);
     await profile.save();
-    res.status(200).json({ profile });
+    res.status(200).json(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -363,17 +366,6 @@ exports.editexperience = async (req, res) => {
   let updateExp = profile.experience.filter(
     (item) => item.id === req.params.exp_id
   );
-
-  // Set update data
-  updateExp[0].title = title ? title : updateExp[0].title;
-  updateExp[0].company = company ? company : updateExp[0].company;
-  updateExp[0].from = from ? from : updateExp[0].from;
-  updateExp[0].to = to ? to : updateExp[0].to;
-  updateExp[0].current = current ? current : updateExp[0].current;
-  updateExp[0].description = description
-    ? description
-    : updateExp[0].description;
-
   // Errors chack
   if (title === "")
     return res.status(400).json({ errors: { msg: "title is requird" } });
@@ -381,6 +373,18 @@ exports.editexperience = async (req, res) => {
     return res.status(400).json({ errors: { msg: "company is requird" } });
   if (from === "")
     return res.status(400).json({ errors: { msg: "from is requird" } });
+  if (current === false && to === "")
+    return res.status(400).json({ errors: { msg: "to is requird" } });
+
+  // Set update data
+  updateExp[0].title = title ? title : updateExp[0].title;
+  updateExp[0].company = company ? company : updateExp[0].company;
+  updateExp[0].from = from ? from : updateExp[0].from;
+  updateExp[0].current = current ? current : false;
+  updateExp[0].description = description
+    ? description
+    : updateExp[0].description;
+  updateExp[0].to = updateExp[0].curren ? "" : to;
 
   try {
     updateExp = profile = profile.experience.map((e) =>
@@ -393,6 +397,7 @@ exports.editexperience = async (req, res) => {
       { $set: { experience: updateExp } },
       { new: true }
     );
+    res.json(profile);
   } catch (err) {
     serverError(res, err);
   }

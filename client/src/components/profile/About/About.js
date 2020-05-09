@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import EducationFrom from "../update/EducationFrom";
 import ExperienceFrom from "../update/ExperienceFrom";
 
-const About = ({ profile, popup }) => {
+const About = ({ profile, popup, user }) => {
   const [toggle, setToggle] = useState({
     overview: true,
     education: false,
@@ -86,7 +86,7 @@ const About = ({ profile, popup }) => {
               status={profile.status}
             />
           )}
-          {toggle.contact && <ContactAndBasic profile={profile} />}
+          {toggle.contact && <ContactAndBasic user={user} profile={profile} />}
         </div>
       </div>
     </div>

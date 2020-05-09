@@ -94,7 +94,9 @@ const Profile = ({
       {profile ? (
         <Fragment>
           {toggle.timeline && <TimeLine profile={profile && profile} />}
-          {toggle.about && <About profile={profile && profile} />}
+          {toggle.about && (
+            <About user={user && user} profile={profile && profile} />
+          )}
           {toggle.update && <ProfileFroms profile={profile && profile} />}
         </Fragment>
       ) : (

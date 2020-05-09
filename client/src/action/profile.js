@@ -34,13 +34,13 @@ export const profileUpdate = (fromdata) => async (dispatch) => {
   try {
     const res = await axios.post("/profile/create-profile", body, config);
 
-    // dispatch(getprofilebyusername(fromdata.username));
     dispatch({
       type: PROFILE_UPDATE,
       payload: res.data,
     });
   } catch (err) {
-    err.response && dispatch(setAlert(err.response.data.errors.msg, "danger"));
+    err.response &&
+      err.response.data.errors.map((e) => dispatch(setAlert(e.msg, "danger")));
     dispatch({
       type: PROFILE_UPDATE_ERROR,
     });
@@ -79,9 +79,8 @@ export const updateEducaion = (id, fromdata) => async (dispatch) => {
     });
     dispatch(setAlert("Update Education Successfully", "success"));
   } catch (err) {
-    err.response.data.errors.map((e) => {
-      dispatch(setAlert(e.msg, "danger"));
-    });
+    err.response.data.errors &&
+      dispatch(setAlert(err.response.data.errors.msg, "danger"));
   }
 };
 
@@ -104,9 +103,10 @@ export const addEducaion = (fromdata) => async (dispatch) => {
     dispatch(setAlert("Add Education Successfully", "success"));
   } catch (err) {
     console.log(err.response);
-    // err.response.data.errors.map((e) => {
-    //   dispatch(setAlert(e.msg, "danger"));
-    // });
+    err.response.data.errors &&
+      err.response.data.errors.map((e) => {
+        dispatch(setAlert(e.msg, "danger"));
+      });
   }
 };
 
@@ -119,5 +119,65 @@ export const deleteEducaion = (id) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(setAlert("Delete Education", "success"));
+  } catch (err) {}
+};
+
+// ADD Experience
+export const addExperience = (fromdata) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(fromdata);
+  try {
+    const res = await axios.put(`/profile/experience`, body, config);
+    dispatch({
+      type: ADD_EDU,
+      payload: res.data,
+    });
+    dispatch(setAlert("Add Experience Successfully", "success"));
+  } catch (err) {
+    err.response.data.errors &&
+      err.response.data.errors.map((e) => {
+        dispatch(setAlert(e.msg, "danger"));
+      });
+  }
+};
+
+// update Experience
+export const editExperience = (id, fromdata) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(fromdata);
+  console.log(body);
+  try {
+    const res = await axios.put(`/profile/experience/${id}`, body, config);
+    console.log(res.data);
+    dispatch({
+      type: ADD_EDU,
+      payload: res.data,
+    });
+    dispatch(setAlert("Add Experience Successfully", "success"));
+  } catch (err) {
+    err.response.data.errors &&
+      err.response.data.errors.map((e) => {
+        dispatch(setAlert(e.msg, "danger"));
+      });
+  }
+};
+
+// delete Experience
+export const deleteExperience = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/profile/experience/${id}`);
+    dispatch({
+      type: DELETE_EDU,
+      payload: res.data,
+    });
+    dispatch(setAlert("Delete Experience", "success"));
   } catch (err) {}
 };

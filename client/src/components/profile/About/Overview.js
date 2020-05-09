@@ -91,15 +91,15 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
             <hr />
           </div>
           <div className="address">
-            <div className="top">
-              <i className="fas fa-plus"></i>
-              <h6 className="add">Add Address</h6>
-              {address && (
-                <div className="d-flex">
-                  <i className="fas fa-user-graduate single-icon"></i> {address}
+            <h4 className="single-title">Address</h4>
+            {address && (
+              <div className="d-flex ">
+                <i className="fas fa-map-marker-alt single-icon"></i>
+                <div className="single-details">
+                  <p>{address}</p>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
             <hr />
           </div>
         </div>
@@ -107,7 +107,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
           <div className="social-link">
             {website && (
               <a href={website} target="_blank" rel="noopener noreferrer">
-                <i class="fas fa-globe fa-2x"></i>
+                <i className="fas fa-globe fa-2x"></i>
               </a>
             )}
             {social && social.facebook && (
@@ -116,7 +116,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fab fa-facebook fa-2x"></i>
+                <i className="fab fa-facebook fa-2x"></i>
               </a>
             )}
             {social && social.twitter && (
@@ -125,7 +125,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fab fa-twitter fa-2x"></i>
+                <i className="fab fa-twitter fa-2x"></i>
               </a>
             )}
             {social && social.youtube && (
@@ -134,7 +134,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fab fa-youtube fa-2x"></i>
+                <i className="fab fa-youtube fa-2x"></i>
               </a>
             )}
             {social && social.linkedin && (
@@ -143,7 +143,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fab fa-linkedin fa-2x"></i>
+                <i className="fab fa-linkedin fa-2x"></i>
               </a>
             )}
             {social && social.instagram && (
@@ -152,7 +152,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i class="fab fa-instagram fa-2x"></i>
+                <i className="fab fa-instagram fa-2x"></i>
               </a>
             )}
           </div>

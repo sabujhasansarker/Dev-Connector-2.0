@@ -45,6 +45,7 @@ const EducationFrom = ({
     currentData.school ? updateEducaion(_id, fromData) : addEducaion(fromData);
     removePopup({ edu: false });
     removeCurrent();
+    console.log(fromData);
   };
 
   return (
@@ -84,7 +85,9 @@ const EducationFrom = ({
             <input
               type="date"
               name="from"
-              value={from && moment(fromData.form).format("YYYY-MM-DD")}
+              value={
+                fromData.form && moment(fromData.form).format("YYYY-MM-DD")
+              }
               onChange={(e) => onchange(e)}
             />
           </div>
@@ -108,7 +111,7 @@ const EducationFrom = ({
                 type="date"
                 name="to"
                 onChange={(e) => onchange(e)}
-                value={to && moment(fromData.to).format("YYYY-MM-DD")}
+                value={fromData.to && moment(fromData.to).format("YYYY-MM-DD")}
               />
             </div>
           )}

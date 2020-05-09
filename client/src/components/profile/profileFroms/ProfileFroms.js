@@ -1,33 +1,54 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 
 import { profileUpdate } from "../../../action/profile";
 import Spnnier from "../../layouts/Spnnier";
-import { Redirect } from "react-router-dom";
+import { setAlert } from "../../../action/alert";
 
-const ProfileFroms = ({ auth: { loading, user }, profileUpdate, profile }) => {
+const ProfileFroms = ({
+  auth: { loading, user },
+  setAlert,
+  profileUpdate,
+  profile,
+}) => {
   const [toggle, setToggle] = useState(false);
+
   const [fromData, setFromData] = useState({
-    status: "",
-    skills: "",
-    bio: "",
-    compnay: "",
-    birthday: "",
-    website: "",
-    githubusername: "",
-    profilePic: "",
-    address: "",
-    youtube: "",
-    facebook: "",
-    twitter: "",
-    instagram: "",
-    linkedin: "",
+    status: profile && profile.status ? profile.status : "",
+    skills: profile && profile.skills ? profile.skills.join(",") : "",
+    bio: profile && profile.bio ? profile.bio : "",
+    compnay: profile && profile.compnay ? profile.compnay : "",
+    birthday: profile && profile.birthday ? profile.birthday : "",
+    website: profile && profile.website ? profile.website : "",
+    githubusername:
+      profile && profile.githubusername ? profile.githubusername : "",
+    profilePic: profile && profile.profilePic ? profile.profilePic : "",
+    address: profile && profile.address ? profile.address : "",
+    youtube:
+      profile && profile.social && profile.social.youtube
+        ? profile.social.youtube
+        : "",
+    facebook:
+      profile && profile.social && profile.social.facebook
+        ? profile.social.facebook
+        : "",
+    twitter:
+      profile && profile.social && profile.social.twitter
+        ? profile.social.twitter
+        : "",
+    instagram:
+      profile && profile.social && profile.social.instagram
+        ? profile.social.instagram
+        : "",
+    linkedin:
+      profile && profile.social && profile.social.profile
+        ? profile.social.profile
+        : "",
   });
 
   if (loading) {
     return <Spnnier />;
   }
-
   const {
     status,
     skills,
@@ -52,12 +73,18 @@ const ProfileFroms = ({ auth: { loading, user }, profileUpdate, profile }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     profileUpdate(fromData);
-    return <Redirect to={`/${user && user.username}`} />;
+    if (skills && status) {
+      if (profile) {
+        setAlert("Update Successfully", "success");
+      } else setAlert("Add Profile Successfully", "success");
+    }
   };
 
   return (
     <div className="create-profile">
-      <h1 className="large text-primary">{profile && "Create"} Your Profile</h1>
+      <h1 className="large text-primary">
+        {profile ? "Update" : "Create"} Your Profile
+      </h1>
       <p className="lead">
         <i className="fas fa-user"></i> Let's get some information to make your
         profile stand out
@@ -239,4 +266,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { profileUpdate })(ProfileFroms);
+export default connect(mapStateToProps, { profileUpdate, setAlert })(
+  ProfileFroms
+);

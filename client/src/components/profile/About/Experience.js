@@ -1,39 +1,59 @@
 import React from "react";
 import Moment from "react-moment";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
+import { setPopup } from "../../../action/popup";
 import Skills from "../timeLine/Skills";
+import { deleteExperience, getCurrent } from "../../../action/profile";
 
-const Experience = ({ experience, skills, status }) => {
+const Experience = ({
+  getCurrent,
+  setPopup,
+  experience,
+  skills,
+  status,
+  deleteExperience,
+}) => {
   return (
     <div className="experience" id="experience">
       <h1>Experience</h1>
       <div className="p-20">
         <div className="top">
-          <i className="fas fa-plus"></i>
+          <i
+            className="fas fa-plus"
+            onClick={(e) => {
+              setPopup({ exp: true });
+            }}
+          ></i>
           <h6 className="add">Add Experience</h6>
         </div>
-        {experience.map((e) => (
-          <div className="d-flex single-view " key={e._id}>
+        {experience.map((exp) => (
+          <div className="d-flex single-view " key={exp._id}>
             <i className="fas fa-user-graduate single-icon"></i>{" "}
             <div className="single-details">
               <p>
-                Work at {e.company} as {e.title}
+                Work at {exp.company} as {exp.title}
               </p>
               <p>
-                Start in <Moment format="YYYY">{e.from}</Moment>
+                Start in <Moment format="YYYY">{exp.from}</Moment>
               </p>
-              {!e.current && e.to && (
+              {!exp.current && exp.to && (
                 <p>
-                  End in <Moment format="YYYY">{!e.current && e.to}</Moment>{" "}
+                  End in <Moment format="YYYY">{!exp.current && exp.to}</Moment>{" "}
                 </p>
               )}
               <div className="mouse-in-out d-flex">
-                <Link to="/" className="mr-10">
+                <p
+                  className="mr-10"
+                  onClick={(e) => {
+                    getCurrent({ exp: exp });
+                    setPopup({ exp: true });
+                  }}
+                >
                   {" "}
                   Edit{" "}
-                </Link>
-                <Link to="/"> Delete </Link>
+                </p>
+                <p onClick={(e) => deleteExperience(exp._id)}> Delete </p>
               </div>
             </div>
           </div>
@@ -47,5 +67,12 @@ const Experience = ({ experience, skills, status }) => {
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  popup: state.popup,
+});
 
-export default Experience;
+export default connect(mapStateToProps, {
+  setPopup,
+  deleteExperience,
+  getCurrent,
+})(Experience);
