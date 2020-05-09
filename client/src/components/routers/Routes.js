@@ -9,8 +9,9 @@ import Login from "../users/Login";
 import Register from "../users/Register";
 import { connect } from "react-redux";
 import Profile from "../profile/Profile";
+import ProfileFroms from "../profile/profileFroms/ProfileFroms";
 
-const Routes = ({ loading }) => {
+const Routes = ({ auth: { loading, user } }) => {
   return (
     <Fragment>
       <Switch>
@@ -20,6 +21,11 @@ const Routes = ({ loading }) => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <PrivetRouter exact path="/:username" component={Profile} />
+        <PrivetRouter
+          exact
+          path="/:username/create-profile"
+          component={ProfileFroms}
+        />
         <Route exact component={Notfound} />
       </Switch>
     </Fragment>
@@ -27,7 +33,7 @@ const Routes = ({ loading }) => {
 };
 
 const mapStateToProps = (state) => ({
-  loading: state.auth.loading,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(Routes);

@@ -1,35 +1,47 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import { connect } from "react-redux";
 
-const Education = ({ education }) => {
+import { setPopup } from "../../../action/popup";
+import { getCurrent, deleteEducaion } from "../../../action/profile";
+
+const Education = ({ education, getCurrent, deleteEducaion, setPopup }) => {
   return (
     <div className="education" id="education">
       <h1>Education</h1>
       <div className="p-20">
         <div className="top">
-          <i className="fas fa-plus"></i>
+          <i
+            className="fas fa-plus"
+            onClick={(e) => setPopup({ edu: true })}
+          ></i>
           <h6 className="add">Add Education</h6>
         </div>
-        {education.map((e) => (
-          <div className="d-flex single-view" key={e._id}>
+        {education.map((edu) => (
+          <div className="d-flex single-view" key={edu._id}>
             <i className="fas fa-user-graduate single-icon"></i>{" "}
             <div className="single-details">
-              <p>Studied at {e.school}</p>
+              <p>Studied at {edu.school}</p>
               <p>
-                Start in <Moment format="YYYY">{e.from}</Moment>
+                Start in <Moment format="YYYY">{edu.from}</Moment>
               </p>
-              {!e.current && e.to && (
+              {!edu.current && edu.to && (
                 <p>
-                  End in <Moment format="YYYY">{!e.current && e.to}</Moment>{" "}
+                  End in <Moment format="YYYY">{!edu.current && edu.to}</Moment>{" "}
                 </p>
               )}
               <div className="mouse-in-out d-flex">
-                <Link to="/" className="mr-10">
-                  {" "}
-                  Edit{" "}
-                </Link>
-                <Link to="/"> Delete </Link>
+                <p
+                  className="mr-10"
+                  onClick={(e) => {
+                    getCurrent({ edu: edu });
+                    setPopup({ edu: true });
+                  }}
+                >
+                  Edit
+                </p>
+                <p onClick={(e) => deleteEducaion(edu._id)}>Delete</p>
               </div>
             </div>
           </div>
@@ -40,4 +52,12 @@ const Education = ({ education }) => {
   );
 };
 
-export default Education;
+const mapStateToProps = (state) => ({
+  popup: state.popup,
+});
+
+export default connect(mapStateToProps, {
+  setPopup,
+  deleteEducaion,
+  getCurrent,
+})(Education);

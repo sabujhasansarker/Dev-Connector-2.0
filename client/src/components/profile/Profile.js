@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { connect } from "react-redux";
 import Spnnier from "../layouts/Spnnier";
 import { Route, Link } from "react-router-dom";
@@ -7,11 +7,13 @@ import Notfound from "../layouts/Notfound";
 import TimeLine from "./timeLine/TimeLine";
 import { getprofilebyusername } from "../../action/profile";
 import About from "./About/About";
+import ProfileFroms from "./profileFroms/ProfileFroms";
 
 const Profile = ({
   profile: { profile, loading },
   match,
   getprofilebyusername,
+  auth: { user },
 }) => {
   useEffect(() => {
     getprofilebyusername(match.params.username);
@@ -54,7 +56,14 @@ const Profile = ({
         </Link>
       </li>
       <li>
-        <a href="">update info</a>
+        <Link
+          to="#update_info"
+          onClick={(e) =>
+            setToggle({ about: false, timeline: false, update: true })
+          }
+        >
+          update info
+        </Link>
       </li>
       <li>
         <a href="">active log</a>
@@ -64,7 +73,9 @@ const Profile = ({
   const profileNotFound = (
     <ul>
       <li>
-        <a href="">Complte Your Profile</a>
+        <Link to={`/${user && user.username}/create-profile`}>
+          Create Your Profile
+        </Link>
       </li>
     </ul>
   );
@@ -72,18 +83,29 @@ const Profile = ({
   return (
     <div className="profile">
       <div className="banner"></div>
-      <img className="profile-pic" src={profile && profile.profilePic} alt="" />
+      <img
+        className="profile-pic"
+        src={profile ? profile && profile.profilePic : user && user.profilePic}
+        alt=""
+      />
       <div className="profile-menu">
         {profile ? profileFound : profileNotFound}
       </div>
-      {toggle.timeline && <TimeLine profile={profile && profile} />}
-      {toggle.about && <About profile={profile && profile} />}
+      {profile ? (
+        <Fragment>
+          {toggle.timeline && <TimeLine profile={profile && profile} />}
+          {toggle.about && <About profile={profile && profile} />}
+          {toggle.update && <ProfileFroms profile={profile && profile} />}
+        </Fragment>
+      ) : (
+        <h1 className="text-center">No Profile Found Create Your profile</h1>
+      )}
     </div>
   );
 };
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  loading: state.auth.loading,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { getprofilebyusername })(Profile);

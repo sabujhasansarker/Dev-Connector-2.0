@@ -4,9 +4,19 @@ import moment from "moment";
 
 import { removePopup } from "../../../action/popup";
 
-import { removeCurrent } from "../../../action/profile";
+import {
+  removeCurrent,
+  updateEducaion,
+  addEducaion,
+} from "../../../action/profile";
 
-const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
+const EducationFrom = ({
+  removeCurrent,
+  removePopup,
+  updateEducaion,
+  addEducaion,
+  currentData,
+}) => {
   const {
     school,
     to,
@@ -15,6 +25,7 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
     fieldofstudy,
     description,
     current,
+    _id,
   } = currentData ? currentData : "";
   const [fromData, setFromData] = useState({
     school: school ? school : "",
@@ -23,7 +34,7 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
     description: description ? description : "",
     degree: degree ? degree : "",
     fieldofstudy: fieldofstudy ? fieldofstudy : "",
-    current: current ? current : "",
+    current: current ? current : false,
   });
 
   const onchange = (e) => {
@@ -31,8 +42,11 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
   };
   const onsubmit = (e) => {
     e.preventDefault();
-    console.log(fromData);
+    currentData.school ? updateEducaion(_id, fromData) : addEducaion(fromData);
+    removePopup({ edu: false });
+    removeCurrent();
   };
+
   return (
     <div className="popup">
       <div className="popup_inner">
@@ -70,32 +84,20 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
             <input
               type="date"
               name="from"
-              value={moment(fromData.form).format("YYYY-MM-DD")}
+              value={from && moment(fromData.form).format("YYYY-MM-DD")}
               onChange={(e) => onchange(e)}
             />
           </div>
           <div className="form-group d-flex">
             <p>
-              {fromData.current ? (
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    setFromData({ ...fromData, current: !fromData.current })
-                  }
-                  checked
-                  name="current"
-                  value=""
-                />
-              ) : (
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    setFromData({ ...fromData, current: !fromData.current })
-                  }
-                  name="current"
-                  value=""
-                />
-              )}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  setFromData({ ...fromData, current: !fromData.current })
+                }
+                checked={fromData.current}
+                name="current"
+              />
               Current Job
             </p>
           </div>
@@ -106,7 +108,7 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
                 type="date"
                 name="to"
                 onChange={(e) => onchange(e)}
-                value={moment(fromData.to).format("YYYY-MM-DD")}
+                value={to && moment(fromData.to).format("YYYY-MM-DD")}
               />
             </div>
           )}
@@ -120,15 +122,15 @@ const EducationFrom = ({ removeCurrent, removePopup, currentData }) => {
             />
           </div>
           <div className="d-flex">
-            {fromData === currentData.edu ? (
-              <input type="submit" disabled value="Update" />
+            {currentData.school ? (
+              <input type="submit" value="Update" />
             ) : (
               <input type="submit" value="Add education" />
             )}
 
             <button
               onClick={(e) => {
-                removePopup();
+                removePopup({ edu: false });
                 removeCurrent();
               }}
             >
@@ -145,6 +147,9 @@ const mapStateToProps = (state) => ({
   currentData: state.profile.current !== null ? state.profile.current.edu : " ",
 });
 
-export default connect(mapStateToProps, { removeCurrent, removePopup })(
-  EducationFrom
-);
+export default connect(mapStateToProps, {
+  removeCurrent,
+  removePopup,
+  updateEducaion,
+  addEducaion,
+})(EducationFrom);

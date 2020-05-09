@@ -8,6 +8,7 @@ import {
   REMOVE_CURRENT,
   UPDATE_EDU,
   DELETE_EDU,
+  ADD_EDU,
 } from "../action/Type";
 
 const inisialState = {
@@ -25,6 +26,7 @@ export default (state = inisialState, action) => {
     case UPDATE_EDU:
     case PROFILE_UPDATE:
     case DELETE_EDU:
+    case ADD_EDU:
       return {
         ...state,
         loading: false,
@@ -33,7 +35,7 @@ export default (state = inisialState, action) => {
     case GET_PROFILE_ERROR:
       return {
         ...state,
-        loading: true,
+        loading: false,
         error: payload,
       };
     case SET_CURRENT:

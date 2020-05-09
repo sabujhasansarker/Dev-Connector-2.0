@@ -1,8 +1,8 @@
 import { SET_POPUP, REMOVE_POPUP } from "./Type";
-export const setPopup = () => (dispatch) => {
-  console.log("ok");
+export const setPopup = (data) => (dispatch) => {
   dispatch({
     type: SET_POPUP,
+    payload: data,
   });
 };
 export const removePopup = () => (dispatch) => {

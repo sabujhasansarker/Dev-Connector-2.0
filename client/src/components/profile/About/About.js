@@ -6,6 +6,7 @@ import Experience from "./Experience";
 import ContactAndBasic from "./ContactAndBasic";
 import { connect } from "react-redux";
 import EducationFrom from "../update/EducationFrom";
+import ExperienceFrom from "../update/ExperienceFrom";
 
 const About = ({ profile, popup }) => {
   const [toggle, setToggle] = useState({
@@ -17,7 +18,8 @@ const About = ({ profile, popup }) => {
 
   return (
     <div id="about">
-      {popup && <EducationFrom />}
+      {popup && popup.edu && <EducationFrom />}
+      {popup && popup.exp && <ExperienceFrom />}
       <h1>About</h1>
       <div className="grid">
         <div className="left">

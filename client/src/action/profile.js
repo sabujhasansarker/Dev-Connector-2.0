@@ -12,6 +12,8 @@ import {
   DELETE_EDU,
 } from "./Type";
 
+import { setAlert } from "./alert";
+
 export const getprofilebyusername = (username) => async (dispatch) => {
   try {
     const res = await axios.get(`/profile/${username}`);
@@ -38,6 +40,7 @@ export const profileUpdate = (fromdata) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    err.response && dispatch(setAlert(err.response.data.errors.msg, "danger"));
     dispatch({
       type: PROFILE_UPDATE_ERROR,
     });
@@ -67,7 +70,6 @@ export const updateEducaion = (id, fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
-  console.log(body);
 
   try {
     const res = await axios.put(`/profile/education/${id}`, body, config);
@@ -75,7 +77,12 @@ export const updateEducaion = (id, fromdata) => async (dispatch) => {
       type: UPDATE_EDU,
       payload: res.data,
     });
-  } catch (err) {}
+    dispatch(setAlert("Update Education Successfully", "success"));
+  } catch (err) {
+    err.response.data.errors.map((e) => {
+      dispatch(setAlert(e.msg, "danger"));
+    });
+  }
 };
 
 // ADD Educaion
@@ -87,14 +94,20 @@ export const addEducaion = (fromdata) => async (dispatch) => {
   };
   const body = JSON.stringify(fromdata);
   console.log(body);
-
   try {
     const res = await axios.put(`/profile/education`, body, config);
     dispatch({
       type: ADD_EDU,
       payload: res.data,
     });
-  } catch (err) {}
+    console.log(res.data);
+    dispatch(setAlert("Add Education Successfully", "success"));
+  } catch (err) {
+    console.log(err.response);
+    // err.response.data.errors.map((e) => {
+    //   dispatch(setAlert(e.msg, "danger"));
+    // });
+  }
 };
 
 // update educaion
@@ -105,5 +118,6 @@ export const deleteEducaion = (id) => async (dispatch) => {
       type: DELETE_EDU,
       payload: res.data,
     });
+    dispatch(setAlert("Delete Education", "success"));
   } catch (err) {}
 };

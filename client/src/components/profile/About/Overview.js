@@ -3,10 +3,10 @@ import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { setPopup, removePopup } from "../../../action/popup";
-import { getCurrent } from "../../../action/profile";
+import { setPopup } from "../../../action/popup";
+import { getCurrent, deleteEducaion } from "../../../action/profile";
 
-const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
+const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
   let { education, address, experience, social, website } = profile;
 
   return (
@@ -16,25 +16,34 @@ const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
         <div className="left">
           <div className="experience">
             <div className="top">
-              <i className="fas fa-plus"></i>
+              <i
+                className="fas fa-plus"
+                onClick={(e) => setPopup({ exp: true })}
+              ></i>
               <h6 className="add">Add Experience</h6>
             </div>
-            {experience.map((e) => (
-              <Fragment key={e._id}>
-                {!e.to && (
+            {experience.map((exp) => (
+              <Fragment key={exp._id}>
+                {!exp.to && (
                   <div className="d-flex single-view">
                     <i className="fas fa-user-graduate single-icon"></i>
                     <div className="single-details">
-                      <p>Work at {e.company}</p>
+                      <p>Work at {exp.company}</p>
                       <p>
-                        Start in <Moment format="YYYY">{e.from}</Moment>
+                        Start in <Moment format="YYYY">{exp.from}</Moment>
                       </p>
                       <div className="mouse-in-out d-flex">
-                        <Link to="/#educaion" className="mr-10">
+                        <p
+                          className="mr-10"
+                          onClick={(e) => {
+                            setPopup({ exp: true });
+                            getCurrent({ exp: exp });
+                          }}
+                        >
                           {" "}
                           Edit{" "}
-                        </Link>
-                        <Link to="/"> Delete </Link>
+                        </p>
+                        <p> Delete </p>
                       </div>
                     </div>
                   </div>
@@ -43,9 +52,13 @@ const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
             ))}
             <hr />
           </div>
+          {/* Education */}
           <div className="education">
             <div className="top">
-              <i className="fas fa-plus" onClick={(e) => setPopup()}></i>
+              <i
+                className="fas fa-plus"
+                onClick={(e) => setPopup({ edu: true })}
+              ></i>
               <h6 className="add">Add Education</h6>
             </div>
             {education.map((edu) => (
@@ -63,12 +76,12 @@ const Overview = ({ profile, setPopup, getCurrent, removePopup, popup }) => {
                           className="mr-10"
                           onClick={(e) => {
                             getCurrent({ edu: edu });
-                            setPopup();
+                            setPopup({ edu: true });
                           }}
                         >
                           Edit
                         </p>
-                        <Link to="/"> Delete </Link>
+                        <p onClick={(e) => deleteEducaion(edu._id)}>Delete</p>
                       </div>
                     </div>
                   </div>
@@ -153,6 +166,8 @@ const mapStateToProps = (state) => ({
   popup: state.popup,
 });
 
-export default connect(mapStateToProps, { setPopup, removePopup, getCurrent })(
-  Overview
-);
+export default connect(mapStateToProps, {
+  setPopup,
+  deleteEducaion,
+  getCurrent,
+})(Overview);
