@@ -158,7 +158,7 @@ export const editExperience = (id, fromdata) => async (dispatch) => {
     const res = await axios.put(`/profile/experience/${id}`, body, config);
     console.log(res.data);
     dispatch({
-      type: ADD_EDU,
+      type: UPDATE_EDU,
       payload: res.data,
     });
     dispatch(setAlert("Add Experience Successfully", "success"));
