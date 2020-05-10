@@ -1,12 +1,24 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 
 import { logout } from "../../action/auth";
+import { clearProfile } from "../../action/profile";
 
-const Navbar = ({ auth: { isAutination, user }, logout }) => {
+import { getprofilebyusername } from "../../action/profile";
+
+const Navbar = ({
+  auth: { isAutination, user },
+  logout,
+  clearProfile,
+  getprofilebyusername,
+  match,
+}) => {
   const username = user && user.firstName;
+  // useEffect(() => {
+  //   getprofilebyusername(match && match.params.username);
+  // }, [getprofilebyusername]);
 
   const gustuser = (
     <Fragment>
@@ -22,6 +34,10 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
     <Fragment>
       <li>
         <Link
+          onClick={(e) => {
+            clearProfile();
+            getprofilebyusername(user && user.username);
+          }}
           className="d-flex nav-user"
           to={`/${user && user.username}`}
           style={{ textTransform: "capitalize" }}
@@ -31,7 +47,9 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
         </Link>
       </li>
       <li>
-        <Link to="/">Posts</Link>
+        <Link to="/" onClick={(e) => clearProfile()}>
+          Posts
+        </Link>
       </li>
       <li>
         <Link to="/setting">
@@ -39,7 +57,13 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
         </Link>
       </li>
       <li>
-        <Link to="/" onClick={() => logout()}>
+        <Link
+          to="/"
+          onClick={() => {
+            logout();
+            clearProfile();
+          }}
+        >
           Logout <i className="fas fa-sign-out-alt"></i>
         </Link>
       </li>
@@ -49,7 +73,7 @@ const Navbar = ({ auth: { isAutination, user }, logout }) => {
     <header>
       <div className="inner container">
         <nav>
-          <Link to="/" className="logo">
+          <Link to="/" className="logo" onClick={(e) => clearProfile()}>
             <i className="fas fa-code"></i> Logo
           </Link>
           <input type="checkbox" name="" id="nav" />{" "}
@@ -65,4 +89,8 @@ const mapToStateProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapToStateProps, { logout })(Navbar);
+export default connect(mapToStateProps, {
+  logout,
+  clearProfile,
+  getprofilebyusername,
+})(Navbar);

@@ -45,7 +45,6 @@ const EducationFrom = ({
     currentData.school ? updateEducaion(_id, fromData) : addEducaion(fromData);
     removePopup({ edu: false });
     removeCurrent();
-    console.log(fromData);
   };
 
   return (

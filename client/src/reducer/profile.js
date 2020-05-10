@@ -9,6 +9,7 @@ import {
   UPDATE_EDU,
   DELETE_EDU,
   ADD_EDU,
+  CLARE_PROFILE,
 } from "../action/Type";
 
 const inisialState = {
@@ -47,6 +48,14 @@ export default (state = inisialState, action) => {
       return {
         ...state,
         current: null,
+      };
+    case CLARE_PROFILE:
+      return {
+        profile: null,
+        profiles: null,
+        loading: true,
+        current: null,
+        error: null,
       };
     default:
       return state;

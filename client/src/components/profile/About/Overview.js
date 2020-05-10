@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { setPopup } from "../../../action/popup";
 import { getCurrent, deleteEducaion } from "../../../action/profile";
 
-const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
+const Overview = ({ profile, setPopup, getCurrent, deleteEducaion, user }) => {
   let { education, address, experience, social, website } = profile;
 
   return (
@@ -15,13 +15,16 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
       <div className="p-20">
         <div className="left">
           <div className="experience">
-            <div className="top">
-              <i
-                className="fas fa-plus"
-                onClick={(e) => setPopup({ exp: true })}
-              ></i>
-              <h6 className="add">Add Experience</h6>
-            </div>
+            {profile.username === user && (
+              <div className="top">
+                <i
+                  className="fas fa-plus"
+                  onClick={(e) => setPopup({ exp: true })}
+                ></i>
+                <h6 className="add">Add Experience</h6>
+              </div>
+            )}
+
             {experience.map((exp) => (
               <Fragment key={exp._id}>
                 {!exp.to && (
@@ -32,19 +35,21 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                       <p>
                         Start in <Moment format="YYYY">{exp.from}</Moment>
                       </p>
-                      <div className="mouse-in-out d-flex">
-                        <p
-                          className="mr-10"
-                          onClick={(e) => {
-                            setPopup({ exp: true });
-                            getCurrent({ exp: exp });
-                          }}
-                        >
-                          {" "}
-                          Edit{" "}
-                        </p>
-                        <p> Delete </p>
-                      </div>
+                      {profile.username === user && (
+                        <div className="mouse-in-out d-flex">
+                          <p
+                            className="mr-10"
+                            onClick={(e) => {
+                              setPopup({ exp: true });
+                              getCurrent({ exp: exp });
+                            }}
+                          >
+                            {" "}
+                            Edit{" "}
+                          </p>
+                          <p> Delete </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -54,13 +59,16 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
           </div>
           {/* Education */}
           <div className="education">
-            <div className="top">
-              <i
-                className="fas fa-plus"
-                onClick={(e) => setPopup({ edu: true })}
-              ></i>
-              <h6 className="add">Add Education</h6>
-            </div>
+            {profile.username === user && (
+              <div className="top">
+                <i
+                  className="fas fa-plus"
+                  onClick={(e) => setPopup({ edu: true })}
+                ></i>
+                <h6 className="add">Add Education</h6>
+              </div>
+            )}
+
             {education.map((edu) => (
               <Fragment key={edu._id}>
                 {!edu.to && (
@@ -71,18 +79,20 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
                       <p>
                         Start in <Moment format="YYYY">{edu.from}</Moment>
                       </p>
-                      <div className="mouse-in-out d-flex">
-                        <p
-                          className="mr-10"
-                          onClick={(e) => {
-                            getCurrent({ edu: edu });
-                            setPopup({ edu: true });
-                          }}
-                        >
-                          Edit
-                        </p>
-                        <p onClick={(e) => deleteEducaion(edu._id)}>Delete</p>
-                      </div>
+                      {profile.username === user && (
+                        <div className="mouse-in-out d-flex">
+                          <p
+                            className="mr-10"
+                            onClick={(e) => {
+                              getCurrent({ edu: edu });
+                              setPopup({ edu: true });
+                            }}
+                          >
+                            Edit
+                          </p>
+                          <p onClick={(e) => deleteEducaion(edu._id)}>Delete</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -164,6 +174,7 @@ const Overview = ({ profile, setPopup, getCurrent, deleteEducaion }) => {
 
 const mapStateToProps = (state) => ({
   popup: state.popup,
+  user: state.auth.user.username,
 });
 
 export default connect(mapStateToProps, {

@@ -29,8 +29,10 @@ const Profile = ({
     return <Spnnier />;
   }
 
-  if (profile && profile.username !== match.params.username) {
-    return <Route exact component={Notfound} />;
+  if (profile === null) {
+    if (user && user.username !== match.params.username) {
+      return <Route exact component={Notfound} />;
+    }
   }
 
   const profileFound = (
@@ -55,19 +57,23 @@ const Profile = ({
           about
         </Link>
       </li>
-      <li>
-        <Link
-          to="#update_info"
-          onClick={(e) =>
-            setToggle({ about: false, timeline: false, update: true })
-          }
-        >
-          update info
-        </Link>
-      </li>
-      <li>
-        <a href="">active log</a>
-      </li>
+      {user && user.username == match.params.username && (
+        <li>
+          <Link
+            to="#update_info"
+            onClick={(e) =>
+              setToggle({ about: false, timeline: false, update: true })
+            }
+          >
+            update info
+          </Link>
+        </li>
+      )}
+      {user && user.username == match.params.username && (
+        <li>
+          <a href="">active log</a>
+        </li>
+      )}
     </ul>
   );
   const profileNotFound = (

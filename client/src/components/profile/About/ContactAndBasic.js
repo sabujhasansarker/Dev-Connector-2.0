@@ -8,12 +8,12 @@ import { setAlert } from "../../../action/alert";
 const ContactAndBasic = ({ profile, user, profileUpdate, setAlert }) => {
   const { social } = profile && profile;
   const [formData, setFormData] = useState({
-    facebook: social.facebook ? social.facebook : "",
-    twitter: social.twitter ? social.twitter : "",
+    facebook: social && social.facebook ? social.facebook : "",
+    twitter: social && social.twitter ? social.twitter : "",
     website: profile.website ? profile.website : "",
-    youtube: social.youtube ? social.youtube : "",
-    linkedin: social.linkedin ? social.linkedin : "",
-    instagram: social.instagram ? social.instagram : "",
+    youtube: social && social.youtube ? social.youtube : "",
+    linkedin: social && social.linkedin ? social.linkedin : "",
+    instagram: social && social.instagram ? social.instagram : "",
     skills: profile.skills.join(","),
     status: profile.status,
   });
@@ -32,7 +32,7 @@ const ContactAndBasic = ({ profile, user, profileUpdate, setAlert }) => {
     <div className="contact">
       <h1>Contact and Basic Information</h1>
       <div className="p-20">
-        <p>Email : {user.email}</p>
+        <p>Email : {profile.user.email}</p>
         <hr />
         <p>
           Username :{" "}
@@ -44,7 +44,7 @@ const ContactAndBasic = ({ profile, user, profileUpdate, setAlert }) => {
         <div className="website_social_link">
           <h4>WEBSITES AND SOCIAL LINKS</h4>
           <br />
-          {!toggle && (
+          {profile && profile.username === user && !toggle && (
             <div className="top">
               <i
                 className="fas fa-plus"
@@ -210,5 +210,12 @@ const ContactAndBasic = ({ profile, user, profileUpdate, setAlert }) => {
     </div>
   );
 };
+const mapStateToProps = (state) => ({
+  popup: state.popup,
+  user: state.auth.user.username,
+  profile: state.profile.profile,
+});
 
-export default connect(null, { profileUpdate, setAlert })(ContactAndBasic);
+export default connect(mapStateToProps, { profileUpdate, setAlert })(
+  ContactAndBasic
+);

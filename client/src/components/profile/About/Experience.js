@@ -12,21 +12,26 @@ const Experience = ({
   experience,
   skills,
   status,
+  user,
+  profile,
   deleteExperience,
 }) => {
   return (
     <div className="experience" id="experience">
       <h1>Experience</h1>
       <div className="p-20">
-        <div className="top">
-          <i
-            className="fas fa-plus"
-            onClick={(e) => {
-              setPopup({ exp: true });
-            }}
-          ></i>
-          <h6 className="add">Add Experience</h6>
-        </div>
+        {profile === user && (
+          <div className="top">
+            <i
+              className="fas fa-plus"
+              onClick={(e) => {
+                setPopup({ exp: true });
+              }}
+            ></i>
+            <h6 className="add">Add Experience</h6>
+          </div>
+        )}
+
         {experience.map((exp) => (
           <div className="d-flex single-view " key={exp._id}>
             <i className="fas fa-user-graduate single-icon"></i>{" "}
@@ -42,19 +47,21 @@ const Experience = ({
                   End in <Moment format="YYYY">{!exp.current && exp.to}</Moment>{" "}
                 </p>
               )}
-              <div className="mouse-in-out d-flex">
-                <p
-                  className="mr-10"
-                  onClick={(e) => {
-                    getCurrent({ exp: exp });
-                    setPopup({ exp: true });
-                  }}
-                >
-                  {" "}
-                  Edit{" "}
-                </p>
-                <p onClick={(e) => deleteExperience(exp._id)}> Delete </p>
-              </div>
+              {profile === user && (
+                <div className="mouse-in-out d-flex">
+                  <p
+                    className="mr-10"
+                    onClick={(e) => {
+                      getCurrent({ exp: exp });
+                      setPopup({ exp: true });
+                    }}
+                  >
+                    {" "}
+                    Edit{" "}
+                  </p>
+                  <p onClick={(e) => deleteExperience(exp._id)}> Delete </p>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -69,6 +76,8 @@ const Experience = ({
 };
 const mapStateToProps = (state) => ({
   popup: state.popup,
+  user: state.auth.user.username,
+  profile: state.profile.profile.username,
 });
 
 export default connect(mapStateToProps, {

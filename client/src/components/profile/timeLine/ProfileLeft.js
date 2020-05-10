@@ -10,8 +10,8 @@ const ProfileLeft = ({ profile }) => {
     <div className="intro p-20 shadwo">
       <i className="fas fa-globe-europe"></i> Intro
       <div className="intro-text">
-        {skills && <Skills skills={skills} status={status} />}
-        {bio && <Bio bio={bio} skills={skills} status={status} />}
+        {skills && <Skills profile={profile} />}
+        {bio && <Bio profile={profile} />}
         {education &&
           education.length > 0 &&
           education.map((e) => (

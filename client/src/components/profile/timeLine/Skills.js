@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 
 import { profileUpdate } from "../../../action/profile";
 
-const Skills = ({ skills, status, profileUpdate }) => {
+const Skills = ({
+  profile: { skills, status, username },
+  profileUpdate,
+  user,
+}) => {
+  // const { skills, status, username } = profile ? profile : "";
+
   const [toggle, setToggle] = useState(false);
 
   const [fromdata, setFromdata] = useState({
@@ -15,7 +21,7 @@ const Skills = ({ skills, status, profileUpdate }) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    setFromdata({ ...fromdata, status });
+    setFromdata({ ...fromdata });
 
     profileUpdate(fromdata);
     setToggle(!toggle);
@@ -29,7 +35,9 @@ const Skills = ({ skills, status, profileUpdate }) => {
               <p key={index}>{e} </p>
             ))}
           </div>
-          <button onClick={(e) => setToggle(!toggle)}>update skills</button>
+          {username === user && (
+            <button onClick={(e) => setToggle(!toggle)}>update skills</button>
+          )}
         </Fragment>
       ) : (
         <form onSubmit={onSubmit}>
@@ -52,4 +60,9 @@ const Skills = ({ skills, status, profileUpdate }) => {
   );
 };
 
-export default connect(null, { profileUpdate })(Skills);
+const mapStateToProps = (state) => ({
+  user: state.auth.user.username,
+  profile: state.profile.profile,
+});
+
+export default connect(mapStateToProps, { profileUpdate })(Skills);

@@ -10,6 +10,7 @@ import {
   UPDATE_EDU,
   ADD_EDU,
   DELETE_EDU,
+  CLARE_PROFILE,
 } from "./Type";
 
 import { setAlert } from "./alert";
@@ -180,4 +181,10 @@ export const deleteExperience = (id) => async (dispatch) => {
     });
     dispatch(setAlert("Delete Experience", "success"));
   } catch (err) {}
+};
+
+export const clearProfile = () => (dispatch) => {
+  dispatch({
+    type: CLARE_PROFILE,
+  });
 };
