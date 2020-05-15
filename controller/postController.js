@@ -99,6 +99,7 @@ exports.likePost = async (req, res) => {
   }
   try {
     // check if the post has already liked
+
     if (
       post.likes.filter((like) => like.user.toString() === req.user.id).length >
       0
@@ -106,12 +107,27 @@ exports.likePost = async (req, res) => {
       post.likes = post.likes.filter(
         (like) => like.user.toString() !== req.user.id
       );
+
       // Profile
+      profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $pull: { likes: { _id: req.params.postId } } },
+        { new: true }
+      );
+      console.log(profile);
+
       await post.save();
       return res.json(post);
     }
     post.likes.unshift({ user: req.user.id });
     await post.save();
+    // Profile
+    profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { likes: { _id: req.params.postId } } },
+      { new: true }
+    );
+    console.log(profile);
 
     res.json(post);
   } catch (err) {
@@ -121,6 +137,7 @@ exports.likePost = async (req, res) => {
 
 //  * Comment
 exports.commentPost = async (req, res) => {
+  let profile = await Profile.findOne({ user: req.user.id });
   const { text } = req.body;
   const user = await User.findById(req.user.id);
   if (!text) {
@@ -136,10 +153,17 @@ exports.commentPost = async (req, res) => {
       username: user.username,
       profilePic: user.profilePic,
     };
-    console.log(newComments);
     post.comments.unshift(newComments);
     await post.save();
     res.json(post);
+
+    // Profile
+    profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { comments: { _id: req.params.postId } } },
+      { new: true }
+    );
+    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -167,6 +191,14 @@ exports.deleteComment = async (req, res) => {
     post.comments.splice(removeIndex, 1);
     await post.save();
     res.json(post);
+
+    // Profile
+    profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { comments: { _id: req.params.postId } } },
+      { new: true }
+    );
+    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
