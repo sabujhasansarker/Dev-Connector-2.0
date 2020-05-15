@@ -1,5 +1,6 @@
 const user = require("./user");
 const profile = require("./profile");
+const post = require("./post");
 
 const routers = [
   {
@@ -9,6 +10,10 @@ const routers = [
   {
     path: "/profile",
     hedelar: profile,
+  },
+  {
+    path: "/post",
+    hedelar: post,
   },
 ];
 
