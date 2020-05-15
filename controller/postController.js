@@ -38,6 +38,14 @@ exports.createPost = async (req, res) => {
       username: user.username,
     });
     newpost.save();
+
+    const posts = await Post.find({ user: req.user.id });
+    const profile = await Profile.findOneAndUpdate(
+      { username: req.user.username },
+      { $set: { posts } },
+      { new: true }
+    );
+    console.log(profile);
     res.json(newpost);
   } catch (err) {
     serverError(res, err);
@@ -53,12 +61,13 @@ exports.editPost = async (req, res) => {
       .json({ errors: { msg: "Please Enter something to post" } });
   }
   try {
-    const post = await Post.findByIdAndUpdate(
+    await Post.findByIdAndUpdate(
       req.params.postId,
       { $set: { body, thumbnail } },
       { new: true }
     );
-    res.json(post);
+    const posts = await Post.find();
+    res.json(posts);
   } catch (err) {
     serverError(res, err);
   }
@@ -68,8 +77,16 @@ exports.editPost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.postId);
-    const posts = await Post.find();
-    res.json(posts);
+    const post = await Post.find();
+    res.json(post);
+
+    const posts = await Post.find({ user: req.user.id });
+    const profile = await Profile.findOneAndUpdate(
+      { username: req.user.username },
+      { $set: { posts } },
+      { new: true }
+    );
+    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -235,6 +252,16 @@ exports.deleteReplay = async (req, res) => {
       { new: true }
     );
     res.json(post);
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
+//
+exports.getPostByUsername = async (req, res) => {
+  try {
+    const posts = await Post.find({ username: req.params.username });
+    res.json(posts);
   } catch (err) {
     serverError(res, err);
   }

@@ -114,6 +114,30 @@ const profileSchema = new Schema({
       type: String,
     },
   },
+  posts: [
+    {
+      _id: {
+        type: Schema.Types.ObjectId,
+        ref: "posts",
+      },
+    },
+  ],
+  likes: [
+    {
+      post: {
+        type: Schema.Types.ObjectId,
+        ref: "posts",
+      },
+    },
+  ],
+  comments: [
+    {
+      post: {
+        type: Schema.Types.ObjectId,
+        ref: "posts",
+      },
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,

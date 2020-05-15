@@ -10,8 +10,11 @@ const {
   deleteComment,
   replayComment,
   deleteReplay,
+  getPostByUsername,
 } = require("../controller/postController");
 const auth = require("../middleware/auth");
+
+router.get("/:username", getPostByUsername);
 
 router.get("/", auth, getAllpost);
 
