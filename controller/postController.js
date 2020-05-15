@@ -193,7 +193,7 @@ exports.deleteComment = async (req, res) => {
     res.json(post);
 
     // Profile
-    profile = await Profile.findOneAndUpdate(
+    let profile = await Profile.findOneAndUpdate(
       { user: req.user.id },
       { $pull: { comments: { _id: req.params.postId } } },
       { new: true }
@@ -242,6 +242,13 @@ exports.replayComment = async (req, res) => {
     );
 
     res.json(post);
+    // Profile
+    let profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $push: { comments: { _id: req.params.postId } } },
+      { new: true }
+    );
+    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -284,6 +291,13 @@ exports.deleteReplay = async (req, res) => {
       { new: true }
     );
     res.json(post);
+    // Profile
+    let profile = await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { $pull: { comments: { _id: req.params.postId } } },
+      { new: true }
+    );
+    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
