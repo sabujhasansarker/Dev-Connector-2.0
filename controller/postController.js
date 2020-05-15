@@ -40,12 +40,11 @@ exports.createPost = async (req, res) => {
     newpost.save();
 
     const posts = await Post.find({ user: req.user.id });
-    const profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { username: req.user.username },
       { $set: { posts } },
       { new: true }
     );
-    console.log(profile);
     res.json(newpost);
   } catch (err) {
     serverError(res, err);
@@ -81,12 +80,11 @@ exports.deletePost = async (req, res) => {
     res.json(post);
 
     const posts = await Post.find({ user: req.user.id });
-    const profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { username: req.user.username },
       { $set: { posts } },
       { new: true }
     );
-    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -95,7 +93,7 @@ exports.deletePost = async (req, res) => {
 // * Like
 exports.likePost = async (req, res) => {
   let post = await Post.findById(req.params.postId);
-  const user = await User.findById(req.user.id);
+  let profile = await Profile.findOne({ user: req.user.id });
   if (!post) {
     return res.status(400).json({ errors: { msg: "Post dose not found" } });
   }
@@ -108,11 +106,13 @@ exports.likePost = async (req, res) => {
       post.likes = post.likes.filter(
         (like) => like.user.toString() !== req.user.id
       );
+      // Profile
       await post.save();
       return res.json(post);
     }
     post.likes.unshift({ user: req.user.id });
     await post.save();
+
     res.json(post);
   } catch (err) {
     serverError(res, err);
