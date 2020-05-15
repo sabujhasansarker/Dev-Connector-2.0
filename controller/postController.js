@@ -134,7 +134,6 @@ exports.deleteComment = async (req, res) => {
     let comment = post.comments.find(
       (comment) => comment._id.toString() === req.params.comment_id
     );
-    console.log(comment);
     // Make sure comment exists
     if (!comment) {
       return res.status(404).json({ msg: "Comment dose not exists" });
@@ -205,6 +204,11 @@ exports.deleteReplay = async (req, res) => {
     let comment = post.comments.find(
       (comment) => comment._id.toString() === req.params.comment_id
     );
+
+    if (!comment) {
+      return res.status(404).json({ msg: "Comment dose not exists" });
+    }
+
     let replay = comment.replays.find(
       (replay) => replay._id.toString() === req.params.replay_id
     );
@@ -218,16 +222,19 @@ exports.deleteReplay = async (req, res) => {
     if (replay.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "User not authorized" });
     }
-    const removeIndex = comment.replays
-      .map((replay) => replay._id.toString())
-      .indexOf(req.params.replayid);
-    comment = comment.replays.splice(removeIndex, 1);
+    comment.replays = comment.replays.filter(
+      (re) => re._id.toString() !== req.params.replay_id && re
+    );
 
-    res.json(comment);
-
-    // post.comments.replays.splice(removeIndex, 1);
-    // await post.save();
-    // res.json(post);
+    let comments = post.comments.filter((comm) =>
+      comm._id.toString() === req.params.comment_id ? comment : comm
+    );
+    post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      { $set: { comments } },
+      { new: true }
+    );
+    res.json(post);
   } catch (err) {
     serverError(res, err);
   }
