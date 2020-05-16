@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 
 import { removeAlert } from "../../action/alert";
 
+import cross from "../../icons/cross.svg";
+
 const Alert = ({ removeAlert, alerts }) =>
   alerts !== null &&
   alerts.map((a) => (
-    <div className={`alert alert-${a.alertType} d-flex`} key={a.id}>
-      <h4>{a.msg}</h4>{" "}
-      <i className="fas fa-times" onClick={() => removeAlert(a.id)}></i>
+     <div className="alert-container">
+    <div className={`container d-flex ${a.alertType} alert  d-flex`} key={a.id}>
+      <p>{a.msg}</p>
+      <img src={cross} alt="" onClick={() => removeAlert(a.id)} />
+    </div>
     </div>
   ));
 

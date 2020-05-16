@@ -8,6 +8,11 @@ import { clearProfile } from "../../action/profile";
 
 import { getprofilebyusername } from "../../action/profile";
 
+import "./Navbar.css";
+import logo from "../../icons/main-logo.svg";
+import usersetting from "../../icons/user-setting.svg";
+import logoutimg from "../../icons/logout.svg";
+
 const Navbar = ({
   auth: { isAutination, user },
   logout,
@@ -16,72 +21,81 @@ const Navbar = ({
   match,
 }) => {
   const username = user && user.firstName;
-  // useEffect(() => {
-  //   getprofilebyusername(match && match.params.username);
-  // }, [getprofilebyusername]);
 
-  const gustuser = (
+  const gast = (
     <Fragment>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <li>
-        <Link to="/register">Register</Link>
-      </li>
+      <div className="right d-flex">
+        <Link to="/">
+          <img className="gest" src={logo} alt="logo" />
+        </Link>
+      </div>
+      <div className="left">
+        <ul className="d-flex">
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+        </ul>
+      </div>
     </Fragment>
   );
-  const loginUser = (
+
+  const auth = (
     <Fragment>
-      <li>
-        <Link
-          onClick={(e) => {
-            clearProfile();
-            getprofilebyusername(user && user.username);
-          }}
-          className="d-flex nav-user"
-          to={`/${user && user.username}`}
-          style={{ textTransform: "capitalize" }}
-        >
-          <img src={user && user.profilePic} alt="" />
-          {user && username}
+      <div className="right d-flex">
+        <Link to="/">
+          <img src={logo} alt="logo" />
         </Link>
-      </li>
-      <li>
-        <Link to="/" onClick={(e) => clearProfile()}>
-          Posts
-        </Link>
-      </li>
-      <li>
-        <Link to="/setting">
-          Setting <i className="fas fa-user-cog setting-icon"></i>
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/"
-          onClick={() => {
-            logout();
-            clearProfile();
-          }}
-        >
-          Logout <i className="fas fa-sign-out-alt"></i>
-        </Link>
-      </li>
+        <input type="text" placeholder="Search" />
+      </div>
+      <div className="left">
+        <ul className="d-flex">
+          <li>
+            <Link
+              onClick={(e) => {
+                clearProfile();
+                getprofilebyusername(user && user.username);
+              }}
+              className="d-flex"
+              to={`/${user && user.username}`}
+              style={{ textTransform: "capitalize" }}
+            >
+              <img src={user && user.profilePic} className="userimage" alt="" />
+              {user && username}
+            </Link>
+          </li>
+          <li>
+            <Link to="/setting" onClick={(e) => clearProfile()}>
+              <img src={usersetting} alt="logo" />
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/"
+              onClick={() => {
+                logout();
+                clearProfile();
+              }}
+            >
+              <img src={logoutimg} alt="logo" />
+            </Link>
+          </li>
+        </ul>
+      </div>
     </Fragment>
   );
   return (
-    <header>
-      <div className="inner container">
-        <nav>
-          <Link to="/" className="logo" onClick={(e) => clearProfile()}>
-            <i className="fas fa-code"></i> Logo
-          </Link>
-          <input type="checkbox" name="" id="nav" />{" "}
-          <label htmlFor="nav"></label>
-          <ul>{isAutination ? loginUser : gustuser}</ul>
-        </nav>
-      </div>
-    </header>
+    <Fragment>
+      <header>
+        <nav className="container d-flex">{isAutination ? auth : gast}</nav>
+      </header>
+      <div
+        className="blackfield"
+        style={isAutination ? { height: "70px" } : { height: "50px" }}
+      ></div>
+    </Fragment>
   );
 };
 

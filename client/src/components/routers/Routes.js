@@ -5,8 +5,10 @@ import PrivetRouter from "./PrivetRouter";
 import Notfound from "../layouts/Notfound";
 import Settings from "../layouts/Settings";
 
-import Login from "../users/Login";
-import Register from "../users/Register";
+// User
+import LoginForm from "../forms/LoginForm"
+import RegisterForm from "../forms/RegisterForm"
+
 import { connect } from "react-redux";
 import Profile from "../profile/Profile";
 import ProfileFroms from "../profile/profileFroms/ProfileFroms";
@@ -18,8 +20,8 @@ const Routes = ({ auth: { loading, user } }) => {
         {!loading && (
           <PrivetRouter exact path="/setting" component={Settings} />
         )}
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={RegisterForm} />
+        <Route exact path="/login" component={LoginForm} />
         <PrivetRouter exact path="/:username" component={Profile} />
         <PrivetRouter
           exact

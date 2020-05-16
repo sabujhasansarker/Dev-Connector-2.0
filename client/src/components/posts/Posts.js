@@ -1,21 +1,18 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
+import React from "react";
 
-import Spnnier from "../layouts/Spnnier";
+// import "./Post.css";
+// import PostFrom from "./PostFrom";
 
-const Posts = ({ loading }) => {
-  if (loading) {
-    return <Spnnier />;
-  }
+// import PostBody from "./PostBody";
+
+const Posts = () => {
   return (
-    <Fragment>
-      <h1>Post's</h1>
-    </Fragment>
+    <div className="container post-container">
+      <h1>Post</h1>
+      {/* <PostFrom />
+      <PostBody /> */}
+    </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  loading: state.auth.loading,
-});
-
-export default connect(mapStateToProps)(Posts);
+export default Posts;

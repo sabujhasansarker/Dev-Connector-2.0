@@ -312,3 +312,19 @@ exports.getPostByUsername = async (req, res) => {
     serverError(res, err);
   }
 };
+
+exports.getPostsByLike_Comments = async (req, res) => {
+  try {
+    const profile = await Profile.find({ username: req.params.username });
+
+    let posts = await Post.find();
+
+    posts = profile[0].posts.filter(
+      (post) => post._id === posts.map((p) => p._id)
+    );
+
+    res.json(posts);
+  } catch (err) {
+    serverError(res, err);
+  }
+};

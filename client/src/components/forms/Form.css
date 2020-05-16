@@ -1,0 +1,10 @@
+.register,
+.login {
+  height: 100vh;
+}
+
+.from-container {
+  background: var(--from-color);
+  padding: 50px;
+  font-weight: 300;
+}

@@ -11,10 +11,13 @@ const {
   replayComment,
   deleteReplay,
   getPostByUsername,
+  getPostsByLike_Comments,
 } = require("../controller/postController");
 const auth = require("../middleware/auth");
 
 router.get("/:username", getPostByUsername);
+
+router.get("/:username/activity", getPostsByLike_Comments);
 
 router.get("/", auth, getAllpost);
 
