@@ -33,11 +33,9 @@ const Overview = ({
   user,
   match,
   popup,
+  username,
 }) => {
   // Get profile
-  useEffect(() => {
-    getprofilebyusername(match && match.params.username);
-  }, [getprofilebyusername]);
 
   let { education, address, experience, social, website } = profile
     ? profile
@@ -45,14 +43,12 @@ const Overview = ({
 
   const [addresstoggle, setAddresstoggle] = useState(false);
 
-  console.log(window.location.href);
-
   return (
     <div className="about-right">
       {/* {popup && <EducationPopup />} */}
       {/*  Single */}
       <div className="single">
-        {profile && profile.username === user && (
+        {profile && profile.username === user && user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -187,7 +183,6 @@ const Overview = ({
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile.profile,
   user: state.auth.user,
   popup: state.popup,
 });

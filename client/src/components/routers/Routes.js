@@ -21,7 +21,7 @@ import Experrience from "../profile/profileRight/About/Experrience";
 import Contact from "../profile/profileRight/About/Contact";
 import Github from "../profile/profileRight/About/Github";
 
-const Routes = ({ auth: { loading, user } }) => {
+const Routes = ({ auth: { loading, user }, profile }) => {
   return (
     <Fragment>
       <Switch>
@@ -41,7 +41,12 @@ const Routes = ({ auth: { loading, user } }) => {
           path="/:username/create-profile"
           component={UpdateInfo}
         />
-        <PrivetRouter exact path="/:username/about" component={About} />
+        <PrivetRouter
+          exact
+          path="/:username/about"
+          component={About}
+          username={"profile && profile.username"}
+        />
         <PrivetRouter
           exact
           path="/:username/about/education"
@@ -72,6 +77,7 @@ const Routes = ({ auth: { loading, user } }) => {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  profile: state.profile.profile,
 });
 
 export default connect(mapStateToProps)(Routes);

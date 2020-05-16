@@ -19,24 +19,14 @@ import web from "../../../icons/web.svg";
 
 // Profile update
 import { profileUpdate } from "../../../action/profile";
-import { getprofilebyusername } from "../../../action/profile";
 import Moment from "react-moment";
 
-const ProfileIntro = ({
-  profile,
-  user,
-  profileUpdate,
-  getprofilebyusername,
-  match,
-}) => {
-  useEffect(() => {
-    getprofilebyusername(match && match.params.username);
-  }, [getprofilebyusername]);
-
+const ProfileIntro = ({ profile, user, profileUpdate }) => {
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
 
+  console.log(profile);
   // profile
   const {
     profilePic,
@@ -70,7 +60,7 @@ const ProfileIntro = ({
       setBiotoggle(false);
     }
   };
-
+  const { firstName, lastName } = user && user ? user : "";
   return (
     <div className="intro">
       <div className="header">
@@ -91,7 +81,7 @@ const ProfileIntro = ({
           alt=""
         />
         <h2 className="text-center" style={{ textTransform: "capitalize" }}>
-          {user && user.firstName + " " + user && user.lastName}
+          {firstName + " " + lastName}
         </h2>
       </div>
       {skills && (
@@ -279,11 +269,9 @@ const ProfileIntro = ({
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile.profile,
   user: state.auth.user,
 });
 
 export default connect(mapStateToProps, {
   profileUpdate,
-  getprofilebyusername,
 })(ProfileIntro);

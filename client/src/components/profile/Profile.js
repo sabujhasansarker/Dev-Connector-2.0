@@ -49,7 +49,7 @@ const Profile = ({
         }`}
         style={!intro ? { width: "0px", padding: "0px" } : {}}
       >
-        {intro && <ProfileIntro />}
+        {intro && <ProfileIntro profile={profile} />}
       </div>
       {window.innerWidth < 769 && (
         <h4
@@ -75,7 +75,7 @@ const Profile = ({
             : {}
         }
       >
-        <ProfileNav />
+        <ProfileNav username={match.params.username} />
         <div className="profile-container">
           <Posts />
         </div>
