@@ -30,7 +30,9 @@ const Profile = ({
   }
 
   if (user && !user.profile) {
-    return <Redirect to="/profile/create-profile" />;
+    if (!profile) {
+      return <Redirect to="/profile/create-profile" />;
+    }
   }
 
   if (profile === null) {
@@ -73,14 +75,10 @@ const Profile = ({
             : {}
         }
       >
-        {user.profile && (
-          <Fragment>
-            <ProfileNav />{" "}
-            <div className="profile-container">
-              <Posts />
-            </div>
-          </Fragment>
-        )}
+        <ProfileNav />
+        <div className="profile-container">
+          <Posts />
+        </div>
       </div>
     </div>
   );
