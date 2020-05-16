@@ -59,9 +59,11 @@ const ProfileIntro = ({
   const onSubmit = (e) => {
     e.preventDefault();
     setFromdata({ ...fromdata });
-    console.log(fromdata);
 
     profileUpdate(fromdata);
+    if (biotoggle) {
+      setBiotoggle(false);
+    }
   };
 
   return (
@@ -118,7 +120,7 @@ const ProfileIntro = ({
         <div className="company flex">
           <img src={companyIcon} className="svg-img" alt="" />
           {commpanytoggle ? (
-            <form className="form" onSubmit={onsubmit}>
+            <form className="form" onSubmit={onSubmit}>
               <div className="form-group">
                 <input
                   type="text"
@@ -128,7 +130,7 @@ const ProfileIntro = ({
                 />
               </div>
               <div className="text">
-                <p onClick={onsubmit} onClick={(e) => setCommpanytoggle(false)}>
+                <p onClick={onSubmit} onClick={(e) => setCommpanytoggle(false)}>
                   Save
                 </p>
                 <p onClick={(e) => setCommpanytoggle(false)}>Cancel</p>
@@ -151,7 +153,7 @@ const ProfileIntro = ({
         <div className="bio flex">
           <img src={bioIcon} className="svg-img" alt="" />
           {biotoggle ? (
-            <form className="form">
+            <form onSubmit={onSubmit} className="form">
               <div className="form-group">
                 <textarea
                   type="text"
@@ -161,12 +163,7 @@ const ProfileIntro = ({
                 />
               </div>
               <div className="text">
-                <p
-                  onClick={(e) => onsubmit(e)}
-                  onClick={(e) => setBiotoggle(false)}
-                >
-                  Save
-                </p>
+                <input type="submit" value="Save" />
                 <p onClick={(e) => setBiotoggle(false)}>Cancel</p>
               </div>
             </form>

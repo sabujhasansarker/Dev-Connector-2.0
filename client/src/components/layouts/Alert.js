@@ -8,11 +8,11 @@ import cross from "../../icons/cross.svg";
 const Alert = ({ removeAlert, alerts }) =>
   alerts !== null &&
   alerts.map((a) => (
-     <div className="alert-container">
-    <div className={`container d-flex ${a.alertType} alert  d-flex`} key={a.id}>
-      <p>{a.msg}</p>
-      <img src={cross} alt="" onClick={() => removeAlert(a.id)} />
-    </div>
+    <div className="alert-container" key={a.id}>
+      <div className={`container d-flex ${a.alertType} alert  d-flex`}>
+        <p>{a.msg}</p>
+        <img src={cross} alt="" onClick={() => removeAlert(a.id)} />
+      </div>
     </div>
   ));
 

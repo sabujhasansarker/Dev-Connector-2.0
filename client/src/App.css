@@ -571,4 +571,11 @@ header .left ul li img {
   height: 50px;
 }
 
+.text input[type="submit"] {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 300;
+}
+
 /*# sourceMappingURL=Post.css.map */
