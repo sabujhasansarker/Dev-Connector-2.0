@@ -20,6 +20,7 @@ import web from "../../../icons/web.svg";
 // Profile update
 import { profileUpdate } from "../../../action/profile";
 import { getprofilebyusername } from "../../../action/profile";
+import Moment from "react-moment";
 
 const ProfileIntro = ({
   profile: {
@@ -32,6 +33,7 @@ const ProfileIntro = ({
     socials,
     website,
     company,
+    githubusername,
   },
   user: { firstName, lastName },
   profileUpdate,
@@ -180,60 +182,87 @@ const ProfileIntro = ({
           )}
         </div>
       )}
-      <div className="education flex">
-        <img src={educationIcon} className="svg-img" alt="" />
-        <p className="text">
-          Study management at <b>oxford university</b> from 2015
-        </p>
-      </div>
-      <div className="work flex">
-        <img src={workIcon} className="svg-img" alt="" />
-        <p className="text">
-          Work at <b>oxford university</b> as a developer from 2019
-        </p>
-      </div>
+      {education &&
+        education.map(
+          (edu) =>
+            !edu.to && (
+              <div className="education flex" key={edu._id}>
+                <img src={educationIcon} className="svg-img" alt="" />
+                <p className="text">
+                  Study management at <b>{edu.school}</b> from{" "}
+                  <Moment format="YYYY">{edu.form}</Moment>
+                </p>
+              </div>
+            )
+        )}
+      {experience &&
+        experience.map(
+          (exp) =>
+            !exp.to && (
+              <div className="work flex" key={exp._id}>
+                <img src={workIcon} className="svg-img" alt="" />
+                <p className="text">
+                  Work at <b>{exp.company}</b> as a {exp.title} from{" "}
+                  <Moment format="YYYY">{exp.from}</Moment>
+                </p>
+              </div>
+            )
+        )}
+
       <div className="social-icons">
         <ul className="flex">
-          <li>
-            <a href="" target="_blank">
-              <img src={fb} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={inst} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={lndin} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={twtter} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={utube} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={fb} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={git} className="svg-img" alt="" />
-            </a>
-          </li>
-          <li>
-            <a href="" target="_blank">
-              <img src={web} className="svg-img" alt="" />
-            </a>
-          </li>
+          {socials && socials.facebook && (
+            <li>
+              <a href={socials.facebook} target="_blank">
+                <img src={fb} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+          {socials && socials.instagram && (
+            <li>
+              <a href={socials.instagram} target="_blank">
+                <img src={inst} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+
+          {socials && socials.linkedin && (
+            <li>
+              <a href={socials.linkedin} target="_blank">
+                <img src={lndin} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+
+          {socials && socials.twitter && (
+            <li>
+              <a href={socials.twitter} target="_blank">
+                <img src={twtter} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+
+          {socials && socials.youtube && (
+            <li>
+              <a href={socials.youtube} target="_blank">
+                <img src={utube} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+          {githubusername && (
+            <li>
+              <a href={`http://github.com/${githubusername}`} target="_blank">
+                <img src={git} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
+          {website && (
+            <li>
+              <a href={website} target="_blank">
+                <img src={web} className="svg-img" alt="" />
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </div>
