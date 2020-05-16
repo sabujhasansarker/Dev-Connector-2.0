@@ -6,7 +6,7 @@ import lndin from "../../icons/linkdin.svg";
 import twtter from "../../icons/twitter.svg";
 import utube from "../../icons/youtube.svg";
 
-const ProfileForm = () => {
+const ProfileForm = ({ name }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
@@ -81,7 +81,7 @@ const ProfileForm = () => {
           )}
 
           <div className="form-group float-right d-flex">
-            <input type="button" value="Update" className="btn btn-save " />
+            <input type="button" value={name} className="btn btn-save " />
             <input type="button" value="Cancel" className="btn " />
           </div>
         </form>

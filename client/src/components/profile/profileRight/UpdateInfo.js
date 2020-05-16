@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
+import { connect } from "react-redux";
 
 import ProfileForm from "../../forms/ProfileForm";
 import ProfileNav from "../ProfileNav";
 import ProfileIntro from "../profileLeft/ProfileIntro";
 
-const UpdateInfo = () => {
+const UpdateInfo = ({ auth: { user } }) => {
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
   return (
     <div className="profile">
@@ -40,13 +41,18 @@ const UpdateInfo = () => {
             : {}
         }
       >
-        <ProfileNav />
+        {user && user.profile && <ProfileNav />}
         <div className="profile-container">
-          <ProfileForm />
+          <ProfileForm name={user && user.profile ? "Update" : "Create"} />
         </div>
       </div>
     </div>
   );
 };
 
-export default UpdateInfo;
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(UpdateInfo);

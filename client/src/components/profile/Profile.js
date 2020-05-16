@@ -1,7 +1,8 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { connect } from "react-redux";
+
 import Spnnier from "../layouts/Spnnier";
-import { Route, Link } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 import { getprofilebyusername } from "../../action/profile";
 
@@ -26,6 +27,10 @@ const Profile = ({
 
   if (loading) {
     return <Spnnier />;
+  }
+
+  if (user && !user.profile) {
+    return <Redirect to="/profile/create-profile" />;
   }
 
   if (profile === null) {
@@ -68,10 +73,14 @@ const Profile = ({
             : {}
         }
       >
-        <ProfileNav />
-        <div className="profile-container">
-          <Posts />
-        </div>
+        {user.profile && (
+          <Fragment>
+            <ProfileNav />{" "}
+            <div className="profile-container">
+              <Posts />
+            </div>
+          </Fragment>
+        )}
       </div>
     </div>
   );

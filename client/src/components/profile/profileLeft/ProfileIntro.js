@@ -23,19 +23,8 @@ import { getprofilebyusername } from "../../../action/profile";
 import Moment from "react-moment";
 
 const ProfileIntro = ({
-  profile: {
-    profilePic,
-    education,
-    experience,
-    bio,
-    status,
-    skills,
-    socials,
-    website,
-    company,
-    githubusername,
-  },
-  user: { firstName, lastName },
+  profile,
+  user,
   profileUpdate,
   getprofilebyusername,
   match,
@@ -47,6 +36,21 @@ const ProfileIntro = ({
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
+
+  // profile
+  const {
+    education,
+    experience,
+    bio,
+    status,
+    skills,
+    socials,
+    website,
+    company,
+    githubusername,
+  } = profile ? profile : "";
+
+  const { firstName, lastName, profilePic } = user ? user : "";
 
   // update
   const [fromdata, setFromdata] = useState({
@@ -87,37 +91,39 @@ const ProfileIntro = ({
           {firstName + " " + lastName}
         </h2>
       </div>
-      <div className="skills flex">
-        <img src={skillIcon} className="svg-img" alt="" />
-        {skilltoggle ? (
-          <form className="form" onSubmit={onSubmit}>
-            <div className="form-group">
-              <input
-                type="text"
-                value={fromdata.skills}
-                onChange={(e) => onchage(e)}
-                name="skills"
+      {skills && (
+        <div className="skills flex">
+          <img src={skillIcon} className="svg-img" alt="" />
+          {skilltoggle ? (
+            <form className="form" onSubmit={onSubmit}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  value={fromdata.skills}
+                  onChange={(e) => onchage(e)}
+                  name="skills"
+                />
+              </div>
+              <div className="text">
+                <p onClick={onSubmit} onClick={(e) => setSkilltoggle(false)}>
+                  Save
+                </p>
+                <p onClick={(e) => setSkilltoggle(false)}>Cancel</p>
+              </div>
+            </form>
+          ) : (
+            <Fragment>
+              <p className="text">{fromdata.skills}</p>
+              <img
+                onClick={(e) => setSkilltoggle(true)}
+                src={editicon}
+                className="svg-img edit-icon"
+                alt=""
               />
-            </div>
-            <div className="text">
-              <p onClick={onSubmit} onClick={(e) => setSkilltoggle(false)}>
-                Save
-              </p>
-              <p onClick={(e) => setSkilltoggle(false)}>Cancel</p>
-            </div>
-          </form>
-        ) : (
-          <Fragment>
-            <p className="text">{fromdata.skills}</p>
-            <img
-              onClick={(e) => setSkilltoggle(true)}
-              src={editicon}
-              className="svg-img edit-icon"
-              alt=""
-            />
-          </Fragment>
-        )}
-      </div>
+            </Fragment>
+          )}
+        </div>
+      )}
       {fromdata.company && (
         <div className="company flex">
           <img src={companyIcon} className="svg-img" alt="" />
