@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
-import "./Profile.css";
-import ProfileIntro from "./profileLeft/ProfileIntro";
-import ProfileNav from "./ProfileNav";
-import Posts from "../posts/Posts";
+import ProfileIntro from "../../profileLeft/ProfileIntro";
+import ProfileNav from "../../ProfileNav";
+import AboutNav from "./AboutNav";
+import Overview from "./Overview";
 
-const Profile = () => {
+const About = () => {
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
+
   return (
     <div className="profile">
       <div
@@ -42,12 +43,11 @@ const Profile = () => {
         }
       >
         <ProfileNav />
-        <div className="profile-container">
-          <Posts />
-        </div>
+        <AboutNav navTitle="OverView" />
+        <Overview />
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default About;

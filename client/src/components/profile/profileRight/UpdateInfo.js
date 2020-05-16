@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-import "./Profile.css";
-import ProfileIntro from "./profileLeft/ProfileIntro";
-import ProfileNav from "./ProfileNav";
-import Posts from "../posts/Posts";
+import ProfileForm from "../../forms/ProfileForm";
+import ProfileNav from "../ProfileNav";
+import ProfileIntro from "../profileLeft/ProfileIntro";
 
-const Profile = () => {
+const UpdateInfo = () => {
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
   return (
     <div className="profile">
@@ -43,11 +42,11 @@ const Profile = () => {
       >
         <ProfileNav />
         <div className="profile-container">
-          <Posts />
+          <ProfileForm />
         </div>
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default UpdateInfo;
