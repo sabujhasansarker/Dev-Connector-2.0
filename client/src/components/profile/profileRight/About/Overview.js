@@ -48,7 +48,7 @@ const Overview = ({
       {/* {popup && <EducationPopup />} */}
       {/*  Single */}
       <div className="single">
-        {profile && profile.username === user && user.username && (
+        {profile.username === user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -66,39 +66,45 @@ const Overview = ({
             <p className="text">
               Study management at <b>oxford university</b> <br /> from 2015
             </p>
-            <div className="flex edit-delete">
-              <p className="text" onClick={(e) => setPopup(!popup)}>
-                Edit
-              </p>
-              <p className="text">Delete</p>
-            </div>
+            {profile.username === user.username && (
+              <div className="flex edit-delete">
+                <p className="text" onClick={(e) => setPopup(!popup)}>
+                  Edit
+                </p>
+                <p className="text">Delete</p>
+              </div>
+            )}
           </div>
         </div>
         <hr />
       </div>
       {/*  Single */}
       <div className="single">
-        <div className="add flex">
-          <img
-            src={addIcon}
-            className="svg-img"
-            onClick={(e) => setPopup(!popup)}
-            alt=""
-          />
-          <h3>Add Experrience</h3>
-        </div>
+        {profile.username === user.username && (
+          <div className="add flex">
+            <img
+              src={addIcon}
+              className="svg-img"
+              onClick={(e) => setPopup({ exp: true })}
+              alt=""
+            />
+            <h3>Add Experrience</h3>
+          </div>
+        )}
         <div className="single-items flex">
           <img src={workIcon} className="svg-img" alt="" />
           <div className="details">
             <p className="text">
               Work at <b>oxford university</b> as a developer <br /> from 2019
             </p>
-            <div className="flex edit-delete">
-              <p className="text" onClick={(e) => setPopup(!popup)}>
-                Edit
-              </p>
-              <p className="text">Delete</p>
-            </div>
+            {profile.username === user.username && (
+              <div className="flex edit-delete">
+                <p className="text" onClick={(e) => setPopup(!popup)}>
+                  Edit
+                </p>
+                <p className="text">Delete</p>
+              </div>
+            )}
           </div>
         </div>
         <hr />
@@ -122,12 +128,14 @@ const Overview = ({
         ) : (
           <Fragment>
             <p className="text">Live in Jatrabari,Dhaka,Bangladesh</p>
-            <img
-              src={editIcon}
-              onClick={(e) => setAddresstoggle(true)}
-              className="svg-img edit-icon"
-              alt=""
-            />
+            {profile.username === user.username && (
+              <img
+                src={editIcon}
+                onClick={(e) => setAddresstoggle(true)}
+                className="svg-img edit-icon"
+                alt=""
+              />
+            )}
           </Fragment>
         )}
       </div>

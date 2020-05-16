@@ -59,7 +59,7 @@ const About = ({
       >
         <ProfileNav username={match.params.username} />
         <AboutNav navTitle="OverView" username={match.params.username} />
-        <Overview profile={profile} />
+        <Overview profile={profile && profile} />
       </div>
     </div>
   );
