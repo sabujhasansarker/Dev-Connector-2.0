@@ -1,4 +1,6 @@
-import React, { useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
+import { connect } from "react-redux";
+import Moment from "react-moment";
 
 import EducationPopup from "../../../forms/EducationPopup";
 
@@ -17,23 +19,51 @@ import utube from "../../../../icons/youtube.svg";
 import git from "../../../../icons/git.svg";
 import web from "../../../../icons/web.svg";
 
-const Overview = () => {
-  const [popup, setPopup] = useState(false);
+// funtion
+import { getprofilebyusername } from "../../../../action/profile";
+import { setPopup } from "../../../../action/popup";
+import { getCurrent, deleteEducaion } from "../../../../action/profile";
+
+const Overview = ({
+  getprofilebyusername,
+  profile,
+  setPopup,
+  getCurrent,
+  deleteEducaion,
+  user,
+  match,
+  popup,
+}) => {
+  // Get profile
+  useEffect(() => {
+    getprofilebyusername(match && match.params.username);
+  }, [getprofilebyusername]);
+
+  let { education, address, experience, social, website } = profile
+    ? profile
+    : "";
+
   const [addresstoggle, setAddresstoggle] = useState(false);
+
+  console.log(window.location.href);
+
   return (
     <div className="about-right">
-      {popup && <EducationPopup />}
+      {/* {popup && <EducationPopup />} */}
       {/*  Single */}
       <div className="single">
-        <div className="add flex">
-          <img
-            src={addIcon}
-            className="svg-img"
-            onClick={(e) => setPopup(!popup)}
-            alt=""
-          />
-          <h3>Add Educaion</h3>
-        </div>
+        {profile && profile.username === user && (
+          <div className="add flex">
+            <img
+              src={addIcon}
+              className="svg-img"
+              onClick={(e) => setPopup({ exp: true })}
+              alt=""
+            />
+            <h3>Add Educaion</h3>
+          </div>
+        )}
+
         <div className="single-items flex">
           <img src={schoolIcon} className="svg-img" alt="" />
           <div className="details">
@@ -156,4 +186,15 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+const mapStateToProps = (state) => ({
+  profile: state.profile.profile,
+  user: state.auth.user,
+  popup: state.popup,
+});
+
+export default connect(mapStateToProps, {
+  getprofilebyusername,
+  setPopup,
+  deleteEducaion,
+  getCurrent,
+})(Overview);

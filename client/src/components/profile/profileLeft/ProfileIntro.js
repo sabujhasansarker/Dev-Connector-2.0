@@ -39,6 +39,7 @@ const ProfileIntro = ({
 
   // profile
   const {
+    profilePic,
     education,
     experience,
     bio,
@@ -49,8 +50,6 @@ const ProfileIntro = ({
     company,
     githubusername,
   } = profile ? profile : "";
-
-  const { firstName, lastName, profilePic } = user ? user : "";
 
   // update
   const [fromdata, setFromdata] = useState({
@@ -86,9 +85,13 @@ const ProfileIntro = ({
             <img src={editicon} className="svg-img" alt="" />
           </label>
         </div>
-        <img className="profile-pic" src={profilePic} alt="" />
+        <img
+          className="profile-pic"
+          src={profilePic ? profilePic : user && user.profilePic}
+          alt=""
+        />
         <h2 className="text-center" style={{ textTransform: "capitalize" }}>
-          {firstName + " " + lastName}
+          {user && user.firstName + " " + user && user.lastName}
         </h2>
       </div>
       {skills && (

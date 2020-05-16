@@ -31,7 +31,7 @@ const Profile = ({
 
   if (user && !user.profile) {
     if (!profile) {
-      return <Redirect to="/profile/create-profile" />;
+      return <Redirect to={`/${user && user.username}/create-profile`} />;
     }
   }
 
