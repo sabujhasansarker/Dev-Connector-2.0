@@ -21,14 +21,13 @@ import web from "../../../icons/web.svg";
 import { profileUpdate } from "../../../action/profile";
 import Moment from "react-moment";
 
-const ProfileIntro = ({ profile, user, profileUpdate }) => {
+const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
 
-  console.log(profile);
   // profile
-  const {
+  let {
     profilePic,
     education,
     experience,
@@ -39,7 +38,14 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
     website,
     company,
     githubusername,
+    user,
   } = profile ? profile : "";
+
+  let { firstName, lastName } = user ? user : "";
+
+  firstName = firstName ? firstName : currentUser && currentUser.firstName;
+  lastName = lastName ? lastName : currentUser && currentUser.lastName;
+  profilePic = profilePic ? profilePic : currentUser && currentUser.profilePic;
 
   // update
   const [fromdata, setFromdata] = useState({
@@ -60,7 +66,7 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
       setBiotoggle(false);
     }
   };
-  const { firstName, lastName } = user && user ? user : "";
+
   return (
     <div className="intro">
       <div className="header">
@@ -75,11 +81,7 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
             <img src={editicon} className="svg-img" alt="" />
           </label>
         </div>
-        <img
-          className="profile-pic"
-          src={profilePic ? profilePic : user && user.profilePic}
-          alt=""
-        />
+        <img className="profile-pic" src={profilePic} alt="" />
         <h2 className="text-center" style={{ textTransform: "capitalize" }}>
           {firstName + " " + lastName}
         </h2>
@@ -269,7 +271,7 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.auth.user,
+  currentUser: state.auth.user,
 });
 
 export default connect(mapStateToProps, {

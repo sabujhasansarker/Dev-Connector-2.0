@@ -49,7 +49,9 @@ const Profile = ({
         }`}
         style={!intro ? { width: "0px", padding: "0px" } : {}}
       >
-        {intro && <ProfileIntro profile={profile} />}
+        {intro && (
+          <ProfileIntro profile={profile} username={match.params.username} />
+        )}
       </div>
       {window.innerWidth < 769 && (
         <h4

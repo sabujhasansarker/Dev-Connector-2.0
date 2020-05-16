@@ -31,13 +31,11 @@ const Overview = ({
   getCurrent,
   deleteEducaion,
   user,
-  match,
   popup,
-  username,
 }) => {
   // Get profile
 
-  let { education, address, experience, social, website } = profile
+  let { education, address, experience, social, website, username } = profile
     ? profile
     : "";
 
@@ -48,7 +46,7 @@ const Overview = ({
       {/* {popup && <EducationPopup />} */}
       {/*  Single */}
       <div className="single">
-        {profile.username === user.username && (
+        {username === user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -66,7 +64,7 @@ const Overview = ({
             <p className="text">
               Study management at <b>oxford university</b> <br /> from 2015
             </p>
-            {profile.username === user.username && (
+            {username === user.username && (
               <div className="flex edit-delete">
                 <p className="text" onClick={(e) => setPopup(!popup)}>
                   Edit
@@ -80,7 +78,7 @@ const Overview = ({
       </div>
       {/*  Single */}
       <div className="single">
-        {profile.username === user.username && (
+        {username === user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -97,7 +95,7 @@ const Overview = ({
             <p className="text">
               Work at <b>oxford university</b> as a developer <br /> from 2019
             </p>
-            {profile.username === user.username && (
+            {username === user.username && (
               <div className="flex edit-delete">
                 <p className="text" onClick={(e) => setPopup(!popup)}>
                   Edit
@@ -128,7 +126,7 @@ const Overview = ({
         ) : (
           <Fragment>
             <p className="text">Live in Jatrabari,Dhaka,Bangladesh</p>
-            {profile.username === user.username && (
+            {username === user.username && (
               <img
                 src={editIcon}
                 onClick={(e) => setAddresstoggle(true)}
