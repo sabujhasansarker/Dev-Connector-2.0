@@ -1,4 +1,5 @@
-import React, { useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
+import { connect } from "react-redux";
 
 import editicon from "../../../icons/edit.svg";
 import skillIcon from "../../../icons/skills.svg";
@@ -16,10 +17,52 @@ import utube from "../../../icons/youtube.svg";
 import git from "../../../icons/git.svg";
 import web from "../../../icons/web.svg";
 
-const ProfileIntro = () => {
+// Profile update
+import { profileUpdate } from "../../../action/profile";
+import { getprofilebyusername } from "../../../action/profile";
+
+const ProfileIntro = ({
+  profile: {
+    profilePic,
+    education,
+    experience,
+    bio,
+    status,
+    skills,
+    socials,
+    website,
+    company,
+  },
+  user: { firstName, lastName },
+  profileUpdate,
+  getprofilebyusername,
+  match,
+}) => {
+  useEffect(() => {
+    getprofilebyusername(match && match.params.username);
+  }, [getprofilebyusername]);
+
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
+
+  // update
+  const [fromdata, setFromdata] = useState({
+    skills: skills ? skills.join(",") : "",
+    status: status,
+    company: company,
+    bio: bio,
+  });
+  const onchage = (e) => {
+    setFromdata({ ...fromdata, [e.target.name]: e.target.value });
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setFromdata({ ...fromdata });
+    console.log(fromdata);
+
+    profileUpdate(fromdata);
+  };
 
   return (
     <div className="intro">
@@ -35,28 +78,33 @@ const ProfileIntro = () => {
             <img src={editicon} className="svg-img" alt="" />
           </label>
         </div>
-        <img
-          className="profile-pic"
-          src="/uploads/2017-03-20-18-36-07-721.jpg"
-          alt=""
-        />
-        <h2 className="text-center">Sabuj Hasan Sarker</h2>
+        <img className="profile-pic" src={profilePic} alt="" />
+        <h2 className="text-center" style={{ textTransform: "capitalize" }}>
+          {firstName + " " + lastName}
+        </h2>
       </div>
       <div className="skills flex">
         <img src={skillIcon} className="svg-img" alt="" />
         {skilltoggle ? (
-          <form className="form">
+          <form className="form" onSubmit={onSubmit}>
             <div className="form-group">
-              <input type="text" />
+              <input
+                type="text"
+                value={fromdata.skills}
+                onChange={(e) => onchage(e)}
+                name="skills"
+              />
             </div>
             <div className="text">
-              <p onClick={(e) => setSkilltoggle(false)}>Save</p>
+              <p onClick={onSubmit} onClick={(e) => setSkilltoggle(false)}>
+                Save
+              </p>
               <p onClick={(e) => setSkilltoggle(false)}>Cancel</p>
             </div>
           </form>
         ) : (
           <Fragment>
-            <p className="text">Html,css,nodejs,reactjs,js,wp</p>
+            <p className="text">{fromdata.skills}</p>
             <img
               onClick={(e) => setSkilltoggle(true)}
               src={editicon}
@@ -66,57 +114,75 @@ const ProfileIntro = () => {
           </Fragment>
         )}
       </div>
-      <div className="company flex">
-        <img src={companyIcon} className="svg-img" alt="" />
-        {commpanytoggle ? (
-          <form className="form">
-            <div className="form-group">
-              <input type="text" />
-            </div>
-            <div className="text">
-              <p onClick={(e) => setCommpanytoggle(false)}>Save</p>
-              <p onClick={(e) => setCommpanytoggle(false)}>Cancel</p>
-            </div>
-          </form>
-        ) : (
-          <Fragment>
-            <p className="text">Esoft company</p>
-            <img
-              onClick={(e) => setCommpanytoggle(true)}
-              src={editicon}
-              className="svg-img edit-icon"
-              alt=""
-            />
-          </Fragment>
-        )}
-      </div>
-      <div className="bio flex">
-        <img src={bioIcon} className="svg-img" alt="" />
-        {biotoggle ? (
-          <form className="form">
-            <div className="form-group">
-              <textarea type="text" />
-            </div>
-            <div className="text">
-              <p onClick={(e) => setBiotoggle(false)}>Save</p>
-              <p onClick={(e) => setBiotoggle(false)}>Cancel</p>
-            </div>
-          </form>
-        ) : (
-          <Fragment>
-            <p className="text">
-              or lipsum as it is sometimes known, is dummy text used in laying
-              out print
-            </p>
-            <img
-              onClick={(e) => setBiotoggle(true)}
-              src={editicon}
-              className="svg-img edit-icon"
-              alt=""
-            />
-          </Fragment>
-        )}
-      </div>
+      {fromdata.company && (
+        <div className="company flex">
+          <img src={companyIcon} className="svg-img" alt="" />
+          {commpanytoggle ? (
+            <form className="form" onSubmit={onsubmit}>
+              <div className="form-group">
+                <input
+                  type="text"
+                  value={fromdata.company}
+                  onChange={(e) => onchage(e)}
+                  name="company"
+                />
+              </div>
+              <div className="text">
+                <p onClick={onsubmit} onClick={(e) => setCommpanytoggle(false)}>
+                  Save
+                </p>
+                <p onClick={(e) => setCommpanytoggle(false)}>Cancel</p>
+              </div>
+            </form>
+          ) : (
+            <Fragment>
+              <p className="text">{fromdata.company}</p>
+              <img
+                onClick={(e) => setCommpanytoggle(true)}
+                src={editicon}
+                className="svg-img edit-icon"
+                alt=""
+              />
+            </Fragment>
+          )}
+        </div>
+      )}
+      {bio && (
+        <div className="bio flex">
+          <img src={bioIcon} className="svg-img" alt="" />
+          {biotoggle ? (
+            <form className="form">
+              <div className="form-group">
+                <textarea
+                  type="text"
+                  value={fromdata.bio}
+                  onChange={(e) => onchage(e)}
+                  name="bio"
+                />
+              </div>
+              <div className="text">
+                <p
+                  onClick={(e) => onsubmit(e)}
+                  onClick={(e) => setBiotoggle(false)}
+                >
+                  Save
+                </p>
+                <p onClick={(e) => setBiotoggle(false)}>Cancel</p>
+              </div>
+            </form>
+          ) : (
+            <Fragment>
+              <p className="text">{fromdata.bio}</p>
+              <img
+                onClick={(e) => setBiotoggle(true)}
+                src={editicon}
+                className="svg-img edit-icon"
+                alt=""
+              />
+            </Fragment>
+          )}
+        </div>
+      )}
       <div className="education flex">
         <img src={educationIcon} className="svg-img" alt="" />
         <p className="text">
@@ -177,4 +243,12 @@ const ProfileIntro = () => {
   );
 };
 
-export default ProfileIntro;
+const mapStateToProps = (state) => ({
+  profile: state.profile.profile,
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, {
+  profileUpdate,
+  getprofilebyusername,
+})(ProfileIntro);

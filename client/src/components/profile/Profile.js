@@ -1,12 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
+import { connect } from "react-redux";
+import Spnnier from "../layouts/Spnnier";
+import { Route, Link } from "react-router-dom";
+
+import { getprofilebyusername } from "../../action/profile";
+
+import Notfound from "../layouts/Notfound";
 
 import "./Profile.css";
 import ProfileIntro from "./profileLeft/ProfileIntro";
 import ProfileNav from "./ProfileNav";
 import Posts from "../posts/Posts";
 
-const Profile = () => {
+const Profile = ({
+  profile: { profile, loading },
+  match,
+  getprofilebyusername,
+  auth: { user },
+}) => {
+  useEffect(() => {
+    getprofilebyusername(match.params.username);
+  }, [getprofilebyusername]);
+
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
+
+  if (loading) {
+    return <Spnnier />;
+  }
+
+  if (profile === null) {
+    if (user && user.username !== match.params.username) {
+      return <Route exact component={Notfound} />;
+    }
+  }
+
   return (
     <div className="profile">
       <div
@@ -50,4 +77,9 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { getprofilebyusername })(Profile);
