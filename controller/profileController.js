@@ -124,17 +124,24 @@ exports.createProfile = async (req, res) => {
       // Create Profile
       profile = new Profile(profileFileds);
       profile.save();
+      profile = await Profile.findOne({
+        user: req.user.id,
+      }).populate("user", ["firstName", "lastName", "email"]);
       return res.status(200).json(profile);
     }
 
     profileFileds.profilePic = profilePic ? profilePic : profile.profilePic;
 
     // Update Profile
-    profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { user: req.user.id },
       { $set: profileFileds },
       { new: true }
     );
+    profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["firstName", "lastName", "email"]);
+
     res.status(200).json(profile);
 
     // update user

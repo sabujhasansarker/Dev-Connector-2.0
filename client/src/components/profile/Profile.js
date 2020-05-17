@@ -22,6 +22,7 @@ import Education from "./profileRight/About/Education";
 import EducationPopup from "../forms/EducationPopup";
 import ExperiencePopup from "../forms/ExperiencePopup";
 import Experrience from "./profileRight/About/Experrience";
+import Contact from "./profileRight/About/Contact";
 
 const Profile = ({
   profile: { profile, loading },
@@ -122,6 +123,10 @@ const Profile = ({
               {window.location.pathname ===
                 `/${match.params.username}/about/experrience` && (
                 <Experrience profile={profile && profile} />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/about/contact-basic` && (
+                <Contact profile={profile && profile} />
               )}
             </div>
           </Fragment>
