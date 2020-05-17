@@ -21,6 +21,7 @@ import Education from "./profileRight/About/Education";
 // Popup
 import EducationPopup from "../forms/EducationPopup";
 import ExperiencePopup from "../forms/ExperiencePopup";
+import Experrience from "./profileRight/About/Experrience";
 
 const Profile = ({
   profile: { profile, loading },
@@ -117,6 +118,10 @@ const Profile = ({
               {window.location.pathname ===
                 `/${match.params.username}/about/education` && (
                 <Education profile={profile && profile} />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/about/experrience` && (
+                <Experrience profile={profile && profile} />
               )}
             </div>
           </Fragment>
