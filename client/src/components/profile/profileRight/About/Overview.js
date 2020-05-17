@@ -84,7 +84,7 @@ const Overview = ({
                 <img src={schoolIcon} className="svg-img" alt="" />
                 <div className="details">
                   <p className="text">
-                    Study {edu.fieldofstudy} at <b>{edu.school}</b> <br /> from
+                    Study {edu.fieldofstudy} at <b>{edu.school}</b> <br /> from{" "}
                     <Moment format="YYYY">{edu.from}</Moment>
                   </p>
                   {username === user.username && (
@@ -130,13 +130,16 @@ const Overview = ({
                 <div className="details">
                   <p className="text">
                     Work at <b>{exp.company}</b> as a {exp.title} <br /> from{" "}
-                    <Moment format="YYYY">{exp.form}</Moment>
+                    <Moment format="YYYY">{exp.from}</Moment>
                   </p>
                   {username === user.username && (
                     <div className="flex edit-delete">
                       <p
                         className="text"
-                        onClick={(e) => setPopup({ exp: true })}
+                        onClick={(e) => {
+                          getCurrent({ exp: exp });
+                          setPopup({ exp: true });
+                        }}
                       >
                         Edit
                       </p>

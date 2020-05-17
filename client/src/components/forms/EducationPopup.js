@@ -28,8 +28,8 @@ const EducationPopup = ({
   } = currentData ? currentData : "";
   const [fromData, setFromData] = useState({
     school: school ? school : "",
-    to: to ? to : "",
-    from: from ? from : "",
+    to: to ? moment(to.toString()).format("YYYY-MM-DD") : "",
+    from: from ? moment(from.toString()).format("YYYY-MM-DD") : "",
     description: description ? description : "",
     degree: degree ? degree : "",
     fieldofstudy: fieldofstudy ? fieldofstudy : "",
@@ -59,6 +59,7 @@ const EducationPopup = ({
             <div className="form-group">
               <input
                 type="text"
+                required
                 name="school"
                 value={fromData.school}
                 onChange={(e) => onchange(e)}
@@ -68,6 +69,7 @@ const EducationPopup = ({
             <div className="form-group ">
               <input
                 type="text"
+                required
                 value={fromData.degree}
                 onChange={(e) => onchange(e)}
                 name="degree"
@@ -77,6 +79,7 @@ const EducationPopup = ({
             <div className="form-group">
               <input
                 type="text"
+                required
                 value={fromData.fieldofstudy}
                 onChange={(e) => onchange(e)}
                 placeholder="Enter your field of study"
@@ -88,9 +91,8 @@ const EducationPopup = ({
               <input
                 type="date"
                 name="from"
-                value={
-                  fromData.form && moment(fromData.form).format("YYYY-MM-DD")
-                }
+                required
+                value={fromData.from}
                 onChange={(e) => onchange(e)}
               />
             </div>
@@ -111,10 +113,9 @@ const EducationPopup = ({
                 <input
                   type="date"
                   name="to"
+                  required
                   onChange={(e) => onchange(e)}
-                  value={
-                    fromData.to && moment(fromData.to).format("YYYY-MM-DD")
-                  }
+                  value={fromData.to}
                 />
               </div>
             )}
