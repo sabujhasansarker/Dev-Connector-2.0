@@ -69,7 +69,7 @@ exports.createProfile = async (req, res) => {
     status,
     skills,
     bio,
-    compnay,
+    company,
     birthday,
     website,
     githubusername,
@@ -89,7 +89,7 @@ exports.createProfile = async (req, res) => {
   if (status) profileFileds.status = status;
   if (bio) profileFileds.bio = bio;
   // if (website) profileFileds.website = website;
-  if (compnay) profileFileds.compnay = compnay;
+  if (company) profileFileds.company = company;
   if (birthday) profileFileds.birthday = birthday;
   if (githubusername) profileFileds.githubusername = githubusername;
   if (address) profileFileds.address = address;

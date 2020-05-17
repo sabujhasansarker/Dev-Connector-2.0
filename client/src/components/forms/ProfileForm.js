@@ -25,7 +25,7 @@ const ProfileForm = ({
     status: profile && profile.status ? profile.status : "",
     skills: profile && profile.skills ? profile.skills.join(",") : "",
     bio: profile && profile.bio ? profile.bio : "",
-    compnay: profile && profile.compnay ? profile.compnay : "",
+    company: profile && profile.company ? profile.company : "",
     birthday: profile && profile.birthday ? profile.birthday : "",
     website: profile && profile.website ? profile.website : "",
     githubusername:
@@ -60,7 +60,7 @@ const ProfileForm = ({
     status,
     skills,
     bio,
-    compnay,
+    company,
     website,
     githubusername,
     address,
@@ -126,8 +126,8 @@ const ProfileForm = ({
             <input
               type="text"
               placeholder="Company"
-              name="compnay"
-              value={compnay}
+              name="company"
+              value={company}
               onChange={(e) => onChange(e)}
             />
           </div>

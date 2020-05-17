@@ -72,31 +72,34 @@ const Contact = ({ profile, user: { username }, profileUpdate }) => {
         <div className="single-items  flex">
           {website && <img src={webIcon} className="svg-img" alt="" />}
           {webtoggle ? (
-            <form className="form" onSubmit={onsubmite}>
-              <div className="form-group">
-                <input
-                  type="url"
-                  value={fromdata.website}
-                  placeholder="Enter your web url"
-                  name="website"
-                  onChange={(e) => onchange(e)}
-                />
-              </div>
-              <div className="edit-delete flex">
-                <p
-                  className="text"
-                  onClick={(e) => {
-                    onsubmite(e);
-                    setWebtoggle(false);
-                  }}
-                >
-                  Save
-                </p>
-                <p className="text" onClick={(e) => setWebtoggle(false)}>
-                  Cancel
-                </p>
-              </div>
-            </form>
+            <Fragment>
+              {!website && <img src={webIcon} className="svg-img" alt="" />}
+              <form className="form" onSubmit={onsubmite}>
+                <div className="form-group">
+                  <input
+                    type="url"
+                    value={fromdata.website}
+                    placeholder="Enter your web url"
+                    name="website"
+                    onChange={(e) => onchange(e)}
+                  />
+                </div>
+                <div className="edit-delete flex">
+                  <p
+                    className="text"
+                    onClick={(e) => {
+                      onsubmite(e);
+                      setWebtoggle(false);
+                    }}
+                  >
+                    Save
+                  </p>
+                  <p className="text" onClick={(e) => setWebtoggle(false)}>
+                    Cancel
+                  </p>
+                </div>
+              </form>
+            </Fragment>
           ) : (
             website && (
               <Fragment>
