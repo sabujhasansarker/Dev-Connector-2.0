@@ -12,6 +12,7 @@ import "./Profile.css";
 import ProfileIntro from "./profileLeft/ProfileIntro";
 import ProfileNav from "./ProfileNav";
 import Posts from "../posts/Posts";
+import About from "./profileRight/About/About";
 
 const Profile = ({
   profile: { profile, loading },
@@ -79,7 +80,12 @@ const Profile = ({
       >
         <ProfileNav username={match.params.username} />
         <div className="profile-container">
-          <Posts />
+          {window.location.pathname === `/${match.params.username}` && (
+            <Posts />
+          )}
+          {window.location.pathname === `/${match.params.username}/about` && (
+            <About profile={profile} />
+          )}
         </div>
       </div>
     </div>

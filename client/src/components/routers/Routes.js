@@ -41,12 +41,7 @@ const Routes = ({ auth: { loading, user }, profile }) => {
           path="/:username/create-profile"
           component={UpdateInfo}
         />
-        <PrivetRouter
-          exact
-          path="/:username/about"
-          component={About}
-          username={"profile && profile.username"}
-        />
+        <PrivetRouter exact path="/:username/about" component={Profile} />
         <PrivetRouter
           exact
           path="/:username/about/education"
