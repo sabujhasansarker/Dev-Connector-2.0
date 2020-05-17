@@ -9,13 +9,7 @@ import addIcon from "../../../../icons/add.svg";
 import { profileUpdate, getrepos } from "../../../../action/profile";
 import { connect } from "react-redux";
 
-const Github = ({
-  profile,
-  username: { username },
-  profileUpdate,
-  repos,
-  getrepos,
-}) => {
+const Github = ({ profile, profileUpdate, repos, user, getrepos }) => {
   useEffect(() => {
     getrepos(profile && profile.githubusername);
   }, [getrepos]);
@@ -42,7 +36,6 @@ const Github = ({
     profileUpdate(fromdata);
     getrepos(fromdata && fromdata.githubusername);
   };
-  console.log(repos);
   return (
     <Fragment>
       <AboutNav navTitle="Github" username={profile && profile.username} />
@@ -95,12 +88,14 @@ const Github = ({
                 <p className="text">
                   http://github.com/{fromdata.githubusername}
                 </p>
-                <img
-                  src={editIcon}
-                  onClick={(e) => setGittoggle(true)}
-                  className="svg-img edit-icon"
-                  alt=""
-                />
+                {profile.username === user.username && (
+                  <img
+                    src={editIcon}
+                    onClick={(e) => setGittoggle(true)}
+                    className="svg-img edit-icon"
+                    alt=""
+                  />
+                )}
               </Fragment>
             )
           )}
@@ -141,6 +136,7 @@ const Github = ({
 
 const mapStateToProps = (state) => ({
   repos: state.profile.repos,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, { profileUpdate, getrepos })(Github);

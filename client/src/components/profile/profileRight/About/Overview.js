@@ -65,7 +65,7 @@ const Overview = ({
     <div className="about-right">
       {/*  Single */}
       <div className="single">
-        {username && username === user && user.username && (
+        {username === user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -116,7 +116,7 @@ const Overview = ({
       </div>
       {/*  Single */}
       <div className="single">
-        {username && username === user && user.username && (
+        {username === user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -166,40 +166,42 @@ const Overview = ({
         <hr />
       </div>
       {address && (
-        <div className="single-items flex">
-          <img src={addressIcon} className="svg-img" alt="" />
-          {addresstoggle ? (
-            <form className="form" onSubmit={onsubmite}>
-              <div className="form-group">
-                <input
-                  type="text"
-                  name="address"
-                  onChange={(e) => onchange(e)}
-                  value={fromdata.address}
-                />
-              </div>
-              <div className=" flex text">
-                <input type="submit" value="Save" />
-                <p onClick={(e) => setAddresstoggle(false)}>Cancel</p>
-              </div>
-            </form>
-          ) : (
-            <Fragment>
-              <p className="text">Live in {fromdata.address}</p>
-              {username === user.username && (
-                <img
-                  src={editIcon}
-                  onClick={(e) => setAddresstoggle(true)}
-                  className="svg-img edit-icon"
-                  alt=""
-                />
-              )}
-            </Fragment>
-          )}
-        </div>
+        <Fragment>
+          <div className="single-items flex">
+            <img src={addressIcon} className="svg-img" alt="" />
+            {addresstoggle ? (
+              <form className="form" onSubmit={onsubmite}>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="address"
+                    onChange={(e) => onchange(e)}
+                    value={fromdata.address}
+                  />
+                </div>
+                <div className=" flex text">
+                  <input type="submit" value="Save" />
+                  <p onClick={(e) => setAddresstoggle(false)}>Cancel</p>
+                </div>
+              </form>
+            ) : (
+              <Fragment>
+                <p className="text">Live in {fromdata.address}</p>
+                {username === user.username && (
+                  <img
+                    src={editIcon}
+                    onClick={(e) => setAddresstoggle(true)}
+                    className="svg-img edit-icon"
+                    alt=""
+                  />
+                )}
+              </Fragment>
+            )}
+          </div>{" "}
+          <hr />
+        </Fragment>
       )}
 
-      <hr />
       <div className="single-items">
         <div className="social-icons">
           <ul className="flex">

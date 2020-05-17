@@ -43,9 +43,7 @@ const Profile = ({
   }
 
   if (!profile) {
-    console.log("popo");
     if (user && user.username !== match.params.username) {
-      console.log("LKjlkfj");
       return <Route exact component={Notfound} />;
     }
   }
@@ -121,20 +119,9 @@ const Profile = ({
                 <Github profile={profile && profile} username={user} />
               )}
               {window.location.pathname ===
-                `/${match.params.username}/update-profile` && (
-                <ProfileForm
-                  profile={profile && profile}
-                  username={match.params.username}
-                />
+                `/${match.params.username}/profile-setting` && (
+                <ProfileForm profile={profile && profile} user={user && user} />
               )}
-              {window.location.pathname ===
-                `/${match.params.username}/create-profile` &&
-                !profile && (
-                  <ProfileForm
-                    profile={profile && profile}
-                    username={match.params.username}
-                  />
-                )}
             </div>
           </Fragment>
         )}

@@ -23,7 +23,7 @@ const ProfileNav = ({ user, username }) => {
       {user && user.username === username && username && (
         <Fragment>
           <li>
-            <Link to={`/${username && username}/update-profile`}>
+            <Link to={`/${username && username}/profile-setting`}>
               Update Info
             </Link>
           </li>

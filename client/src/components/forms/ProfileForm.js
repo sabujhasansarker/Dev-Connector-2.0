@@ -8,10 +8,17 @@ import twtter from "../../icons/twitter.svg";
 import utube from "../../icons/youtube.svg";
 
 // Function
-import { profileUpdate } from "../../action/profile";
+import { profileUpdate, clearProfile } from "../../action/profile";
 import { setAlert } from "../../action/alert";
+import { Redirect } from "react-router-dom";
 
-const ProfileForm = ({ profile, profileUpdate, setAlert }) => {
+const ProfileForm = ({
+  profile,
+  profileUpdate,
+  setAlert,
+  user,
+  clearProfile,
+}) => {
   const [toggle, setToggle] = useState(false);
 
   const [fromData, setFromData] = useState({
@@ -45,8 +52,10 @@ const ProfileForm = ({ profile, profileUpdate, setAlert }) => {
       profile && profile.social && profile.social.profile
         ? profile.social.profile
         : "",
+    username: profile && profile.username,
   });
-
+  // redirect
+  const [redirect, setRedirect] = useState(false);
   const {
     status,
     skills,
@@ -69,12 +78,20 @@ const ProfileForm = ({ profile, profileUpdate, setAlert }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     profileUpdate(fromData);
+    clearProfile();
     if (skills && status) {
+      setRedirect(true);
       if (profile) {
         setAlert("Update Successfully", "success");
       } else setAlert("Add Profile Successfully", "success");
     }
   };
+  if (redirect) {
+    return <Redirect to={`/${profile.username}`} />;
+  }
+  if (profile.username !== user.username) {
+    return <Redirect to={`/${profile.username}`} />;
+  }
 
   return (
     <div className="from-container profile">
@@ -237,4 +254,6 @@ const ProfileForm = ({ profile, profileUpdate, setAlert }) => {
   );
 };
 
-export default connect(null, { setAlert, profileUpdate })(ProfileForm);
+export default connect(null, { setAlert, profileUpdate, clearProfile })(
+  ProfileForm
+);
