@@ -12,29 +12,32 @@ import "./Profile.css";
 import ProfileIntro from "./profileLeft/ProfileIntro";
 import ProfileNav from "./ProfileNav";
 import Posts from "../posts/Posts";
+
+// Page
 import About from "./profileRight/About/About";
+import ProfileForm from "../forms/ProfileForm";
 
 const Profile = ({
   profile: { profile, loading },
   match,
   getprofilebyusername,
-  auth: { user },
+  auth,
 }) => {
   useEffect(() => {
     getprofilebyusername(match.params.username);
   }, [getprofilebyusername]);
 
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
-
+  const { user } = auth && auth;
   if (loading) {
     return <Spnnier />;
   }
 
-  if (user && !user.profile) {
-    if (!profile) {
-      return <Redirect to={`/${user && user.username}/create-profile`} />;
-    }
-  }
+  // if (user && !user.profile) {
+  //   if (!profile) {
+  //     return <Redirect to={`/${user && user.username}/create-profile`} />;
+  //   }
+  // }
 
   if (profile === null) {
     if (user && user.username !== match.params.username) {
@@ -50,9 +53,7 @@ const Profile = ({
         }`}
         style={!intro ? { width: "0px", padding: "0px" } : {}}
       >
-        {intro && (
-          <ProfileIntro profile={profile} username={match.params.username} />
-        )}
+        {intro && <ProfileIntro profile={profile} user={user} />}
       </div>
       {window.innerWidth < 769 && (
         <h4
@@ -78,15 +79,24 @@ const Profile = ({
             : {}
         }
       >
-        <ProfileNav username={match.params.username} />
-        <div className="profile-container">
-          {window.location.pathname === `/${match.params.username}` && (
-            <Posts />
-          )}
-          {window.location.pathname === `/${match.params.username}/about` && (
-            <About profile={profile} />
-          )}
-        </div>
+        {user && !user.profile && !profile ? (
+          <Fragment>
+            <ProfileForm />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <ProfileNav username={match.params.username} />
+            <div className="profile-container">
+              {window.location.pathname === `/${match.params.username}` && (
+                <Posts />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/about` && (
+                <About profile={profile && profile} />
+              )}
+            </div>
+          </Fragment>
+        )}
       </div>
     </div>
   );

@@ -576,6 +576,8 @@ header .left ul li img {
   border: none;
   cursor: pointer;
   font-weight: 300;
+  padding: 0 !important;
+  margin-right: 10px !important;
 }
 
 /*# sourceMappingURL=Post.css.map */

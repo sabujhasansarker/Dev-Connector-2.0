@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 import AboutNav from "./AboutNav";
 import Overview from "./Overview";
 
-const About = ({ profile: { profile } }) => {
+const About = ({ profile }) => {
   return (
     <Fragment>
       <AboutNav navTitle="OverView" username={profile && profile.username} />

@@ -21,7 +21,7 @@ import web from "../../../icons/web.svg";
 import { profileUpdate } from "../../../action/profile";
 import Moment from "react-moment";
 
-const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
+const ProfileIntro = ({ profile, user, profileUpdate }) => {
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
@@ -38,14 +38,13 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
     website,
     company,
     githubusername,
-    user,
   } = profile ? profile : "";
 
-  let { firstName, lastName } = user ? user : "";
+  let { firstName, lastName } = profile ? profile.user : "";
 
-  firstName = firstName ? firstName : currentUser && currentUser.firstName;
-  lastName = lastName ? lastName : currentUser && currentUser.lastName;
-  profilePic = profilePic ? profilePic : currentUser && currentUser.profilePic;
+  firstName = firstName ? firstName : user && user.firstName;
+  lastName = lastName ? lastName : user && user.lastName;
+  profilePic = profilePic ? profilePic : user && user.profilePic;
 
   // update
   const [fromdata, setFromdata] = useState({
@@ -78,7 +77,7 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
             className="file-input__input"
           />
           <label className="file-input__label" htmlFor="file-input">
-            {profile && profile.username === currentUser.username && (
+            {profile && profile.username === user.username && (
               <img src={editicon} className="svg-img" alt="" />
             )}
           </label>
@@ -111,7 +110,7 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
           ) : (
             <Fragment>
               <p className="text">{fromdata.skills}</p>
-              {profile && profile.username === currentUser.username && (
+              {profile && profile.username === user.username && (
                 <img
                   src={editicon}
                   onClick={(e) => setSkilltoggle(true)}
@@ -137,9 +136,11 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
                 />
               </div>
               <div className="text">
-                <p onClick={onSubmit} onClick={(e) => setCommpanytoggle(false)}>
-                  Save
-                </p>
+                <input
+                  type="submit"
+                  value="Save"
+                  onClick={(e) => setCommpanytoggle(false)}
+                />
                 <p onClick={(e) => setCommpanytoggle(false)}>Cancel</p>
               </div>
             </form>
@@ -147,7 +148,7 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
             <Fragment>
               <p className="text">{fromdata.company}</p>
 
-              {profile && profile.username === currentUser.username && (
+              {profile && profile.username === user.username && (
                 <img
                   src={editicon}
                   onClick={(e) => setCommpanytoggle(true)}
@@ -181,7 +182,7 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
             <Fragment>
               <p className="text">{fromdata.bio}</p>
 
-              {profile && profile.username === currentUser.username && (
+              {profile && profile.username === user.username && (
                 <img
                   src={editicon}
                   onClick={(e) => setBiotoggle(true)}
@@ -280,10 +281,6 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentUser: state.auth.user,
-});
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   profileUpdate,
 })(ProfileIntro);
