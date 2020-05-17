@@ -38,3 +38,6 @@ export const REMOVE_CURRENT = "REMOVE_CURRENT";
 export const UPDATE_EDU = "UPDATE_EDU";
 export const ADD_EDU = "ADD_EDU";
 export const DELETE_EDU = "DELETE_EDU";
+
+// Github
+export const GET_REPOS = "GET_REPOS";

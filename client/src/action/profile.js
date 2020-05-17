@@ -11,6 +11,7 @@ import {
   ADD_EDU,
   DELETE_EDU,
   CLARE_PROFILE,
+  GET_REPOS,
 } from "./Type";
 
 import { setAlert } from "./alert";
@@ -93,17 +94,14 @@ export const addEducaion = (fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
-  console.log(body);
   try {
     const res = await axios.put(`/profile/education`, body, config);
     dispatch({
       type: ADD_EDU,
       payload: res.data,
     });
-    console.log(res.data);
     dispatch(setAlert("Add Education Successfully", "success"));
   } catch (err) {
-    console.log(err.response);
     err.response.data.errors &&
       err.response.data.errors.map((e) => {
         dispatch(setAlert(e.msg, "danger"));
@@ -154,10 +152,10 @@ export const editExperience = (id, fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
-  console.log(body);
+
   try {
     const res = await axios.put(`/profile/experience/${id}`, body, config);
-    console.log(res.data);
+
     dispatch({
       type: UPDATE_EDU,
       payload: res.data,
@@ -187,4 +185,20 @@ export const clearProfile = () => (dispatch) => {
   dispatch({
     type: CLARE_PROFILE,
   });
+};
+
+// GET_REPOS
+export const getrepos = (username) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/profile/github/${username}`);
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data,
+    });
+    dispatch(getprofilebyusername());
+  } catch (err) {
+    dispatch({
+      type: GET_PROFILE_ERROR,
+    });
+  }
 };

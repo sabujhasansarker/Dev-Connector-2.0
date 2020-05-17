@@ -10,11 +10,13 @@ import {
   DELETE_EDU,
   ADD_EDU,
   CLARE_PROFILE,
+  GET_REPOS,
 } from "../action/Type";
 
 const inisialState = {
   profile: null,
   profiles: null,
+  repos: [],
   loading: true,
   current: null,
   error: null,
@@ -55,7 +57,13 @@ export default (state = inisialState, action) => {
         profiles: null,
         loading: true,
         current: null,
+        repos: null,
         error: null,
+      };
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: payload,
       };
     default:
       return state;
