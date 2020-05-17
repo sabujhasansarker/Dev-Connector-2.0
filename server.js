@@ -1,5 +1,5 @@
 const app = require("express")();
-
+const path = require("path");
 // Middleares
 const middleares = require("./middleware/middleware");
 middleares(app);
@@ -16,7 +16,7 @@ connectDB();
 if (process.env.NODE_ENV === "production") {
   // set static folder
   app.use(express.static("client/build"));
-  app.use("*", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
