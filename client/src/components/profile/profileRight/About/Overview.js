@@ -1,8 +1,6 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 import Moment from "react-moment";
-
-import EducationPopup from "../../../forms/EducationPopup";
 
 import editIcon from "../../../../icons/edit.svg";
 import addIcon from "../../../../icons/add.svg";
@@ -25,6 +23,7 @@ import {
   getCurrent,
   deleteEducaion,
   profileUpdate,
+  deleteExperience,
 } from "../../../../action/profile";
 
 const Overview = ({
@@ -32,8 +31,8 @@ const Overview = ({
   setPopup,
   getCurrent,
   deleteEducaion,
+  deleteExperience,
   user,
-  popup,
   profileUpdate,
 }) => {
   // Get profile
@@ -98,7 +97,12 @@ const Overview = ({
                       >
                         Edit
                       </p>
-                      <p className="text">Delete</p>
+                      <p
+                        className="text"
+                        onClick={(e) => deleteEducaion(edu._id)}
+                      >
+                        Delete
+                      </p>
                     </div>
                   )}
                 </div>
@@ -143,7 +147,12 @@ const Overview = ({
                       >
                         Edit
                       </p>
-                      <p className="text">Delete</p>
+                      <p
+                        className="text"
+                        onClick={(e) => deleteExperience(exp._id)}
+                      >
+                        Delete
+                      </p>
                     </div>
                   )}
                 </div>
@@ -261,4 +270,5 @@ export default connect(mapStateToProps, {
   setPopup,
   deleteEducaion,
   getCurrent,
+  deleteExperience,
 })(Overview);

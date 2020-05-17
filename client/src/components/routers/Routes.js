@@ -39,29 +39,33 @@ const Routes = ({ auth: { loading, user }, profile }) => {
         <PrivetRouter
           exact
           path="/:username/create-profile"
-          component={UpdateInfo}
+          component={Profile}
         />
         <PrivetRouter exact path="/:username/about" component={Profile} />
         <PrivetRouter
           exact
           path="/:username/about/education"
-          component={Education}
+          component={Profile}
         />
         <PrivetRouter
           exact
           path="/:username/about/contact-basic"
-          component={Contact}
+          component={Profile}
         />
-        <PrivetRouter exact path="/:username/about/github" component={Github} />
+        <PrivetRouter
+          exact
+          path="/:username/about/github"
+          component={Profile}
+        />
         <PrivetRouter
           exact
           path="/:username/about/experrience"
-          component={Experrience}
+          component={Profile}
         />
         <PrivetRouter
           exact
           path="/:username/update-profile"
-          component={UpdateInfo}
+          component={Profile}
         />
 
         <Route exact component={Notfound} />

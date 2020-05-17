@@ -16,6 +16,9 @@ import Posts from "../posts/Posts";
 // Page
 import About from "./profileRight/About/About";
 import ProfileForm from "../forms/ProfileForm";
+import Education from "./profileRight/About/Education";
+
+// Popup
 import EducationPopup from "../forms/EducationPopup";
 import ExperiencePopup from "../forms/ExperiencePopup";
 
@@ -80,18 +83,40 @@ const Profile = ({
       >
         {user && !user.profile && !profile ? (
           <Fragment>
-            <ProfileForm />
+            <ProfileForm
+              profile={profile && profile}
+              username={match.params.username}
+            />
           </Fragment>
         ) : (
           <Fragment>
             <ProfileNav username={match.params.username} />
             <div className="profile-container">
+              {window.location.pathname ===
+                `/${match.params.username}/create-profile` && (
+                <ProfileForm
+                  profile={profile && profile}
+                  username={match.params.username}
+                />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/update-profile` && (
+                <ProfileForm
+                  profile={profile && profile}
+                  username={match.params.username}
+                />
+              )}
               {window.location.pathname === `/${match.params.username}` && (
                 <Posts />
               )}
               {window.location.pathname ===
                 `/${match.params.username}/about` && (
                 <About profile={profile && profile} />
+              )}
+
+              {window.location.pathname ===
+                `/${match.params.username}/about/education` && (
+                <Education profile={profile && profile} />
               )}
             </div>
           </Fragment>

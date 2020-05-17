@@ -1,86 +1,87 @@
 import React, { useState, Fragment } from "react";
-
-import EducationPopup from "../../../forms/EducationPopup";
+import { connect } from "react-redux";
+import Moment from "react-moment";
 
 import addIcon from "../../../../icons/add.svg";
 import schoolIcon from "../../../../icons/school.svg";
 
-import ProfileIntro from "../../profileLeft/ProfileIntro";
-import ProfileNav from "../../ProfileNav";
 import AboutNav from "./AboutNav";
 
-const Education = () => {
-  const [popup, setPopup] = useState(false);
-  const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
+// funtion
+import { setPopup } from "../../../../action/popup";
+import { getCurrent, deleteEducaion } from "../../../../action/profile";
+
+const Education = ({ user, profile, getCurrent, deleteEducaion, setPopup }) => {
+  let { education, username } = profile ? profile : "";
 
   return (
-    <div className="profile">
-      {popup && <EducationPopup />}
-      <div
-        className={`left ${
-          window.innerWidth < 769 ? intro && "intro_open" : ""
-        }`}
-        style={!intro ? { width: "0px", padding: "0px" } : {}}
-      >
-        {intro && <ProfileIntro />}
-      </div>
-      {window.innerWidth < 769 && (
-        <h4
-          style={intro ? { marginLeft: "0px", marginLeft: "50%" } : {}}
-          className="intro_toggle"
-          onClick={(e) => setIntro(!intro)}
-        >
-          {intro ? "<" : ">"}
-        </h4>
-      )}
-      <div
-        className="right"
-        style={
-          window.innerWidth < 769
-            ? !intro
-              ? { width: "100%", marginLeft: "0px" }
-              : {
-                  position: "relative",
-                  zIndex: "-1",
-                  width: "100%",
-                  marginLeft: "0px",
-                }
-            : {}
-        }
-      >
-        <ProfileNav />
-        <AboutNav navTitle="Education" />
-        <div className="about-right">
-          <div className="single">
+    <Fragment>
+      <AboutNav navTitle="Education" username={profile && profile.username} />
+      <div className="about-right">
+        <div className="single">
+          {username === user.username && (
             <div className="add flex">
               <img
                 src={addIcon}
                 className="svg-img"
-                onClick={(e) => setPopup(!popup)}
+                onClick={(e) => setPopup({ edu: true })}
                 alt=""
               />
               <h3>Add Educaion</h3>
             </div>
-            <div className="single-items flex">
-              <img src={schoolIcon} className="svg-img" alt="" />
-              <div className="details">
-                <p className="text">
-                  Study management at <b>oxford university</b> <br /> from 2015
-                </p>
-                <div className="flex edit-delete">
-                  <p className="text" onClick={(e) => setPopup(!popup)}>
-                    Edit
+          )}
+          {education.map((edu) => (
+            <Fragment key={edu._id}>
+              <div className="single-items flex">
+                <img src={schoolIcon} className="svg-img" alt="" />
+                <div className="details">
+                  <p className="text">
+                    Study {edu.fieldofstudy} at <b>{edu.school}</b> <br /> from{" "}
+                    <Moment format="YYYY">{edu.from}</Moment>
+                    {edu.to && (
+                      <Fragment>
+                        {" "}
+                        to <Moment format="YYYY">{edu.to}</Moment>
+                      </Fragment>
+                    )}
                   </p>
-                  <p className="text">Delete</p>
+                  {username === user.username && (
+                    <div className="flex edit-delete">
+                      <p
+                        className="text"
+                        onClick={(e) => {
+                          setPopup({ edu: true });
+                          getCurrent({ edu: edu });
+                        }}
+                      >
+                        Edit
+                      </p>
+                      <p
+                        className="text"
+                        onClick={(e) => deleteEducaion(edu._id)}
+                      >
+                        Delete
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-            <hr />
-          </div>
+            </Fragment>
+          ))}
+
+          <hr />
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 
-export default Education;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, {
+  setPopup,
+  deleteEducaion,
+  getCurrent,
+})(Education);

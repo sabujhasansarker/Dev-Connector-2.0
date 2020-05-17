@@ -5,9 +5,17 @@ import inst from "../../icons/inst.svg";
 import lndin from "../../icons/linkdin.svg";
 import twtter from "../../icons/twitter.svg";
 import utube from "../../icons/youtube.svg";
+import { Redirect } from "react-router-dom";
 
-const ProfileForm = ({ name }) => {
+const ProfileForm = ({ username, profile }) => {
   const [toggle, setToggle] = useState(false);
+
+  if (profile) {
+    return <Redirect to={`/${username}/update-profile`} />;
+  }
+  if (!profile) {
+    return <Redirect to={`/${username}/create-profile`} />;
+  }
 
   return (
     <div className="from-container profile">
@@ -81,8 +89,12 @@ const ProfileForm = ({ name }) => {
           )}
 
           <div className="form-group float-right d-flex">
-            <input type="button" value={name} className="btn btn-save " />
-            <input type="button" value="Cancel" className="btn " />
+            <input
+              type="submit"
+              value={profile ? "Update" : "Add"}
+              className="btn btn-save "
+            />
+            <input type="submit" value="Cancel" className="btn " />
           </div>
         </form>
       </div>

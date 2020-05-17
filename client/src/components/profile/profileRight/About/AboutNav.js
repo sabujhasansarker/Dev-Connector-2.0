@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AboutNav = ({ navTitle }) => {
+const AboutNav = ({ navTitle, username }) => {
   return (
     <div className="about-body">
       <div className="profile-header">
@@ -12,21 +12,21 @@ const AboutNav = ({ navTitle }) => {
         <div className="right-nav">
           <ul>
             <li>
-              <Link to="/profile/about">Overview</Link>
+              <Link to={`/${username}/about`}>Overview</Link>
             </li>
             <li>
-              <Link to="/profile/about/education">Education</Link>
+              <Link to={`/${username}/about/education`}>Education</Link>
             </li>
             <li>
-              <Link to="/profile/about/experrience">Experrience</Link>
+              <Link to={`/${username}/about/experrience`}>Experrience</Link>
             </li>
             <li>
-              <Link to="/profile/about/contact-basic">
+              <Link to={`/${username}/about/contact-basic`}>
                 Contact and basic info
               </Link>
             </li>
             <li>
-              <Link to="/profile/about/github">Github</Link>
+              <Link to={`/${username}/about/github`}>Github</Link>
             </li>
           </ul>
         </div>
