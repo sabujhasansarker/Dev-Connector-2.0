@@ -13,13 +13,6 @@ import UserFrom from "../forms/UserForm";
 
 // Profile
 import Profile from "../profile/Profile";
-import About from "../profile/profileRight/About/About";
-import UpdateInfo from "../profile/profileRight/UpdateInfo";
-
-import Education from "../profile/profileRight/About/Education";
-import Experrience from "../profile/profileRight/About/Experrience";
-import Contact from "../profile/profileRight/About/Contact";
-import Github from "../profile/profileRight/About/Github";
 
 const Routes = ({ auth: { loading, user }, profile }) => {
   return (

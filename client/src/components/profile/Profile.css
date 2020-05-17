@@ -10,13 +10,18 @@
 
 .profile .left {
   background: whitesmoke;
-  height: 100vh;
   padding: 20px;
   width: 22%;
   position: fixed;
   z-index: 5;
   -webkit-transition: 0.5s all;
   transition: 0.5s all;
+  overflow: auto;
+  height: calc(100% - 100px);
+}
+
+.profile .left::-webkit-scrollbar {
+  width: 0px;
 }
 
 .profile .left .svg-img {
@@ -70,6 +75,7 @@
 
 .profile .left .text {
   font-weight: 300;
+  word-break: break-all;
 }
 
 .profile .left .flex {
@@ -122,7 +128,7 @@
 
 .profile .right {
   margin-left: 24%;
-  width: 76%;
+  width: 75%;
 }
 
 .profile .right .container.post-container {
@@ -179,7 +185,12 @@
   background: #2c2c2c;
   padding: 21px;
   position: fixed;
-  min-height: 100%;
+  height: calc(100% - 230px);
+  overflow: auto;
+}
+
+.right-nav::-webkit-scrollbar {
+  width: 0px;
 }
 
 .right-nav li {

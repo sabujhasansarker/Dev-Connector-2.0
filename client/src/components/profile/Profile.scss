@@ -11,12 +11,16 @@
   }
   .left {
     background: whitesmoke;
-    height: 100vh;
     padding: 20px;
     width: 22%;
     position: fixed;
     z-index: 5;
     transition: 0.5s all;
+    overflow: auto;
+    height: calc(100% - 100px);
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
     .svg-img {
       margin: 0px 10px;
     }
@@ -54,6 +58,7 @@
     }
     .text {
       font-weight: 300;
+      word-break: break-all;
     }
     .flex {
       margin: 15px 0px;
@@ -94,7 +99,7 @@
   }
   .right {
     margin-left: 24%;
-    width: 76%;
+    width: 75%;
     .container.post-container {
       width: 98%;
     }
@@ -141,7 +146,11 @@
   background: #2c2c2c;
   padding: 21px;
   position: fixed;
-  min-height: 100%;
+  height: calc(100% - 230px);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
   li {
     padding: 20px;
     a {

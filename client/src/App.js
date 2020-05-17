@@ -28,14 +28,13 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Navbar />
-          <Alert />
-          <Switch>
-            <PrivetRouter exact path="/" component={Posts} />
-            <Route component={Routes} />
-          </Switch>
-          {/* <PrivetRouter exact path="/:username" component={Profile} />
+        <Alert />
+        <Switch>
+          <PrivetRouter exact path="/" component={Posts} />
+          <Route component={Routes} />
+        </Switch>
+        {/* <PrivetRouter exact path="/:username" component={Profile} />
           <PrivetRouter exact path="/:username/about" component={About} /> */}
-        
       </Router>
     </Provider>
   );
