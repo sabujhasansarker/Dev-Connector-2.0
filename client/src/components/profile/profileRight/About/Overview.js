@@ -41,7 +41,7 @@ const Overview = ({
     education,
     address,
     experience,
-    socials,
+    social,
     website,
     username,
     githubusername,
@@ -201,40 +201,40 @@ const Overview = ({
       <div className="single-items">
         <div className="social-icons">
           <ul className="flex">
-            {socials && socials.facebook && (
+            {social && social.facebook && (
               <li>
-                <a href={socials.facebook} target="_blank">
+                <a href={social.facebook} target="_blank">
                   <img src={fb} className="svg-img" alt="" />
                 </a>
               </li>
             )}
-            {socials && socials.instagram && (
+            {social && social.instagram && (
               <li>
-                <a href={socials.instagram} target="_blank">
+                <a href={social.instagram} target="_blank">
                   <img src={inst} className="svg-img" alt="" />
                 </a>
               </li>
             )}
 
-            {socials && socials.linkedin && (
+            {social && social.linkedin && (
               <li>
-                <a href={socials.linkedin} target="_blank">
+                <a href={social.linkedin} target="_blank">
                   <img src={lndin} className="svg-img" alt="" />
                 </a>
               </li>
             )}
 
-            {socials && socials.twitter && (
+            {social && social.twitter && (
               <li>
-                <a href={socials.twitter} target="_blank">
+                <a href={social.twitter} target="_blank">
                   <img src={twtter} className="svg-img" alt="" />
                 </a>
               </li>
             )}
 
-            {socials && socials.youtube && (
+            {social && social.youtube && (
               <li>
-                <a href={socials.youtube} target="_blank">
+                <a href={social.youtube} target="_blank">
                   <img src={utube} className="svg-img" alt="" />
                 </a>
               </li>
