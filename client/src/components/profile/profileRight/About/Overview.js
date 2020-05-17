@@ -38,9 +38,15 @@ const Overview = ({
 }) => {
   // Get profile
 
-  let { education, address, experience, social, website, username } = profile
-    ? profile
-    : "";
+  let {
+    education,
+    address,
+    experience,
+    socials,
+    website,
+    username,
+    githubusername,
+  } = profile ? profile : "";
 
   const [addresstoggle, setAddresstoggle] = useState(false);
 
@@ -58,7 +64,6 @@ const Overview = ({
   };
   return (
     <div className="about-right">
-      {/* {popup && <EducationPopup />} */}
       {/*  Single */}
       <div className="single">
         {username === user.username && (
@@ -66,7 +71,7 @@ const Overview = ({
             <img
               src={addIcon}
               className="svg-img"
-              onClick={(e) => setPopup({ exp: true })}
+              onClick={(e) => setPopup({ edu: true })}
               alt=""
             />
             <h3>Add Educaion</h3>
@@ -84,7 +89,13 @@ const Overview = ({
                   </p>
                   {username === user.username && (
                     <div className="flex edit-delete">
-                      <p className="text" onClick={(e) => setPopup(!popup)}>
+                      <p
+                        className="text"
+                        onClick={(e) => {
+                          setPopup({ edu: true });
+                          getCurrent({ edu: edu });
+                        }}
+                      >
                         Edit
                       </p>
                       <p className="text">Delete</p>
@@ -123,7 +134,10 @@ const Overview = ({
                   </p>
                   {username === user.username && (
                     <div className="flex edit-delete">
-                      <p className="text" onClick={(e) => setPopup(!popup)}>
+                      <p
+                        className="text"
+                        onClick={(e) => setPopup({ exp: true })}
+                      >
                         Edit
                       </p>
                       <p className="text">Delete</p>
@@ -175,46 +189,58 @@ const Overview = ({
       <div className="single-items">
         <div className="social-icons">
           <ul className="flex">
-            <li>
-              <a href="" target="_blank">
-                <img src={fb} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={inst} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={lndin} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={twtter} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={utube} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={fb} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={git} className="svg-img" alt="" />
-              </a>
-            </li>
-            <li>
-              <a href="" target="_blank">
-                <img src={web} className="svg-img" alt="" />
-              </a>
-            </li>
+            {socials && socials.facebook && (
+              <li>
+                <a href={socials.facebook} target="_blank">
+                  <img src={fb} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+            {socials && socials.instagram && (
+              <li>
+                <a href={socials.instagram} target="_blank">
+                  <img src={inst} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+
+            {socials && socials.linkedin && (
+              <li>
+                <a href={socials.linkedin} target="_blank">
+                  <img src={lndin} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+
+            {socials && socials.twitter && (
+              <li>
+                <a href={socials.twitter} target="_blank">
+                  <img src={twtter} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+
+            {socials && socials.youtube && (
+              <li>
+                <a href={socials.youtube} target="_blank">
+                  <img src={utube} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+            {githubusername && (
+              <li>
+                <a href={`http://github.com/${githubusername}`} target="_blank">
+                  <img src={git} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
+            {website && (
+              <li>
+                <a href={website} target="_blank">
+                  <img src={web} className="svg-img" alt="" />
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </div>

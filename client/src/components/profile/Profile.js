@@ -16,11 +16,14 @@ import Posts from "../posts/Posts";
 // Page
 import About from "./profileRight/About/About";
 import ProfileForm from "../forms/ProfileForm";
+import EducationPopup from "../forms/EducationPopup";
+import ExperiencePopup from "../forms/ExperiencePopup";
 
 const Profile = ({
   profile: { profile, loading },
   match,
   getprofilebyusername,
+  popup,
   auth,
 }) => {
   useEffect(() => {
@@ -33,12 +36,6 @@ const Profile = ({
     return <Spnnier />;
   }
 
-  // if (user && !user.profile) {
-  //   if (!profile) {
-  //     return <Redirect to={`/${user && user.username}/create-profile`} />;
-  //   }
-  // }
-
   if (profile === null) {
     if (user && user.username !== match.params.username) {
       return <Route exact component={Notfound} />;
@@ -47,6 +44,8 @@ const Profile = ({
 
   return (
     <div className="profile">
+      {popup && popup.edu && <EducationPopup />}
+      {popup && popup.exp && <ExperiencePopup />}
       <div
         className={`left ${
           window.innerWidth < 769 ? intro && "intro_open" : ""
@@ -105,6 +104,7 @@ const Profile = ({
 const mapStateToProps = (state) => ({
   profile: state.profile,
   auth: state.auth,
+  popup: state.popup,
 });
 
 export default connect(mapStateToProps, { getprofilebyusername })(Profile);
