@@ -47,7 +47,6 @@ const Profile = ({
       return <Route exact component={Notfound} />;
     }
   }
-
   return (
     <div className="profile">
       {popup && popup.edu && <EducationPopup />}
@@ -58,7 +57,7 @@ const Profile = ({
         }`}
         style={!intro ? { width: "0px", padding: "0px" } : {}}
       >
-        {intro && <ProfileIntro profile={profile} user={user} />}
+        {intro && <ProfileIntro profile={profile && profile} user={user} />}
       </div>
       {window.innerWidth < 769 && (
         <h4
@@ -95,20 +94,6 @@ const Profile = ({
           <Fragment>
             <ProfileNav username={match.params.username} />
             <div className="profile-container">
-              {window.location.pathname ===
-                `/${match.params.username}/create-profile` && (
-                <ProfileForm
-                  profile={profile && profile}
-                  username={match.params.username}
-                />
-              )}
-              {window.location.pathname ===
-                `/${match.params.username}/update-profile` && (
-                <ProfileForm
-                  profile={profile && profile}
-                  username={match.params.username}
-                />
-              )}
               {window.location.pathname === `/${match.params.username}` && (
                 <Posts />
               )}
@@ -132,6 +117,22 @@ const Profile = ({
               {window.location.pathname ===
                 `/${match.params.username}/about/github` && (
                 <Github profile={profile && profile} username={user} />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/update-profile` && (
+                <ProfileForm
+                  profile={profile && profile}
+                  username={match.params.username}
+                />
+              )}
+              {window.location.pathname ===
+                `/${match.params.username}/create-profile` && !profile ? (
+                <ProfileForm
+                  profile={profile && profile}
+                  username={match.params.username}
+                />
+              ) : (
+                <Redirect to={`/${match.params.username}`} />
               )}
             </div>
           </Fragment>

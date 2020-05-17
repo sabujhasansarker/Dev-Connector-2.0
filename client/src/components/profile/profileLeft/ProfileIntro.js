@@ -52,15 +52,21 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
     status: status,
     company: company,
     bio: bio,
+    facebook: social && social.facebook ? social.facebook : "",
+    instagram: social && social.instagram ? social.instagram : "",
+    linkedin: social && social.linkedin ? social.linkedin : "",
+    twitter: social && social.twitter ? social.twitter : "",
+    youtube: social && social.youtube ? social.youtube : "",
+    website: website ? website : "",
+    profilePic: profilePic ? profilePic : "",
   });
   const onchage = (e) => {
     setFromdata({ ...fromdata, [e.target.name]: e.target.value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    setFromdata({ ...fromdata });
-
     profileUpdate(fromdata);
+    console.log(fromdata);
     if (biotoggle) {
       setBiotoggle(false);
     }
@@ -101,7 +107,12 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
                 />
               </div>
               <div className="text">
-                <p onClick={onSubmit} onClick={(e) => setSkilltoggle(false)}>
+                <p
+                  onClick={(e) => {
+                    onSubmit(e);
+                    setSkilltoggle(false);
+                  }}
+                >
                   Save
                 </p>
                 <p onClick={(e) => setSkilltoggle(false)}>Cancel</p>
