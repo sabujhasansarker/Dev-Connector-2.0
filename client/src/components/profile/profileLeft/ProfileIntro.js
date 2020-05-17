@@ -78,7 +78,11 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
             className="file-input__input"
           />
           <label className="file-input__label" htmlFor="file-input">
-            <img src={editicon} className="svg-img" alt="" />
+            {profile &&
+              profile.username === currentUser &&
+              currentUser.username && (
+                <img src={editicon} className="svg-img" alt="" />
+              )}
           </label>
         </div>
         <img className="profile-pic" src={profilePic} alt="" />
@@ -109,12 +113,16 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
           ) : (
             <Fragment>
               <p className="text">{fromdata.skills}</p>
-              <img
-                onClick={(e) => setSkilltoggle(true)}
-                src={editicon}
-                className="svg-img edit-icon"
-                alt=""
-              />
+              {profile &&
+                profile.username === currentUser &&
+                currentUser.username && (
+                  <img
+                    src={editicon}
+                    onClick={(e) => setSkilltoggle(true)}
+                    className="svg-img"
+                    alt=""
+                  />
+                )}
             </Fragment>
           )}
         </div>
@@ -142,12 +150,17 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
           ) : (
             <Fragment>
               <p className="text">{fromdata.company}</p>
-              <img
-                onClick={(e) => setCommpanytoggle(true)}
-                src={editicon}
-                className="svg-img edit-icon"
-                alt=""
-              />
+
+              {profile &&
+                profile.username === currentUser &&
+                currentUser.username && (
+                  <img
+                    src={editicon}
+                    onClick={(e) => setCommpanytoggle(true)}
+                    className="svg-img"
+                    alt=""
+                  />
+                )}
             </Fragment>
           )}
         </div>
@@ -173,12 +186,17 @@ const ProfileIntro = ({ profile, currentUser, profileUpdate }) => {
           ) : (
             <Fragment>
               <p className="text">{fromdata.bio}</p>
-              <img
-                onClick={(e) => setBiotoggle(true)}
-                src={editicon}
-                className="svg-img edit-icon"
-                alt=""
-              />
+
+              {profile &&
+                profile.username === currentUser &&
+                currentUser.username && (
+                  <img
+                    src={editicon}
+                    onClick={(e) => setBiotoggle(true)}
+                    className="svg-img"
+                    alt=""
+                  />
+                )}
             </Fragment>
           )}
         </div>
