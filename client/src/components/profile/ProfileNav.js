@@ -6,24 +6,32 @@ const ProfileNav = ({ user, username }) => {
   const profileNull = (
     <ul>
       <li>
-        <Link to={`/${username}/create-profile`}>Create Profile</Link>
+        <Link to={`/${username && username}/create-profile`}>
+          Create Profile
+        </Link>
       </li>
     </ul>
   );
   const profilefound = (
     <ul>
       <li>
-        <Link to={`/${username}`}>Timeline</Link>
+        <Link to={`/${username && username}`}>Timeline</Link>
       </li>
       <li>
-        <Link to={`/${username}/about`}>About</Link>
+        <Link to={`/${username && username}/about`}>About</Link>
       </li>
-      <li>
-        <Link to={`/${username}/update-profile`}>Update Info</Link>
-      </li>
-      <li>
-        <Link to={`/${username}/active-log`}>Active Log</Link>
-      </li>
+      {user && user.username === username && username && (
+        <Fragment>
+          <li>
+            <Link to={`/${username && username}/update-profile`}>
+              Update Info
+            </Link>
+          </li>
+          <li>
+            <Link to={`/${username && username}/active-log`}>Active Log</Link>
+          </li>
+        </Fragment>
+      )}
     </ul>
   );
   return (

@@ -42,8 +42,10 @@ const Profile = ({
     return <Spnnier />;
   }
 
-  if (profile === null) {
+  if (!profile) {
+    console.log("popo");
     if (user && user.username !== match.params.username) {
+      console.log("LKjlkfj");
       return <Route exact component={Notfound} />;
     }
   }
@@ -92,7 +94,7 @@ const Profile = ({
           </Fragment>
         ) : (
           <Fragment>
-            <ProfileNav username={match.params.username} />
+            <ProfileNav username={match.params.username} user={user && user} />
             <div className="profile-container">
               {window.location.pathname === `/${match.params.username}` && (
                 <Posts />
@@ -126,14 +128,13 @@ const Profile = ({
                 />
               )}
               {window.location.pathname ===
-                `/${match.params.username}/create-profile` && !profile ? (
-                <ProfileForm
-                  profile={profile && profile}
-                  username={match.params.username}
-                />
-              ) : (
-                <Redirect to={`/${match.params.username}`} />
-              )}
+                `/${match.params.username}/create-profile` &&
+                !profile && (
+                  <ProfileForm
+                    profile={profile && profile}
+                    username={match.params.username}
+                  />
+                )}
             </div>
           </Fragment>
         )}

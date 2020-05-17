@@ -45,7 +45,7 @@ const Github = ({
   console.log(repos);
   return (
     <Fragment>
-      <AboutNav navTitle="Github" />
+      <AboutNav navTitle="Github" username={profile && profile.username} />
       <div className="about-right">
         {!githubusername && (
           <div className="add flex">

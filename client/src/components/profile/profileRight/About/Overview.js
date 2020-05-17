@@ -65,7 +65,7 @@ const Overview = ({
     <div className="about-right">
       {/*  Single */}
       <div className="single">
-        {username === user.username && (
+        {username && username === user && user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -76,46 +76,47 @@ const Overview = ({
             <h3>Add Educaion</h3>
           </div>
         )}
-        {education.map((edu) => (
-          <Fragment key={edu._id}>
-            {!edu.to && (
-              <div className="single-items flex">
-                <img src={schoolIcon} className="svg-img" alt="" />
-                <div className="details">
-                  <p className="text">
-                    Study {edu.fieldofstudy} at <b>{edu.school}</b> <br /> from{" "}
-                    <Moment format="YYYY">{edu.from}</Moment>
-                  </p>
-                  {username === user.username && (
-                    <div className="flex edit-delete">
-                      <p
-                        className="text"
-                        onClick={(e) => {
-                          setPopup({ edu: true });
-                          getCurrent({ edu: edu });
-                        }}
-                      >
-                        Edit
-                      </p>
-                      <p
-                        className="text"
-                        onClick={(e) => deleteEducaion(edu._id)}
-                      >
-                        Delete
-                      </p>
-                    </div>
-                  )}
+        {education &&
+          education.map((edu) => (
+            <Fragment key={edu._id}>
+              {!edu.to && (
+                <div className="single-items flex">
+                  <img src={schoolIcon} className="svg-img" alt="" />
+                  <div className="details">
+                    <p className="text">
+                      Study {edu.fieldofstudy} at <b>{edu.school}</b> <br />{" "}
+                      from <Moment format="YYYY">{edu.from}</Moment>
+                    </p>
+                    {username === user.username && (
+                      <div className="flex edit-delete">
+                        <p
+                          className="text"
+                          onClick={(e) => {
+                            setPopup({ edu: true });
+                            getCurrent({ edu: edu });
+                          }}
+                        >
+                          Edit
+                        </p>
+                        <p
+                          className="text"
+                          onClick={(e) => deleteEducaion(edu._id)}
+                        >
+                          Delete
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </Fragment>
-        ))}
+              )}
+            </Fragment>
+          ))}
 
         <hr />
       </div>
       {/*  Single */}
       <div className="single">
-        {username === user.username && (
+        {username && username === user && user.username && (
           <div className="add flex">
             <img
               src={addIcon}
@@ -126,40 +127,41 @@ const Overview = ({
             <h3>Add Experrience</h3>
           </div>
         )}
-        {experience.map((exp) => (
-          <Fragment key={exp._id}>
-            {!exp.to && (
-              <div className="single-items flex">
-                <img src={workIcon} className="svg-img" alt="" />
-                <div className="details">
-                  <p className="text">
-                    Work at <b>{exp.company}</b> as a {exp.title} <br /> from{" "}
-                    <Moment format="YYYY">{exp.from}</Moment>
-                  </p>
-                  {username === user.username && (
-                    <div className="flex edit-delete">
-                      <p
-                        className="text"
-                        onClick={(e) => {
-                          getCurrent({ exp: exp });
-                          setPopup({ exp: true });
-                        }}
-                      >
-                        Edit
-                      </p>
-                      <p
-                        className="text"
-                        onClick={(e) => deleteExperience(exp._id)}
-                      >
-                        Delete
-                      </p>
-                    </div>
-                  )}
+        {experience &&
+          experience.map((exp) => (
+            <Fragment key={exp._id}>
+              {!exp.to && (
+                <div className="single-items flex">
+                  <img src={workIcon} className="svg-img" alt="" />
+                  <div className="details">
+                    <p className="text">
+                      Work at <b>{exp.company}</b> as a {exp.title} <br /> from{" "}
+                      <Moment format="YYYY">{exp.from}</Moment>
+                    </p>
+                    {username === user.username && (
+                      <div className="flex edit-delete">
+                        <p
+                          className="text"
+                          onClick={(e) => {
+                            getCurrent({ exp: exp });
+                            setPopup({ exp: true });
+                          }}
+                        >
+                          Edit
+                        </p>
+                        <p
+                          className="text"
+                          onClick={(e) => deleteExperience(exp._id)}
+                        >
+                          Delete
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </Fragment>
-        ))}
+              )}
+            </Fragment>
+          ))}
 
         <hr />
       </div>

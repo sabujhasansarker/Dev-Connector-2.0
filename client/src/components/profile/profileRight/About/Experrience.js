@@ -22,7 +22,7 @@ const Experrience = ({
 
   return (
     <Fragment>
-      <AboutNav navTitle="Experrience" />
+      <AboutNav navTitle="Experrience" username={profile && profile.username} />
       <div className="about-right">
         <div className="single">
           {username === user.username && (
