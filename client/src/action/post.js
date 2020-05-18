@@ -14,7 +14,9 @@ import {
   DELETE_REPLAY,
   CLEARE_POSTS,
   CLEARE_USER_POST,
+  CURRENT_POST,
 } from "./Type";
+import { setAlert } from "./alert";
 
 // Cleare post
 export const clearPosts = () => async (dispatch) => {
@@ -90,20 +92,26 @@ export const createPost = (fromData) => async (dispatch) => {
   }
 };
 
+// Current
+export const setCurrent = (fromData) => (dispatch) => {
+  dispatch({ type: CURRENT_POST, payload: fromData });
+};
+
 // Edit Post
 export const editPost = (fromData, postId) => async (dispatch) => {
   const config = {
-    header: {
+    headers: {
       "Content-Type": "application/json",
     },
   };
   const body = JSON.stringify(fromData);
   try {
-    const res = await axios.post(`/post/edit/${postId}`, body, config);
+    const res = await axios.put(`/post/edit/${postId}`, body, config);
     dispatch({
       type: EDIT_POST,
-      dispatch: res.data,
+      payload: res.data,
     });
+    console.log(res.data);
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });
   }
@@ -111,13 +119,13 @@ export const editPost = (fromData, postId) => async (dispatch) => {
 
 // delete post
 export const deletePost = (postId) => async (dispatch) => {
-  console.log(postId);
   try {
     const res = await axios.delete(`/post/delete/${postId}`);
     dispatch({
       type: DELETE_POST,
       payload: res.data,
     });
+    dispatch(setAlert("Delete Post", "danger"));
   } catch (err) {
     dispatch({ type: POST_ERROR });
   }

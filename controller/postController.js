@@ -73,7 +73,9 @@ exports.editPost = async (req, res) => {
       { $set: { body, thumbnail } },
       { new: true }
     );
-    const posts = await Post.find();
+    const posts = await Post.find()
+      .populate("user", ["firstName", "lastName", "username", "profilePic"])
+      .sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     serverError(res, err);
@@ -84,7 +86,9 @@ exports.editPost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.postId);
-    const post = await Post.find();
+    const post = await Post.find()
+      .populate("user", ["firstName", "lastName", "username", "profilePic"])
+      .sort({ date: -1 });
     res.json(post);
 
     const posts = await Post.find({ user: req.user.id });

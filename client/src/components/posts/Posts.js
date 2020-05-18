@@ -32,10 +32,12 @@ const Posts = ({
           profile.username === user.username && <PostFrom user={user} />
         : user && user.profile && <PostFrom user={user} />}
       {userPosts && userPosts
-        ? userPosts.map((post) => (
+        ? userPosts &&
+          userPosts.map((post) => (
             <PostBody posts={post} user={user} key={post._id} />
           ))
-        : posts.map((post) => (
+        : posts &&
+          posts.map((post) => (
             <PostBody posts={post} user={user} key={post._id} />
           ))}
     </div>

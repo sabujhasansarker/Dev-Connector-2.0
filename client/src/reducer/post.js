@@ -6,6 +6,8 @@ import {
   CLEARE_USER_POST,
   CREATE_POST,
   DELETE_POST,
+  CURRENT_POST,
+  EDIT_POST,
 } from "../action/Type";
 
 const initialState = {
@@ -13,6 +15,7 @@ const initialState = {
   userPosts: [],
   post: null,
   loading: true,
+  current: null,
   error: {},
 };
 
@@ -36,6 +39,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         posts: [payload, ...state.posts],
+      };
+    case CURRENT_POST:
+      return {
+        ...state,
+        current: payload,
+      };
+    case EDIT_POST:
+      return {
+        ...state,
+        posts: payload,
+        current: null,
       };
     case CLEARE_POSTS:
       return {

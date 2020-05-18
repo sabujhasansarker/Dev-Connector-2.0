@@ -9,9 +9,14 @@ import Comments from "./Comments";
 import moment from "moment";
 
 // funtion
-import { deletePost } from "../../action/post";
+import { deletePost, setCurrent } from "../../action/post";
 
-const PostBody = ({ posts, user: { username, _id }, deletePost }) => {
+const PostBody = ({
+  posts,
+  user: { username, _id },
+  deletePost,
+  setCurrent,
+}) => {
   const [dot, setDot] = useState(false);
   const { user, body, thumbnail, date } = posts && posts;
   const { firstName, lastName, profilePic } = user && user;
@@ -33,7 +38,7 @@ const PostBody = ({ posts, user: { username, _id }, deletePost }) => {
         </p>
         {dot && (
           <div className="dot-body">
-            <p>Edit</p>
+            <p onClick={(e) => setCurrent(posts)}>Edit</p>
             <p onClick={(e) => deletePost(posts._id)}>Delete</p>
           </div>
         )}
@@ -67,4 +72,4 @@ const PostBody = ({ posts, user: { username, _id }, deletePost }) => {
   );
 };
 
-export default connect(null, { deletePost })(PostBody);
+export default connect(null, { deletePost, setCurrent })(PostBody);

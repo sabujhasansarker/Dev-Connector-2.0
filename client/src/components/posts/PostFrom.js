@@ -1,26 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import cameraIcon from "../../icons/camera.svg";
 import cross from "../../icons/cross.svg";
 
 // Funtion
-import { createPost } from "../../action/post";
+import { createPost, editPost } from "../../action/post";
 
-const PostFrom = ({ createPost, user }) => {
+const PostFrom = ({ createPost, user, current, editPost }) => {
   const [toggle, setToggle] = useState(false);
   const [image, setImage] = useState(true);
 
-  const [fromdata, setFromdata] = useState({ thumbnail: "", body: "" });
+  const [fromdata, setFromdata] = useState({
+    thumbnail: current ? current.thumbnail : "",
+    body: current ? current.body : "",
+  });
+  useEffect(() => {
+    setToggle(current ? true : false);
+    setFromdata({
+      thumbnail: current ? current.thumbnail : "",
+      body: current ? current.body : "",
+    });
+  }, [current]);
 
   const onChange = (e) => {
     setFromdata({ ...setFromdata, [e.target.name]: e.target.value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    createPost(fromdata);
     setToggle(false);
-    console.log(fromdata);
+    console.log(current);
+    if (current) {
+      return editPost(fromdata, current && current._id);
+    }
+    createPost(fromdata);
   };
   return (
     <div className={`${toggle && "popup popup-post-form"} shadow`}>
@@ -32,7 +45,7 @@ const PostFrom = ({ createPost, user }) => {
         <form className="form" onSubmit={onSubmit}>
           {toggle && image && (
             <div className="thumbnail">
-              <img src="/uploads/2017-03-20-18-36-07-721.jpg" alt="" />
+              <img src={fromdata.thumbnail} alt="" />
               <img
                 src={cross}
                 className="svg-img"
@@ -54,6 +67,7 @@ const PostFrom = ({ createPost, user }) => {
             <textarea
               onClick={(e) => setToggle(true)}
               name="body"
+              value={fromdata.body}
               onChange={(e) => onChange(e)}
               placeholder="What’s on your mind Sabuj Hasan Sarker"
             />
@@ -89,4 +103,8 @@ const PostFrom = ({ createPost, user }) => {
   );
 };
 
-export default connect(null, { createPost })(PostFrom);
+const mapStateToProps = (state) => ({
+  current: state.post.current,
+});
+
+export default connect(mapStateToProps, { createPost, editPost })(PostFrom);
