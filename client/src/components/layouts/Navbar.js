@@ -7,6 +7,7 @@ import { logout } from "../../action/auth";
 import { clearProfile } from "../../action/profile";
 
 import { getprofilebyusername } from "../../action/profile";
+import { clearPostsByUsername, clearPosts } from "../../action/post";
 
 import "./Navbar.css";
 import logo from "../../icons/main-logo.svg";
@@ -18,8 +19,12 @@ const Navbar = ({
   logout,
   clearProfile,
   getprofilebyusername,
-  match,
+  clearPostsByUsername,
+  clearPosts,
 }) => {
+  useEffect(() => {
+    window.location.pathname === "/" ? clearPostsByUsername() : clearPosts();
+  }, []);
   const username = user && user.firstName;
 
   const gast = (
@@ -45,7 +50,7 @@ const Navbar = ({
   const auth = (
     <Fragment>
       <div className="right d-flex">
-        <Link to="/">
+        <Link to="/" onClick={(e) => clearPostsByUsername()}>
           <img src={logo} alt="logo" />
         </Link>
         <input type="text" placeholder="Search" />
@@ -67,7 +72,13 @@ const Navbar = ({
             </Link>
           </li>
           <li>
-            <Link to="/setting" onClick={(e) => clearProfile()}>
+            <Link
+              to="/setting"
+              onClick={(e) => {
+                clearPostsByUsername();
+                clearProfile();
+              }}
+            >
               <img src={usersetting} alt="logo" />
             </Link>
           </li>
@@ -77,6 +88,7 @@ const Navbar = ({
               onClick={() => {
                 logout();
                 clearProfile();
+                clearPostsByUsername();
               }}
             >
               <img src={logoutimg} alt="logo" />
@@ -107,4 +119,6 @@ export default connect(mapToStateProps, {
   logout,
   clearProfile,
   getprofilebyusername,
+  clearPostsByUsername,
+  clearPosts,
 })(Navbar);

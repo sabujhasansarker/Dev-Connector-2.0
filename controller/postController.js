@@ -8,7 +8,12 @@ const Post = require("../model/Post");
 // * post
 exports.getAllpost = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate("user", [
+      "firstName",
+      "lastName",
+      "username",
+      "profilePic",
+    ]);
     res.json(posts);
   } catch (err) {
     serverError(res, err);
@@ -45,6 +50,7 @@ exports.createPost = async (req, res) => {
       { $set: { posts } },
       { new: true }
     );
+
     res.json(newpost);
   } catch (err) {
     serverError(res, err);
@@ -306,7 +312,9 @@ exports.deleteReplay = async (req, res) => {
 //
 exports.getPostByUsername = async (req, res) => {
   try {
-    const posts = await Post.find({ username: req.params.username });
+    const posts = await Post.find({
+      username: req.params.username,
+    }).populate("user", ["firstName", "lastName", "username", "profilePic"]);
     res.json(posts);
   } catch (err) {
     serverError(res, err);

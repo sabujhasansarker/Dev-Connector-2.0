@@ -2,9 +2,14 @@ import React, { useEffect, useState, Fragment } from "react";
 import { connect } from "react-redux";
 
 import Spnnier from "../layouts/Spnnier";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import { getprofilebyusername } from "../../action/profile";
+import {
+  getPostByUser,
+  clearPosts,
+  clearPostsByUsername,
+} from "../../action/post";
 
 import Notfound from "../layouts/Notfound";
 
@@ -31,9 +36,14 @@ const Profile = ({
   getprofilebyusername,
   popup,
   auth,
+  userPosts,
+  getPostByUser,
+  clearPosts,
 }) => {
   useEffect(() => {
     getprofilebyusername(match.params.username);
+    clearPosts();
+    getPostByUser(match.params.username);
   }, [getprofilebyusername]);
 
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);
@@ -95,7 +105,7 @@ const Profile = ({
             <ProfileNav username={match.params.username} user={user && user} />
             <div className="profile-container">
               {window.location.pathname === `/${match.params.username}` && (
-                <Posts />
+                <Posts userPosts={userPosts && userPosts} />
               )}
               {window.location.pathname ===
                 `/${match.params.username}/about` && (
@@ -134,6 +144,11 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
   auth: state.auth,
   popup: state.popup,
+  userPosts: state.post.userPosts,
 });
 
-export default connect(mapStateToProps, { getprofilebyusername })(Profile);
+export default connect(mapStateToProps, {
+  getprofilebyusername,
+  getPostByUser,
+  clearPosts,
+})(Profile);

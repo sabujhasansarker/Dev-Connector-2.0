@@ -99,10 +99,15 @@
 // Post
 .posts {
   padding: 20px;
+  margin: 20px 0px;
   .header {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    color: black;
+    h4 {
+      text-transform: capitalize;
+    }
   }
   .post-body {
     p {

@@ -12,10 +12,33 @@ import {
   REPLAY,
   DELETE_COMMENT,
   DELETE_REPLAY,
+  CLEARE_POSTS,
+  CLEARE_USER_POST,
 } from "./Type";
 
+// Cleare post
+export const clearPosts = () => async (dispatch) => {
+  try {
+    dispatch({ type: CLEARE_POSTS });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+    });
+  }
+};
+
+export const clearPostsByUsername = () => async (dispatch) => {
+  try {
+    dispatch({ type: CLEARE_USER_POST });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+    });
+  }
+};
+
 // Get all post
-exports.getAllPosts = () => async (dispatch) => {
+export const getAllPosts = () => async (dispatch) => {
   try {
     const res = await axios.get("/post");
     dispatch({
@@ -30,7 +53,7 @@ exports.getAllPosts = () => async (dispatch) => {
 };
 
 // Get post by username
-exports.getPostByUser = (username) => async (dispatch) => {
+export const getPostByUser = (username) => async (dispatch) => {
   try {
     const res = await axios.get(`/post/${username}`);
     dispatch({
@@ -45,7 +68,7 @@ exports.getPostByUser = (username) => async (dispatch) => {
 };
 
 // create profile
-exports.createProfile = (fromData) => async (dispatch) => {
+export const createProfile = (fromData) => async (dispatch) => {
   const config = {
     header: {
       "Content-Type": "application/json",
@@ -66,7 +89,7 @@ exports.createProfile = (fromData) => async (dispatch) => {
 };
 
 // Edit Post
-exports.editPost = (fromData, postId) => async (dispatch) => {
+export const editPost = (fromData, postId) => async (dispatch) => {
   const config = {
     header: {
       "Content-Type": "application/json",
@@ -85,7 +108,7 @@ exports.editPost = (fromData, postId) => async (dispatch) => {
 };
 
 // delete post
-exports.deletePost = (postId) => async (dispatch) => {
+export const deletePost = (postId) => async (dispatch) => {
   try {
     const res = await axios.delete(`/post/delete/${postId}`);
     dispatch({
@@ -98,7 +121,7 @@ exports.deletePost = (postId) => async (dispatch) => {
 };
 
 // Like
-exports.likePost = (postId) => async (dispatch) => {
+export const likePost = (postId) => async (dispatch) => {
   try {
     const res = await axios.put(`/post/like/${postId}`);
     dispatch({
@@ -111,7 +134,7 @@ exports.likePost = (postId) => async (dispatch) => {
 };
 
 // comment
-exports.createComment = (postId, fromData) => async (dispatch) => {
+export const createComment = (postId, fromData) => async (dispatch) => {
   const config = {
     header: {
       "Content-Type": "application/json",
@@ -130,7 +153,7 @@ exports.createComment = (postId, fromData) => async (dispatch) => {
 };
 
 // delete comment
-exports.deleteComment = (postId, comment_id) => async (dispatch) => {
+export const deleteComment = (postId, comment_id) => async (dispatch) => {
   try {
     const res = await axios.delete(`/post/${postId}/comment/${comment_id}`);
     dispatch({
@@ -143,7 +166,9 @@ exports.deleteComment = (postId, comment_id) => async (dispatch) => {
 };
 
 // replay
-exports.createReplay = (postId, commentId, fromData) => async (dispatch) => {
+export const createReplay = (postId, commentId, fromData) => async (
+  dispatch
+) => {
   const config = {
     header: {
       "Content-Type": "application/json",
@@ -152,7 +177,7 @@ exports.createReplay = (postId, commentId, fromData) => async (dispatch) => {
   const body = JSON.stringify(fromData);
   try {
     const res = await axios.put(
-      `/post/${postId}/comment/${comment_id}/replay`,
+      `/post/${postId}/comment/${commentId}/replay`,
       body,
       config
     );
@@ -166,7 +191,9 @@ exports.createReplay = (postId, commentId, fromData) => async (dispatch) => {
 };
 
 // delete replay
-exports.deleteComment = (postId, comment_id, replay_id) => async (dispatch) => {
+export const deleteReplay = (postId, comment_id, replay_id) => async (
+  dispatch
+) => {
   try {
     const res = await axios.delete(
       `/post/${postId}/comment/${comment_id}/replay/${replay_id}`

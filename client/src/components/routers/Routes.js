@@ -1,4 +1,4 @@
-import React, { Fragment, Profiler } from "react";
+import React, { Fragment } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import { connect } from "react-redux";

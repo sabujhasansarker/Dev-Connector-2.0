@@ -44,7 +44,9 @@ export const GET_REPOS = "GET_REPOS";
 
 // Post
 export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const CLEARE_POSTS = "CLEARE_POSTS";
 export const GET_POST_BY_USERNAME = "GET_POST_BY_USERNAME";
+export const CLEARE_USER_POST = "CLEARE_USER_POST";
 export const SINGLE_POST = "SINGLE_POST";
 export const POST_ERROR = "POST_ERROR";
 

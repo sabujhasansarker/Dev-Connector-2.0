@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const PostShema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   username: String,
   thumbnail: {
@@ -16,7 +16,7 @@ const PostShema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
       },
     },
   ],
@@ -24,7 +24,7 @@ const PostShema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "users",
+        ref: "User",
       },
       text: {
         type: String,
@@ -44,7 +44,7 @@ const PostShema = new Schema({
         {
           user: {
             type: Schema.Types.ObjectId,
-            ref: "users",
+            ref: "User",
           },
           text: {
             type: String,
