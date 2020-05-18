@@ -35,13 +35,17 @@ const PostBody = ({
             </div>
           </div>
         </Link>
-        <p className="dot" onClick={(e) => setDot(!dot)}>
-          ...
-        </p>
-        {dot && (
-          <div className="dot-body">
-            <p onClick={(e) => setCurrent(posts)}>Edit</p>
-            <p onClick={(e) => deletePost(posts._id)}>Delete</p>
+        {posts && posts.user._id === _id && (
+          <div className="dot-container">
+            <p className="dot" onClick={(e) => setDot(!dot)}>
+              ...
+            </p>
+            {dot && (
+              <div className="dot-body">
+                <p onClick={(e) => setCurrent(posts)}>Edit</p>
+                <p onClick={(e) => deletePost(posts._id)}>Delete</p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -81,10 +85,10 @@ const PostBody = ({
           </div>
           <div className="comment ">
             <img src={comm} className="svg-img" alt="" />
-            <p>56</p>
+            <p>{posts && posts.comments.length}</p>
           </div>
         </div>
-        <Comments />
+        <Comments comments={posts && posts.comments} />
       </div>
     </div>
   );

@@ -208,7 +208,11 @@
 }
 
 .headr-flex .dot-body {
-  right: 235px;
-  margin-top: 30px;
+  right: 0px;
+  margin-top: 0px;
+}
+
+.dot-container {
+  position: relative;
 }
 /*# sourceMappingURL=Post.css.map */

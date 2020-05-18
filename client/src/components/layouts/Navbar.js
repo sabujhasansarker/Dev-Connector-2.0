@@ -7,7 +7,11 @@ import { logout } from "../../action/auth";
 import { clearProfile } from "../../action/profile";
 
 import { getprofilebyusername } from "../../action/profile";
-import { clearPostsByUsername, clearPosts } from "../../action/post";
+import {
+  clearPostsByUsername,
+  clearPosts,
+  getPostByUser,
+} from "../../action/post";
 
 import "./Navbar.css";
 import logo from "../../icons/main-logo.svg";
@@ -21,6 +25,7 @@ const Navbar = ({
   getprofilebyusername,
   clearPostsByUsername,
   clearPosts,
+  getPostByUser,
 }) => {
   useEffect(() => {
     window.location.pathname === "/" ? clearPostsByUsername() : clearPosts();
@@ -61,6 +66,7 @@ const Navbar = ({
             <Link
               onClick={(e) => {
                 clearProfile();
+                getPostByUser(user && user.username);
                 getprofilebyusername(user && user.username);
               }}
               className="d-flex"
@@ -121,4 +127,5 @@ export default connect(mapToStateProps, {
   getprofilebyusername,
   clearPostsByUsername,
   clearPosts,
+  getPostByUser,
 })(Navbar);

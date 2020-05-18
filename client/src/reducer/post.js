@@ -40,6 +40,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         posts: [payload, ...state.posts],
+        userPosts: [payload, ...state.userPosts],
       };
     case CURRENT_POST:
       return {

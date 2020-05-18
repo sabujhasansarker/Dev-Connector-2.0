@@ -29,11 +29,12 @@ const PostFrom = ({ createPost, user, current, editPost }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     setToggle(false);
-    console.log(current);
     if (current) {
-      return editPost(fromdata, current && current._id);
+      editPost(fromdata, current && current._id);
+      return setFromdata({ thumbnail: "", body: "" });
     }
     createPost(fromdata);
+    setFromdata({ thumbnail: "", body: "" });
   };
   return (
     <div className={`${toggle && "popup popup-post-form"} shadow`}>

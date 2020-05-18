@@ -20,50 +20,7 @@ const PostShema = new Schema({
       },
     },
   ],
-  comments: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-      text: {
-        type: String,
-        required: true,
-      },
-      username: {
-        type: String,
-      },
-      profilePic: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-      replays: [
-        {
-          user: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
-          },
-          text: {
-            type: String,
-            required: true,
-          },
-          username: {
-            type: String,
-          },
-          profilePic: {
-            type: String,
-          },
-          date: {
-            type: Date,
-            default: Date.now,
-          },
-        },
-      ],
-    },
-  ],
+  comments: [],
   date: {
     type: Date,
     default: Date.now,

@@ -19,7 +19,7 @@ const Posts = ({
   profile,
 }) => {
   useEffect(() => {
-    getAllPosts();
+    window.location.pathname === "/" && getAllPosts();
   }, [getAllPosts]);
 
   if (loading) {

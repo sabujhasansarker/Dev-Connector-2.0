@@ -4,6 +4,8 @@ const { serverError } = require("../utils/errors");
 const User = require("../model/User");
 const Profile = require("../model/Profile");
 const Post = require("../model/Post");
+const Comments = require("../model/Comments");
+const Repelies = require("../model/Repelies");
 
 // * post
 exports.getAllpost = async (req, res) => {
@@ -126,9 +128,14 @@ exports.likePost = async (req, res) => {
         { $pull: { likes: { _id: req.params.postId } } },
         { new: true }
       );
-      console.log(profile);
 
       await post.save();
+      post = await Post.findById(req.params.postId).populate("user", [
+        "firstName",
+        "lastName",
+        "username",
+        "profilePic",
+      ]);
       return res.json(post);
     }
     post.likes.unshift({ user: req.user.id });
@@ -139,7 +146,12 @@ exports.likePost = async (req, res) => {
       { $push: { likes: { _id: req.params.postId } } },
       { new: true }
     );
-    console.log(profile);
+    post = await Post.findById(req.params.postId).populate("user", [
+      "firstName",
+      "lastName",
+      "username",
+      "profilePic",
+    ]);
 
     res.json(post);
   } catch (err) {
@@ -149,25 +161,29 @@ exports.likePost = async (req, res) => {
 
 //  * Comment
 exports.commentPost = async (req, res) => {
-  let profile = await Profile.findOne({ user: req.user.id });
-  const { text } = req.body;
-  const user = await User.findById(req.user.id);
-  if (!text) {
+  const { body } = req.body;
+  if (!body) {
     return res
       .status(400)
       .json({ errors: { msg: "Please Enter something to post" } });
   }
   try {
-    let post = await Post.findById(req.params.postId);
-    const newComments = {
-      text,
+    const newComments = new Comments({
+      body,
       user: req.user.id,
-      username: user.username,
-      profilePic: user.profilePic,
-    };
-    post.comments.unshift(newComments);
+      replies: [],
+    });
+    await newComments.save();
+    let comments = await Comments.findById(newComments._id).populate("user", [
+      "firstName",
+      "lastName",
+      "username",
+      "profilePic",
+    ]);
+    let post = await Post.findById(req.params.postId);
+    console.log(post);
+    post.comments.unshift(comments);
     await post.save();
-    res.json(post);
 
     // Profile
     profile = await Profile.findOneAndUpdate(
@@ -175,7 +191,7 @@ exports.commentPost = async (req, res) => {
       { $push: { comments: { _id: req.params.postId } } },
       { new: true }
     );
-    console.log(profile);
+    res.json(post);
   } catch (err) {
     serverError(res, err);
   }
@@ -184,6 +200,7 @@ exports.commentPost = async (req, res) => {
 exports.deleteComment = async (req, res) => {
   try {
     let post = await Post.findById(req.params.postId);
+    console.log(post);
     let comment = post.comments.find(
       (comment) => comment._id.toString() === req.params.comment_id
     );
@@ -210,6 +227,7 @@ exports.deleteComment = async (req, res) => {
       { $pull: { comments: { _id: req.params.postId } } },
       { new: true }
     );
+    await Comments.findByIdAndDelete(req.params.comment_id);
     console.log(profile);
   } catch (err) {
     serverError(res, err);
@@ -218,49 +236,40 @@ exports.deleteComment = async (req, res) => {
 
 //  * Replays
 exports.replayComment = async (req, res) => {
-  const { text } = req.body;
-  const user = await User.findById(req.user.id);
-  if (!text) {
+  const { body } = req.body;
+  if (!body) {
     return res
       .status(400)
       .json({ errors: { msg: "Please Enter something to post" } });
   }
   try {
-    let post = await Post.findById(req.params.postId);
-
-    let comment = post.comments.find(
-      (comment) => comment._id.toString() === req.params.comment_id
-    );
-
-    // Make sure comment exists
-    if (!comment) {
-      return res.status(404).json({ msg: "Comment dose not exists" });
-    }
-    const newComments = {
-      text,
+    const newRepelies = new Repelies({
+      body,
       user: req.user.id,
-      username: user.username,
-      profilePic: user.profilePic,
-    };
-    comment.replays.unshift(newComments);
+    });
 
-    const comments = post.comments.map((c) =>
-      c._id.toString() === req.params.comment_id ? comment : c
-    );
-    post = await Post.findByIdAndUpdate(
-      req.params.postId,
-      { $set: { comments } },
-      { new: true }
-    );
+    await newRepelies.save();
+    let replies = await Repelies.findById(newRepelies._id).populate("user", [
+      "firstName",
+      "lastName",
+      "username",
+      "profilePic",
+    ]);
 
-    res.json(post);
+    let post = await Post.findById(req.params.postId);
+    let comments = await Comments.find({ _id: req.params.comment_id });
+    console.log(req.params.comment_id);
+    comments.replies.unshift(replies);
+    // const comment = await comments.save();
+    // post.comments.unshift(comment);
+    console.log(comments);
     // Profile
-    let profile = await Profile.findOneAndUpdate(
+    profile = await Profile.findOneAndUpdate(
       { user: req.user.id },
       { $push: { comments: { _id: req.params.postId } } },
       { new: true }
     );
-    console.log(profile);
+    res.json(post);
   } catch (err) {
     serverError(res, err);
   }
