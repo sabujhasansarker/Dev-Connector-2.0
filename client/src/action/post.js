@@ -68,18 +68,20 @@ export const getPostByUser = (username) => async (dispatch) => {
 };
 
 // create profile
-export const createProfile = (fromData) => async (dispatch) => {
+export const createPost = (fromData) => async (dispatch) => {
   const config = {
-    header: {
+    headers: {
       "Content-Type": "application/json",
     },
   };
   const body = JSON.stringify(fromData);
+
   try {
     const res = await axios.post("/post", body, config);
+    console.log(res);
     dispatch({
       type: CREATE_POST,
-      dispatch: res.data,
+      payload: res.data,
     });
   } catch (err) {
     dispatch({

@@ -13,27 +13,23 @@
 }
 
 .post-from-container .form {
-  width: 98% !important;
+  width: 100% !important;
   background: white;
-  height: 100px;
-  padding: 10px;
+  height: 200px;
+  padding: 0px !important;
 }
 
 @media (max-width: 768px) {
   .post-from-container .form {
-    width: 96% !important;
+    width: 100% !important;
   }
 }
 
-.post-from-container .form .d-flex {
-  -webkit-box-align: unset;
-      -ms-flex-align: unset;
-          align-items: unset;
-}
-
 .post-from-container .form .form-group {
-  width: 100% !important;
-  height: 100%;
+  width: 96% !important;
+  height: 68%;
+  background: white;
+  padding: 10px;
 }
 
 .post-from-container .form .form-group textarea {
@@ -46,6 +42,7 @@
 
 .post-from-container .post-from-footer {
   padding: 5px 10px;
+  background: whitesmoke;
 }
 
 .post-from-container .post-from-footer .svg-img {
@@ -97,7 +94,8 @@
 }
 
 .popup.popup-post-form .popup-content .form {
-  height: 40vh;
+  overflow: auto;
+  height: calc(48vh - 100px);
 }
 
 .posts {

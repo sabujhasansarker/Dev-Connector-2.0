@@ -5,11 +5,7 @@ import Spnnier from "../layouts/Spnnier";
 import { Route } from "react-router-dom";
 
 import { getprofilebyusername } from "../../action/profile";
-import {
-  getPostByUser,
-  clearPosts,
-  clearPostsByUsername,
-} from "../../action/post";
+import { getPostByUser, clearPosts } from "../../action/post";
 
 import Notfound from "../layouts/Notfound";
 
@@ -42,8 +38,8 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getprofilebyusername(match.params.username);
-    clearPosts();
     getPostByUser(match.params.username);
+    clearPosts();
   }, [getprofilebyusername]);
 
   const [intro, setIntro] = useState(window.innerWidth < 769 ? false : true);

@@ -4,6 +4,7 @@ import {
   POST_ERROR,
   CLEARE_POSTS,
   CLEARE_USER_POST,
+  CREATE_POST,
 } from "../action/Type";
 
 const initialState = {
@@ -28,6 +29,11 @@ export default function (state = initialState, action) {
         ...state,
         userPosts: payload,
         loading: false,
+      };
+    case CREATE_POST:
+      return {
+        ...state,
+        posts: [payload, ...state.posts],
       };
     case CLEARE_POSTS:
       return {

@@ -8,12 +8,9 @@ const Post = require("../model/Post");
 // * post
 exports.getAllpost = async (req, res) => {
   try {
-    const posts = await Post.find().populate("user", [
-      "firstName",
-      "lastName",
-      "username",
-      "profilePic",
-    ]);
+    const posts = await Post.find()
+      .populate("user", ["firstName", "lastName", "username", "profilePic"])
+      .sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     serverError(res, err);
@@ -34,7 +31,7 @@ exports.createPost = async (req, res) => {
     return res.status(400).json({ errors: { msg: "Profile dose not found" } });
   }
   try {
-    const newpost = new Post({
+    let newpost = new Post({
       user: req.user.id,
       body,
       thumbnail,
@@ -50,7 +47,12 @@ exports.createPost = async (req, res) => {
       { $set: { posts } },
       { new: true }
     );
-
+    newpost = await Post.findById(newpost._id).populate("user", [
+      "firstName",
+      "lastName",
+      "username",
+      "profilePic",
+    ]);
     res.json(newpost);
   } catch (err) {
     serverError(res, err);
@@ -314,7 +316,9 @@ exports.getPostByUsername = async (req, res) => {
   try {
     const posts = await Post.find({
       username: req.params.username,
-    }).populate("user", ["firstName", "lastName", "username", "profilePic"]);
+    })
+      .populate("user", ["firstName", "lastName", "username", "profilePic"])
+      .sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     serverError(res, err);

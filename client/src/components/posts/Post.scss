@@ -22,20 +22,19 @@
     margin: 0 5px;
   }
   .form {
-    width: 98% !important;
+    width: 100% !important;
     background: white;
-    height: 100px;
-    padding: 10px;
+    height: 200px;
+    padding: 0px !important;
     @include tablet() {
-      width: 96% !important;
-    }
-    .d-flex {
-      align-items: unset;
+      width: 100% !important;
     }
 
     .form-group {
-      width: 100% !important;
-      height: 100%;
+      width: 96% !important;
+      height: 68%;
+      background: white;
+      padding: 10px;
       textarea {
         border-radius: 0px;
         background: white;
@@ -47,6 +46,7 @@
   }
   .post-from-footer {
     padding: 5px 10px;
+    background: whitesmoke;
     .svg-img {
       width: 30px;
     }
@@ -92,7 +92,8 @@
     }
   }
   .form {
-    height: 40vh;
+    overflow: auto;
+    height: calc(48vh - 100px);
   }
 }
 

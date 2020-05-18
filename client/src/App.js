@@ -15,6 +15,7 @@ import setAuthToken from "./utils/setAuthToken";
 import Routes from "./components/routers/Routes";
 import Posts from "./components/posts/Posts";
 import PrivetRouter from "./components/routers/PrivetRouter";
+import { clearPostsByUsername } from "./action/post";
 
 if (localStorage.usertoken) {
   setAuthToken(localStorage.usertoken);
@@ -23,6 +24,7 @@ if (localStorage.usertoken) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
+    window.location.pathname === "/" && store.dispatch(clearPostsByUsername());
   }, []);
   return (
     <Provider store={store}>

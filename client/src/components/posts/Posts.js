@@ -9,14 +9,17 @@ import PostBody from "./PostBody";
 import Spnnier from "../layouts/Spnnier";
 
 // Funtion
-import { getAllPosts, clearPostsByUsername } from "../../action/post";
+import { getAllPosts } from "../../action/post";
 
-const Posts = ({ posts: { posts, loading }, userPosts, getAllPosts, user }) => {
+const Posts = ({
+  posts: { posts, loading },
+  userPosts,
+  getAllPosts,
+  user,
+  profile,
+}) => {
   useEffect(() => {
     getAllPosts();
-    if (window.location.pathname === "/") {
-      clearPostsByUsername();
-    }
   }, [getAllPosts]);
 
   if (loading) {
@@ -24,10 +27,17 @@ const Posts = ({ posts: { posts, loading }, userPosts, getAllPosts, user }) => {
   }
   return (
     <div className="container post-container">
-      <PostFrom />
-      {userPosts
-        ? userPosts.map((post) => <PostBody posts={post} user={user} />)
-        : posts.map((post) => <PostBody posts={post} user={user} />)}
+      {userPosts && userPosts
+        ? profile &&
+          profile.username === user.username && <PostFrom user={user} />
+        : user && user.profile && <PostFrom user={user} />}
+      {userPosts && userPosts
+        ? userPosts.map((post) => (
+            <PostBody posts={post} user={user} key={post._id} />
+          ))
+        : posts.map((post) => (
+            <PostBody posts={post} user={user} key={post._id} />
+          ))}
     </div>
   );
 };
@@ -35,8 +45,7 @@ const Posts = ({ posts: { posts, loading }, userPosts, getAllPosts, user }) => {
 const mapStateToProps = (state) => ({
   posts: state.post,
   user: state.auth.user,
+  profile: state.profile.profile,
 });
 
-export default connect(mapStateToProps, { getAllPosts, clearPostsByUsername })(
-  Posts
-);
+export default connect(mapStateToProps, { getAllPosts })(Posts);

@@ -1,11 +1,27 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
 import cameraIcon from "../../icons/camera.svg";
 import cross from "../../icons/cross.svg";
 
-const PostFrom = () => {
+// Funtion
+import { createPost } from "../../action/post";
+
+const PostFrom = ({ createPost, user }) => {
   const [toggle, setToggle] = useState(false);
   const [image, setImage] = useState(true);
+
+  const [fromdata, setFromdata] = useState({ thumbnail: "", body: "" });
+
+  const onChange = (e) => {
+    setFromdata({ ...setFromdata, [e.target.name]: e.target.value });
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    createPost(fromdata);
+    setToggle(false);
+    console.log(fromdata);
+  };
   return (
     <div className={`${toggle && "popup popup-post-form"} shadow`}>
       <div className={`post-from-container ${toggle && "popup-content"}`}>
@@ -13,7 +29,7 @@ const PostFrom = () => {
           <p className="text">Create post</p>
         </div>
 
-        <form className="form">
+        <form className="form" onSubmit={onSubmit}>
           {toggle && image && (
             <div className="thumbnail">
               <img src="/uploads/2017-03-20-18-36-07-721.jpg" alt="" />
@@ -25,51 +41,52 @@ const PostFrom = () => {
               />
             </div>
           )}
-          <div className="form-group d-flex">
+          <div
+            className="form-group d-flex"
+            style={!image ? { height: "26vh" } : {}}
+          >
             <img
               className="userimage"
-              src="/uploads/2017-03-20-18-36-07-721.jpg"
+              src={user && user.profilePic}
               alt=""
               className="user-head-image"
             />
             <textarea
               onClick={(e) => setToggle(true)}
+              name="body"
+              onChange={(e) => onChange(e)}
               placeholder="What’s on your mind Sabuj Hasan Sarker"
             />
           </div>
-        </form>
-        <div className="post-from-footer d-flex">
-          <div className="file-input">
-            <input
-              type="file"
-              name="file-input"
-              id="file-input"
-              className="file-input__input"
-            />
-            <label className="file-input__label" htmlFor="file-input">
-              <img src={cameraIcon} className="svg-img" alt="" />
-            </label>
-          </div>
-          {toggle && (
-            <div className="form-group float-right d-flex">
+          <div className="post-from-footer d-flex">
+            <div className="file-input">
               <input
-                type="button"
-                onClick={(e) => setToggle(false)}
-                value="Post"
-                className="btn btn-save "
+                type="file"
+                name="thumbnail"
+                id="file-input"
+                className="file-input__input"
+                onChange={(e) => onChange(e)}
               />
-              <input
-                type="button"
-                onClick={(e) => setToggle(false)}
-                value="Cancel"
-                className="btn "
-              />
+              <label className="file-input__label" htmlFor="file-input">
+                <img src={cameraIcon} className="svg-img" alt="" />
+              </label>
             </div>
-          )}
-        </div>
+            {toggle && (
+              <div className="float-right d-flex">
+                <input type="submit" value="Post" className="btn btn-save " />
+                <input
+                  type="button"
+                  onClick={(e) => setToggle(false)}
+                  value="Cancel"
+                  className="btn "
+                />
+              </div>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default PostFrom;
+export default connect(null, { createPost })(PostFrom);
