@@ -75,6 +75,7 @@
 
 .popup.popup-post-form .popup-content .thumbnail {
   position: relative;
+  margin: 10px;
 }
 
 .popup.popup-post-form .popup-content .thumbnail img {

@@ -3,19 +3,21 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import love from "../../icons/love.svg";
+import loveTrue from "../../icons/360.svg";
 import comm from "../../icons/comment.svg";
 import Comments from "./Comments";
 
 import moment from "moment";
 
 // funtion
-import { deletePost, setCurrent } from "../../action/post";
+import { deletePost, setCurrent, likePost } from "../../action/post";
 
 const PostBody = ({
   posts,
   user: { username, _id },
   deletePost,
   setCurrent,
+  likePost,
 }) => {
   const [dot, setDot] = useState(false);
   const { user, body, thumbnail, date } = posts && posts;
@@ -58,7 +60,13 @@ const PostBody = ({
         </p>
         <div className="total d-flex">
           <div className="like ">
-            <img src={love} className="svg-img" alt="" />
+            {posts.likes.filter((item) => item.user.toString() === _id).length >
+            0 ? (
+              <img src={loveTrue} className="svg-img" alt="" />
+            ) : (
+              <img src={love} className="svg-img" alt="" />
+            )}
+
             <p>56</p>
           </div>
           <div className="comment ">
@@ -72,4 +80,4 @@ const PostBody = ({
   );
 };
 
-export default connect(null, { deletePost, setCurrent })(PostBody);
+export default connect(null, { deletePost, setCurrent, likePost })(PostBody);
