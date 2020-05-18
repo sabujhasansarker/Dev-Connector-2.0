@@ -8,6 +8,7 @@ import {
   DELETE_POST,
   CURRENT_POST,
   EDIT_POST,
+  LIKE,
 } from "../action/Type";
 
 const initialState = {
@@ -50,6 +51,13 @@ export default function (state = initialState, action) {
         ...state,
         posts: payload,
         current: null,
+      };
+    case LIKE:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === payload.postId ? payload.likes : post
+        ),
       };
     case CLEARE_POSTS:
       return {

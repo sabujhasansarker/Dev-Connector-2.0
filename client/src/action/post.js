@@ -135,9 +135,10 @@ export const deletePost = (postId) => async (dispatch) => {
 export const likePost = (postId) => async (dispatch) => {
   try {
     const res = await axios.put(`/post/like/${postId}`);
+    console.log(res);
     dispatch({
       type: LIKE,
-      payload: res.data,
+      payload: { postId, likes: res.data },
     });
   } catch (err) {
     dispatch({ type: POST_ERROR });

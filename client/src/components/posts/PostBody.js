@@ -62,12 +62,22 @@ const PostBody = ({
           <div className="like ">
             {posts.likes.filter((item) => item.user.toString() === _id).length >
             0 ? (
-              <img src={loveTrue} className="svg-img" alt="" />
+              <img
+                src={loveTrue}
+                className="svg-img"
+                alt=""
+                onClick={(e) => likePost(posts._id)}
+              />
             ) : (
-              <img src={love} className="svg-img" alt="" />
+              <img
+                src={love}
+                className="svg-img"
+                alt=""
+                onClick={(e) => likePost(posts._id)}
+              />
             )}
 
-            <p>56</p>
+            <p>{posts.likes.length}</p>
           </div>
           <div className="comment ">
             <img src={comm} className="svg-img" alt="" />
