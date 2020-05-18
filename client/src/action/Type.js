@@ -41,3 +41,22 @@ export const DELETE_EDU = "DELETE_EDU";
 
 // Github
 export const GET_REPOS = "GET_REPOS";
+
+// Post
+export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const GET_POST_BY_USERNAME = "GET_POST_BY_USERNAME";
+export const SINGLE_POST = "SINGLE_POST";
+export const POST_ERROR = "POST_ERROR";
+
+// crete post
+export const CREATE_POST = "CREATE_POST";
+export const CREATE_POST_ERROR = "CREATE_POST_ERROR";
+export const EDIT_POST = "EDIT_POST";
+export const DELETE_POST = "DELETE_POST";
+
+// like comments
+export const LIKE = "LIKE";
+export const COMMENTS = "COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const REPLAY = "REPLAY";
+export const DELETE_REPLAY = "DELETE_REPLAY";
