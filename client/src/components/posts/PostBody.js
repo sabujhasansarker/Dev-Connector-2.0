@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import love from "../../icons/love.svg";
 import comm from "../../icons/comment.svg";
@@ -7,20 +8,36 @@ import Comments from "./Comments";
 
 import moment from "moment";
 
-const PostBody = ({ posts, user: { username, _id } }) => {
+// funtion
+import { deletePost } from "../../action/post";
+
+const PostBody = ({ posts, user: { username, _id }, deletePost }) => {
+  const [dot, setDot] = useState(false);
   const { user, body, thumbnail, date } = posts && posts;
   const { firstName, lastName, profilePic } = user && user;
+
   return (
     <div className="posts shadow">
-      <Link to={`/${user.username}`}>
-        <div className="header">
-          <img className="user-head-image" src={profilePic} alt="" />
-          <div className="user-head">
-            <h4>{firstName + " " + lastName}</h4>
-            <p>{moment(date).startOf("hour").fromNow()}</p>
+      <div className="headr-flex">
+        <Link to={`/${user.username}`}>
+          <div className="header">
+            <img className="user-head-image" src={profilePic} alt="" />
+            <div className="user-head">
+              <h4>{firstName + " " + lastName}</h4>
+              <p>{moment(date).startOf("hour").fromNow()}</p>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+        <p className="dot" onClick={(e) => setDot(!dot)}>
+          ...
+        </p>
+        {dot && (
+          <div className="dot-body">
+            <p>Edit</p>
+            <p onClick={(e) => deletePost(posts._id)}>Delete</p>
+          </div>
+        )}
+      </div>
       <div className="post-body">
         <p className="text">
           {body.length > 200 ? (
@@ -50,4 +67,4 @@ const PostBody = ({ posts, user: { username, _id } }) => {
   );
 };
 
-export default PostBody;
+export default connect(null, { deletePost })(PostBody);

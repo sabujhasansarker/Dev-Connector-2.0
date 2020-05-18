@@ -196,4 +196,18 @@
 .dot-body p {
   cursor: pointer;
 }
+
+.headr-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.headr-flex .dot-body {
+  right: 235px;
+  margin-top: 30px;
+}
 /*# sourceMappingURL=Post.css.map */

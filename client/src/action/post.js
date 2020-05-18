@@ -111,6 +111,7 @@ export const editPost = (fromData, postId) => async (dispatch) => {
 
 // delete post
 export const deletePost = (postId) => async (dispatch) => {
+  console.log(postId);
   try {
     const res = await axios.delete(`/post/delete/${postId}`);
     dispatch({

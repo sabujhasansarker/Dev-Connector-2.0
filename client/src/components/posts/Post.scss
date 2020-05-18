@@ -192,3 +192,12 @@
     cursor: pointer;
   }
 }
+
+.headr-flex {
+  display: flex;
+  justify-content: space-between;
+  .dot-body {
+    right: 235px;
+    margin-top: 30px;
+  }
+}
