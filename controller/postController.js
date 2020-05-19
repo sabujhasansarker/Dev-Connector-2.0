@@ -215,21 +215,11 @@ exports.commentPost = async (req, res) => {
 exports.deleteComment = async (req, res) => {
   try {
     let post = await Post.findById(req.params.postId);
-    console.log(post);
-    let comment = post.comments.find(
-      (comment) => comment._id.toString() === req.params.comment_id
-    );
-    // Make sure comment exists
-    if (!comment) {
-      return res.status(404).json({ msg: "Comment dose not exists" });
-    }
 
     // Cheack user
-    if (comment.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "User not authorized" });
-    }
+
     const removeIndex = post.comments
-      .map((comment) => comment._id.toString())
+      .map((comment) => comment._id)
       .indexOf(req.params.comment_id);
 
     post.comments.splice(removeIndex, 1);
@@ -264,9 +254,7 @@ exports.replayComment = async (req, res) => {
 
     const comments = await Comments.findById(req.params.comment_id);
     comments.replies.unshift(newReplay);
-    // await comments.save();
-    // Profile
-
+    comments.save();
     // comment
     Post.find()
       .populate({
@@ -297,48 +285,24 @@ exports.replayComment = async (req, res) => {
 
 exports.deleteReplay = async (req, res) => {
   try {
-    let post = await Post.findById(req.params.postId);
-    let comment = post.comments.find(
-      (comment) => comment._id.toString() === req.params.comment_id
-    );
-
-    if (!comment) {
-      return res.status(404).json({ msg: "Comment dose not exists" });
-    }
-
-    let replay = comment.replays.find(
-      (replay) => replay._id.toString() === req.params.replay_id
-    );
-
-    // Make sure comment exists
-    if (!replay) {
-      return res.status(404).json({ msg: "Replay dose not exists" });
-    }
+    let comments = await Comments.findById(req.params.comment_id);
 
     // Cheack user
-    if (replay.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "User not authorized" });
-    }
-    comment.replays = comment.replays.filter(
-      (re) => re._id.toString() !== req.params.replay_id && re
-    );
 
-    let comments = post.comments.filter((comm) =>
-      comm._id.toString() === req.params.comment_id ? comment : comm
-    );
-    post = await Post.findByIdAndUpdate(
-      req.params.postId,
-      { $set: { comments } },
-      { new: true }
-    );
-    res.json(post);
+    const removeIndex = comments.replies
+      .map((replie) => replie._id)
+      .indexOf(req.params.replay_id);
+
+    comments.replies.splice(removeIndex, 1);
+    await comments.save();
+    res.json(comments);
+
     // Profile
-    let profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { user: req.user.id },
-      { $pull: { comments: { _id: req.params.postId } } },
+      { $pull: { comments: req.params.postId } },
       { new: true }
     );
-    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
