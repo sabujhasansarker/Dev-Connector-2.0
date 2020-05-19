@@ -22,9 +22,9 @@ const commentSchema = new Schema({
         ref: "User",
         required: true,
       },
-      createAt: {
+      date: {
         type: Date,
-        default: new Date(),
+        default: Date.now,
       },
     },
   ],

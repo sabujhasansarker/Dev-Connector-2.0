@@ -5,7 +5,6 @@ const User = require("../model/User");
 const Profile = require("../model/Profile");
 const Post = require("../model/Post");
 const Comments = require("../model/Comments");
-const Repelies = require("../model/Repelies");
 
 // * post
 exports.getAllpost = async (req, res) => {
@@ -173,25 +172,41 @@ exports.commentPost = async (req, res) => {
       user: req.user.id,
       replies: [],
     });
-    await newComments.save();
-    let comments = await Comments.findById(newComments._id).populate("user", [
-      "firstName",
-      "lastName",
-      "username",
-      "profilePic",
-    ]);
-    let post = await Post.findById(req.params.postId);
-    console.log(post);
-    post.comments.unshift(comments);
-    await post.save();
+    newComments.save();
 
-    // Profile
-    profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { $push: { comments: { _id: req.params.postId } } },
+    await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $push: { comments: newComments._id },
+      },
       { new: true }
     );
-    res.json(post);
+
+    // Profile
+    await Profile.findOneAndUpdate(
+      { user: req.user.id },
+      {
+        $push: { comments: newComments._id },
+      },
+      { new: true }
+    );
+
+    // comment
+    Post.find()
+      .populate({
+        path: "comments",
+        model: "Comment",
+        populate: {
+          path: "user",
+          select: ["username", "profilePic", "firstName", "lastName"],
+          model: "User",
+        },
+      })
+      .exec(function (err, data) {
+        if (!err) {
+          res.json(data);
+        }
+      });
   } catch (err) {
     serverError(res, err);
   }
@@ -222,13 +237,12 @@ exports.deleteComment = async (req, res) => {
     res.json(post);
 
     // Profile
-    let profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { user: req.user.id },
-      { $pull: { comments: { _id: req.params.postId } } },
+      { $pull: { comments: req.params.postId } },
       { new: true }
     );
     await Comments.findByIdAndDelete(req.params.comment_id);
-    console.log(profile);
   } catch (err) {
     serverError(res, err);
   }
@@ -243,33 +257,39 @@ exports.replayComment = async (req, res) => {
       .json({ errors: { msg: "Please Enter something to post" } });
   }
   try {
-    const newRepelies = new Repelies({
+    const newReplay = {
       body,
       user: req.user.id,
-    });
+    };
 
-    await newRepelies.save();
-    let replies = await Repelies.findById(newRepelies._id).populate("user", [
-      "firstName",
-      "lastName",
-      "username",
-      "profilePic",
-    ]);
-
-    let post = await Post.findById(req.params.postId);
-    let comments = await Comments.find({ _id: req.params.comment_id });
-    console.log(req.params.comment_id);
-    comments.replies.unshift(replies);
-    // const comment = await comments.save();
-    // post.comments.unshift(comment);
-    console.log(comments);
+    const comments = await Comments.findById(req.params.comment_id);
+    comments.replies.unshift(newReplay);
+    // await comments.save();
     // Profile
-    profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { $push: { comments: { _id: req.params.postId } } },
-      { new: true }
-    );
-    res.json(post);
+
+    // comment
+    Post.find()
+      .populate({
+        path: "comments",
+        model: "Comment",
+        populate: [
+          {
+            path: "user",
+            select: ["username", "profilePic", "firstName", "lastName"],
+            model: "User",
+          },
+          {
+            path: "replies.user",
+            select: ["username", "profilePic", "firstName", "lastName"],
+            model: "User",
+          },
+        ],
+      })
+      .exec(function (err, data) {
+        if (!err) {
+          res.json(data);
+        }
+      });
   } catch (err) {
     serverError(res, err);
   }
@@ -342,11 +362,7 @@ exports.getPostsByLike_Comments = async (req, res) => {
   try {
     const profile = await Profile.find({ username: req.params.username });
 
-    let posts = await Post.find();
-
-    posts = profile[0].posts.filter(
-      (post) => post._id === posts.map((p) => p._id)
-    );
+    let posts = await Post.find({ likes: req.params.username });
 
     res.json(posts);
   } catch (err) {

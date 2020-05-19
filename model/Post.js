@@ -14,13 +14,16 @@ const PostShema = new Schema({
   },
   likes: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
-  comments: [],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,
