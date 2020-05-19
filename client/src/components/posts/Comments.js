@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import Replay from "./Replay";
 import { createComment, deleteComment } from "../../action/post";
 import { connect } from "react-redux";
+import moment from "moment";
 
 const Comments = ({
   comments,
@@ -11,7 +12,6 @@ const Comments = ({
   deleteComment,
 }) => {
   const [dot, setDot] = useState(false);
-  const [replay, setReplay] = useState(false);
   const [fromData, setFromData] = useState({
     body: "",
   });
@@ -29,40 +29,58 @@ const Comments = ({
     <div className="comments">
       {comments &&
         comments.map((comment) => (
-          <div className="comment-body" key={comment._id}>
-            <img
-              className="user-head-image"
-              src={comment.user.profilePic}
-              alt=""
-            />
-            <div className="comment-text">
-              <div className="flex">
-                <p className="text">
-                  <b>{comment.user.firstName + " " + comment.user.lastName}</b>{" "}
-                  {comment.body}
-                </p>
-                {comment.user._id === userId && (
-                  <div className="dot-container">
-                    <p
-                      className="dot"
-                      onClick={(e) => setDot({ _id: comment._id })}
-                    >
-                      ...
-                    </p>
-                    {dot._id === comment._id && (
-                      <div className="dot-body">
-                        <p>Replay</p>
-                        <p onClick={(e) => deleteComment(postId, comment._id)}>
-                          Delete
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
+          <Fragment>
+            <div className="comment-body" key={comment._id}>
+              <img
+                className="user-head-image"
+                src={comment.user.profilePic}
+                alt=""
+              />
+              <div className="comment-text">
+                <div className="flex">
+                  <p className="text">
+                    <b>
+                      {comment.user.firstName + " " + comment.user.lastName}
+                    </b>{" "}
+                    {comment.body}
+                  </p>
+                  {comment.user._id === userId && (
+                    <div className="dot-container">
+                      <p
+                        className="dot"
+                        onClick={(e) => setDot({ _id: comment._id })}
+                      >
+                        ...
+                      </p>
+                      {dot._id === comment._id && (
+                        <div className="dot-body">
+                          <p>Replay</p>
+                          <p
+                            onClick={(e) => deleteComment(postId, comment._id)}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <p>{moment(comment.date).startOf("hour").fromNow()}</p>
               </div>
-              <p>just Now</p>
             </div>
-          </div>
+            {comment.replies && (
+              <Fragment>
+                <div className="replay-section">
+                  <Replay
+                    replies={comment.replies}
+                    postId={postId}
+                    commentId={comment._id}
+                    userId={userId}
+                  />
+                </div>
+              </Fragment>
+            )}
+          </Fragment>
         ))}
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
@@ -75,11 +93,6 @@ const Comments = ({
           />
         </div>
       </form>
-      {replay && (
-        <div className="replay-section">
-          <Replay />
-        </div>
-      )}
     </div>
   );
 };

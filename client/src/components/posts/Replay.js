@@ -1,31 +1,86 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
+import { createReplay, deleteReplay } from "../../action/post";
+import { connect } from "react-redux";
+import moment from "moment";
 
-const Replay = () => {
+const Replay = ({
+  replies,
+  postId,
+  commentId,
+  userId,
+  createReplay,
+  deleteReplay,
+}) => {
+  const [dot, setDot] = useState(false);
+  const [fromData, setFromData] = useState({
+    body: "",
+  });
+  const onChange = (e) => {
+    setFromData({ ...fromData, body: e.target.value });
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (fromData.body !== "") {
+      createReplay(postId, commentId, fromData);
+      setFromData({ body: "" });
+    }
+  };
   return (
     <div className="comments">
-      <form className="form">
+      <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
-          <input type="text" placeholder="Enter your Replay" />
+          <input
+            type="text"
+            placeholder="Enter your Replay"
+            name="body"
+            onChange={(e) => onChange(e)}
+            value={fromData.body}
+          />
         </div>
       </form>
-      <div className="comment-body">
-        <img
-          className="user-head-image"
-          src="/uploads/2017-03-20-18-36-07-721.jpg"
-          alt=""
-        />
-        <div className="comment-text">
-          <p className="text">
-            <b>Sabuj Hasan Sarker</b> Lorem ipsum dolor sit, amet consectetur
-            adipisicing elit. Quod, molestiae ipsam! Similique sunt, cumque
-            ipsum voluptates quisquam saepe, non amet voluptate porro
-            reprehenderit, laudantium eligendi deserunt hic ea natus aliquam!
-          </p>
-          <p> just Now</p>
-        </div>
-      </div>
+      {replies &&
+        replies.map((replie) => (
+          <Fragment>
+            <div className="comment-body" key={replie._id}>
+              <img
+                className="user-head-image"
+                src={replie.user.profilePic}
+                alt=""
+              />
+              <div className="comment-text">
+                <div className="flex">
+                  <p className="text">
+                    <b>{replie.user.firstName + " " + replie.user.lastName}</b>{" "}
+                    {replie.body}
+                  </p>
+                  {replie.user._id === userId && (
+                    <div className="dot-container">
+                      <p
+                        className="dot"
+                        onClick={(e) => setDot({ _id: replie._id })}
+                      >
+                        ...
+                      </p>
+                      {dot._id === replie._id && (
+                        <div className="dot-body">
+                          <p
+                            onClick={(e) =>
+                              deleteReplay(postId, commentId, replie._id)
+                            }
+                          >
+                            Delete
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <p>{moment(replie.date).startOf("hour").fromNow()}</p>
+              </div>
+            </div>
+          </Fragment>
+        ))}
     </div>
   );
 };
-
-export default Replay;
+export default connect(null, { createReplay, deleteReplay })(Replay);

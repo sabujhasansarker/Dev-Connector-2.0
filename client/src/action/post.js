@@ -179,7 +179,7 @@ export const createReplay = (postId, commentId, fromData) => async (
   dispatch
 ) => {
   const config = {
-    header: {
+    headers: {
       "Content-Type": "application/json",
     },
   };
@@ -192,7 +192,7 @@ export const createReplay = (postId, commentId, fromData) => async (
     );
     dispatch({
       type: REPLAY,
-      dispatch: res.data,
+      payload: res.data,
     });
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });

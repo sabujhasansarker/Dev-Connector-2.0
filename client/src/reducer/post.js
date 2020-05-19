@@ -11,6 +11,8 @@ import {
   LIKE,
   COMMENTS,
   DELETE_COMMENT,
+  REPLAY,
+  DELETE_REPLAY,
 } from "../action/Type";
 
 const initialState = {
@@ -29,6 +31,8 @@ export default function (state = initialState, action) {
     case DELETE_POST:
     case COMMENTS:
     case DELETE_COMMENT:
+    case REPLAY:
+    case DELETE_REPLAY:
       return {
         ...state,
         posts: payload,
