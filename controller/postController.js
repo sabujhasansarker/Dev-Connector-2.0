@@ -126,7 +126,7 @@ exports.likePost = async (req, res) => {
       );
 
       await post.save();
-      siglePostPopulet(Post, req.params.postId, res);
+      return siglePostPopulet(Post, req.params.postId, res);
     }
     post.likes.unshift({ user: req.user.id });
     await post.save();
@@ -136,7 +136,7 @@ exports.likePost = async (req, res) => {
       { $push: { likes: { _id: req.params.postId } } },
       { new: true }
     );
-    siglePostPopulet(Post, req.params.postId, res);
+    return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -263,9 +263,29 @@ exports.getPostByUsername = async (req, res) => {
     const posts = await Post.find({
       username: req.params.username,
     })
-      .populate("user", ["firstName", "lastName", "username", "profilePic"])
-      .sort({ date: -1 });
-    res.json(posts);
+      .populate("user", ["username", "profilePic", "firstName", "lastName"])
+      .populate({
+        path: "comments",
+        model: "Comment",
+        populate: [
+          {
+            path: "user",
+            select: ["username", "profilePic", "firstName", "lastName"],
+            model: "User",
+          },
+          {
+            path: "replies.user",
+            select: ["username", "profilePic", "firstName", "lastName"],
+            model: "User",
+          },
+        ],
+      })
+      .sort({ date: -1 })
+      .exec(function (err, data) {
+        if (!err) {
+          res.json(data);
+        }
+      });
   } catch (err) {
     serverError(res, err);
   }

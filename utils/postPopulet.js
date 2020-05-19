@@ -46,10 +46,11 @@ exports.siglePostPopulet = (model, postId, res) => {
         },
       ],
     })
-    .sort({ date: -1 })
     .exec(function (err, data) {
+      if (err) return handleError(err);
       if (!err) {
         res.json(data);
       }
+      // prints "The author is Ian Fleming"
     });
 };
