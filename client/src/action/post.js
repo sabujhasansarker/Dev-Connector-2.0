@@ -80,7 +80,6 @@ export const createPost = (fromData) => async (dispatch) => {
 
   try {
     const res = await axios.post("/post", body, config);
-    console.log(res);
     dispatch({
       type: CREATE_POST,
       payload: res.data,
@@ -111,7 +110,6 @@ export const editPost = (fromData, postId) => async (dispatch) => {
       type: EDIT_POST,
       payload: res.data,
     });
-    console.log(res.data);
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });
   }
@@ -135,7 +133,6 @@ export const deletePost = (postId) => async (dispatch) => {
 export const likePost = (postId) => async (dispatch) => {
   try {
     const res = await axios.put(`/post/like/${postId}`);
-    console.log(res);
     dispatch({
       type: LIKE,
       payload: { postId, likes: res.data },
@@ -148,7 +145,7 @@ export const likePost = (postId) => async (dispatch) => {
 // comment
 export const createComment = (postId, fromData) => async (dispatch) => {
   const config = {
-    header: {
+    headers: {
       "Content-Type": "application/json",
     },
   };
@@ -157,7 +154,7 @@ export const createComment = (postId, fromData) => async (dispatch) => {
     const res = await axios.put(`/post/comment/${postId}`, body, config);
     dispatch({
       type: COMMENTS,
-      dispatch: res.data,
+      payload: res.data,
     });
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });

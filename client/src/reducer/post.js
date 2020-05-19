@@ -9,6 +9,8 @@ import {
   CURRENT_POST,
   EDIT_POST,
   LIKE,
+  COMMENTS,
+  DELETE_COMMENT,
 } from "../action/Type";
 
 const initialState = {
@@ -25,6 +27,8 @@ export default function (state = initialState, action) {
   switch (type) {
     case GET_ALL_POSTS:
     case DELETE_POST:
+    case COMMENTS:
+    case DELETE_COMMENT:
       return {
         ...state,
         posts: payload,

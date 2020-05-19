@@ -88,7 +88,11 @@ const PostBody = ({
             <p>{posts && posts.comments.length}</p>
           </div>
         </div>
-        <Comments comments={posts && posts.comments} />
+        <Comments
+          comments={posts && posts.comments}
+          postId={posts && posts._id}
+          userId={_id}
+        />
       </div>
     </div>
   );

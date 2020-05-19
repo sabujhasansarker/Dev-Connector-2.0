@@ -279,9 +279,10 @@ input[type="checkbox"] {
   font-size: 20px;
   margin-left: 10px;
   cursor: pointer;
-  margin-top: 10px;
 }
-
+.dot-body {
+  margin-top: 0 !important;
+}
 .register,
 .login {
   height: 100vh;

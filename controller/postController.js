@@ -1,4 +1,5 @@
 const { serverError } = require("../utils/errors");
+const { postPopulet, siglePostPopulet } = require("../utils/postPopulet");
 
 // ? Model
 const User = require("../model/User");
@@ -9,10 +10,7 @@ const Comments = require("../model/Comments");
 // * post
 exports.getAllpost = async (req, res) => {
   try {
-    const posts = await Post.find()
-      .populate("user", ["firstName", "lastName", "username", "profilePic"])
-      .sort({ date: -1 });
-    res.json(posts);
+    postPopulet(Post, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -106,7 +104,6 @@ exports.deletePost = async (req, res) => {
 // * Like
 exports.likePost = async (req, res) => {
   let post = await Post.findById(req.params.postId);
-  let profile = await Profile.findOne({ user: req.user.id });
   if (!post) {
     return res.status(400).json({ errors: { msg: "Post dose not found" } });
   }
@@ -129,13 +126,7 @@ exports.likePost = async (req, res) => {
       );
 
       await post.save();
-      post = await Post.findById(req.params.postId).populate("user", [
-        "firstName",
-        "lastName",
-        "username",
-        "profilePic",
-      ]);
-      return res.json(post);
+      siglePostPopulet(Post, req.params.postId, res);
     }
     post.likes.unshift({ user: req.user.id });
     await post.save();
@@ -145,14 +136,7 @@ exports.likePost = async (req, res) => {
       { $push: { likes: { _id: req.params.postId } } },
       { new: true }
     );
-    post = await Post.findById(req.params.postId).populate("user", [
-      "firstName",
-      "lastName",
-      "username",
-      "profilePic",
-    ]);
-
-    res.json(post);
+    siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -192,21 +176,7 @@ exports.commentPost = async (req, res) => {
     );
 
     // comment
-    Post.find()
-      .populate({
-        path: "comments",
-        model: "Comment",
-        populate: {
-          path: "user",
-          select: ["username", "profilePic", "firstName", "lastName"],
-          model: "User",
-        },
-      })
-      .exec(function (err, data) {
-        if (!err) {
-          res.json(data);
-        }
-      });
+    postPopulet(Post, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -224,7 +194,7 @@ exports.deleteComment = async (req, res) => {
 
     post.comments.splice(removeIndex, 1);
     await post.save();
-    res.json(post);
+    postPopulet(Post, res);
 
     // Profile
     await Profile.findOneAndUpdate(
@@ -256,28 +226,7 @@ exports.replayComment = async (req, res) => {
     comments.replies.unshift(newReplay);
     comments.save();
     // comment
-    Post.find()
-      .populate({
-        path: "comments",
-        model: "Comment",
-        populate: [
-          {
-            path: "user",
-            select: ["username", "profilePic", "firstName", "lastName"],
-            model: "User",
-          },
-          {
-            path: "replies.user",
-            select: ["username", "profilePic", "firstName", "lastName"],
-            model: "User",
-          },
-        ],
-      })
-      .exec(function (err, data) {
-        if (!err) {
-          res.json(data);
-        }
-      });
+    postPopulet(Post, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -295,7 +244,7 @@ exports.deleteReplay = async (req, res) => {
 
     comments.replies.splice(removeIndex, 1);
     await comments.save();
-    res.json(comments);
+    postPopulet(Post, res);
 
     // Profile
     await Profile.findOneAndUpdate(
