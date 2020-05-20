@@ -32,7 +32,7 @@
 
     .form-group {
       width: 96% !important;
-      height: 68%;
+      height: 135px;
       background: white;
       padding: 10px;
       textarea {
@@ -204,4 +204,15 @@
 }
 .dot-container {
   position: relative;
+}
+
+.post-body {
+  .post-thumbli {
+    height: 300px;
+  }
+}
+.popup-post-form {
+  .form-group {
+    height: 200px !important;
+  }
 }

@@ -29,26 +29,30 @@ const Comments = ({
     <div className="comments">
       {comments &&
         comments.map((comment) => (
-          <Fragment>
-            <div className="comment-body" key={comment._id}>
+          <Fragment key={comment.user && comment._id}>
+            <div className="comment-body" key={comment.user && comment._id}>
               <img
                 className="user-head-image"
-                src={comment.user.profilePic}
+                src={comment.user && comment.user.profilePic}
                 alt=""
               />
               <div className="comment-text">
                 <div className="flex">
                   <p className="text">
                     <b>
-                      {comment.user.firstName + " " + comment.user.lastName}
+                      {comment.user &&
+                        comment.user.firstName + " " + comment.user &&
+                        comment.user.lastName}
                     </b>{" "}
                     {comment.body}
                   </p>
-                  {comment.user._id === userId && (
+                  {comment.user && comment.user._id === userId && (
                     <div className="dot-container">
                       <p
                         className="dot"
-                        onClick={(e) => setDot({ _id: comment._id })}
+                        onClick={(e) =>
+                          setDot({ _id: comment.user && comment._id })
+                        }
                       >
                         ...
                       </p>
@@ -56,7 +60,9 @@ const Comments = ({
                         <div className="dot-body">
                           <p>Replay</p>
                           <p
-                            onClick={(e) => deleteComment(postId, comment._id)}
+                            onClick={(e) =>
+                              deleteComment(postId, comment.user && comment._id)
+                            }
                           >
                             Delete
                           </p>

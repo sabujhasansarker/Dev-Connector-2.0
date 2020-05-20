@@ -40,7 +40,7 @@ const Replay = ({
       </form>
       {replies &&
         replies.map((replie) => (
-          <Fragment>
+          <Fragment key={replie._id}>
             <div className="comment-body" key={replie._id}>
               <img
                 className="user-head-image"

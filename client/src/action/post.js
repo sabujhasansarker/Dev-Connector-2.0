@@ -15,6 +15,7 @@ import {
   CLEARE_POSTS,
   CLEARE_USER_POST,
   CURRENT_POST,
+  SINGLE_POST,
 } from "./Type";
 import { setAlert } from "./alert";
 
@@ -66,6 +67,20 @@ export const getPostByUser = (username) => async (dispatch) => {
     dispatch({
       type: POST_ERROR,
     });
+  }
+};
+
+// single post
+export const getSinglePost = (postId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/post/${postId}`);
+
+    dispatch({
+      type: SINGLE_POST,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({ type: POST_ERROR });
   }
 };
 

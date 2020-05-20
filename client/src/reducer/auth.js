@@ -7,7 +7,6 @@ import {
   GET_USER_ERROR,
   LOGOUT,
   UPDATE_USER,
-  GET_PROFILE_BY_USERNAME,
   PROFILE_UPDATE,
 } from "../action/Type";
 
@@ -50,6 +49,7 @@ export default (state = initialState, action) => {
         isAutination: false,
         usertoken: localStorage.removeItem("usertoken"),
       };
+
     default:
       return state;
   }

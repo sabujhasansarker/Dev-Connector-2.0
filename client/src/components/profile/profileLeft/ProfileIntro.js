@@ -1,5 +1,6 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useRef, useState, Fragment } from "react";
 import { connect } from "react-redux";
+import axios from "axios";
 
 import editicon from "../../../icons/edit.svg";
 import skillIcon from "../../../icons/skills.svg";
@@ -18,13 +19,15 @@ import git from "../../../icons/git.svg";
 import web from "../../../icons/web.svg";
 
 // Profile update
-import { profileUpdate } from "../../../action/profile";
+import { profileUpdate, deletePic } from "../../../action/profile";
 import Moment from "react-moment";
 
-const ProfileIntro = ({ profile, user, profileUpdate }) => {
+const ProfileIntro = ({ profile, user, profileUpdate, deletePic }) => {
   const [skilltoggle, setSkilltoggle] = useState(false);
   const [commpanytoggle, setCommpanytoggle] = useState(false);
   const [biotoggle, setBiotoggle] = useState(false);
+  const file = useRef("");
+  const [filePath, setFilePath] = useState();
 
   // profile
   let {
@@ -58,15 +61,41 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
     twitter: social && social.twitter ? social.twitter : "",
     youtube: social && social.youtube ? social.youtube : "",
     website: website ? website : "",
-    profilePic: profilePic ? profilePic : "",
   });
+  const [oldPic, setOldPic] = useState(profilePic);
+  // file uplode
+
+  const fileChange = async (e) => {
+    e.preventDefault();
+    let fileData = file.current.files[0];
+    // setFile(e.target.files[0]);
+    if (fileData) {
+      const formData = new FormData();
+      formData.append("file", fileData);
+      try {
+        const res = await axios.post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        setFilePath(res.data.filePath);
+        setFromdata({ ...fromdata, profilePic: res.data.filePath });
+      } catch (err) {
+        if (err.response.status === 500) {
+          console.log("There was a problem with the server");
+        } else {
+          console.log(err.response.data.msg);
+        }
+      }
+    }
+  };
   const onchage = (e) => {
     setFromdata({ ...fromdata, [e.target.name]: e.target.value });
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
     profileUpdate(fromdata);
-    console.log(fromdata);
     if (biotoggle) {
       setBiotoggle(false);
     }
@@ -76,19 +105,50 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
     <div className="intro">
       <div className="header">
         <div className="file-input">
-          <input
-            type="file"
-            name="file-input"
-            id="file-input"
-            className="file-input__input"
-          />
-          <label className="file-input__label" htmlFor="file-input">
-            {profile && profile.username === user.username && (
-              <img src={editicon} className="svg-img" alt="" />
+          <form onSubmit={onSubmit}>
+            <input
+              type="file"
+              id="file-input_"
+              className="file-input__input"
+              ref={file}
+              name="profilePic"
+              onChange={fileChange}
+            />
+            <label className="file-input__label" htmlFor="file-input_">
+              {profile && profile.username === user.username && (
+                <img src={editicon} className="svg-img" alt="" />
+              )}
+            </label>
+            {filePath && (
+              <div className="text header-text">
+                <p
+                  onClick={(e) => {
+                    onSubmit(e);
+                    deletePic(oldPic);
+                    setFilePath(false);
+                  }}
+                >
+                  Save
+                </p>
+                <p
+                  onClick={(e) => {
+                    setFilePath(false);
+                    deletePic(filePath);
+                    setFromdata({ ...fromdata, profilePic: profilePic });
+                    file.current.value = "";
+                  }}
+                >
+                  Cancel
+                </p>
+              </div>
             )}
-          </label>
+          </form>
         </div>
-        <img className="profile-pic" src={profilePic} alt="" />
+        <img
+          className="profile-pic"
+          src={fromdata.profilePic ? fromdata.profilePic : profilePic}
+          alt=""
+        />
         <h2 className="text-center" style={{ textTransform: "capitalize" }}>
           {firstName + " " + lastName}
         </h2>
@@ -294,4 +354,5 @@ const ProfileIntro = ({ profile, user, profileUpdate }) => {
 
 export default connect(null, {
   profileUpdate,
+  deletePic,
 })(ProfileIntro);

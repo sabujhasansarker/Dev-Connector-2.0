@@ -16,6 +16,14 @@ exports.getAllpost = async (req, res) => {
   }
 };
 
+exports.getSinglePost = async (req, res) => {
+  try {
+    siglePostPopulet(Post, req.params.postId, res);
+  } catch (err) {
+    serverError(res, err);
+  }
+};
+
 // * Create post
 exports.createPost = async (req, res) => {
   const { body, thumbnail } = req.body;
@@ -85,10 +93,7 @@ exports.editPost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.postId);
-    const post = await Post.find()
-      .populate("user", ["firstName", "lastName", "username", "profilePic"])
-      .sort({ date: -1 });
-    res.json(post);
+    postPopulet(Post, res);
 
     const posts = await Post.find({ user: req.user.id });
     await Profile.findOneAndUpdate(

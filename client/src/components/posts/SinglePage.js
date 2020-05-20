@@ -1,6 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import Spnnier from "../layouts/Spnnier";
+
+import { getSinglePost } from "../../action/post";
 
 import love from "../../icons/love.svg";
 import loveTrue from "../../icons/360.svg";
@@ -13,22 +16,32 @@ import moment from "moment";
 import { deletePost, setCurrent, likePost } from "../../action/post";
 import { deletePic } from "../../action/profile";
 
-const PostBody = ({
-  posts,
-  user: { username, _id },
+const SinglePage = ({
+  getSinglePost,
+  match,
+  post: { post, loading },
+  auth,
+  likePost,
   deletePost,
   setCurrent,
-  likePost,
-  deletePic,
 }) => {
+  useEffect(() => {
+    getSinglePost(match.params.postId);
+  }, [getSinglePost]);
+
   const [dot, setDot] = useState(false);
-  const { user, body, thumbnail, date } = posts && posts;
-  const { firstName, lastName, profilePic } = user && user;
+  const { user, body, thumbnail, date, likes, comments } = post ? post : "";
+  const { firstName, lastName, profilePic, username } = user ? user : "";
+  const { _id } = auth ? auth : "";
+
+  if (loading) {
+    return <Spnnier />;
+  }
 
   return (
     <div className="posts shadow">
       <div className="headr-flex">
-        <Link to={`/${user.username}`}>
+        <Link to={`/${username}`}>
           <div className="header">
             <img className="user-head-image" src={profilePic} alt="" />
             <div className="user-head">
@@ -37,18 +50,18 @@ const PostBody = ({
             </div>
           </div>
         </Link>
-        {posts && posts.user._id === _id && (
+        {post && post.user._id === _id && (
           <div className="dot-container">
             <p className="dot" onClick={(e) => setDot(!dot)}>
               ...
             </p>
             {dot && (
               <div className="dot-body">
-                <p onClick={(e) => setCurrent(posts)}>Edit</p>
+                <p onClick={(e) => setCurrent(post)}>Edit</p>
                 <p
                   onClick={(e) => {
                     deletePic(thumbnail);
-                    deletePost(posts._id);
+                    deletePost(post._id);
                   }}
                 >
                   Delete
@@ -62,54 +75,48 @@ const PostBody = ({
         {thumbnail && thumbnail && (
           <img src={thumbnail} className="post-thumbli" alt="" />
         )}
-        <p className="text">
-          {body.length > 200 ? (
-            <Fragment>
-              {body.substring(0, 200)}
-              <span>
-                <Link to={`/post/${posts._id}`}>read more .......</Link>
-              </span>
-            </Fragment>
-          ) : (
-            body
-          )}
-        </p>
+        <p className="text">{body}</p>
         <div className="total d-flex">
           <div className="like ">
-            {posts.likes.filter((item) => item.user.toString() === _id).length >
-            0 ? (
+            {likes &&
+            likes.filter((item) => item.user.toString() === _id).length > 0 ? (
               <img
                 src={loveTrue}
                 className="svg-img"
                 alt=""
-                onClick={(e) => likePost(posts._id)}
+                onClick={(e) => likePost(post._id)}
               />
             ) : (
               <img
                 src={love}
                 className="svg-img"
                 alt=""
-                onClick={(e) => likePost(posts._id)}
+                onClick={(e) => likePost(post._id)}
               />
             )}
 
-            <p>{posts.likes.length}</p>
+            <p>{post && likes.length}</p>
           </div>
           <div className="comment ">
             <img src={comm} className="svg-img" alt="" />
-            <p>{posts && posts.comments.length}</p>
+            <p>{post && comments.length}</p>
           </div>
         </div>
-        <Comments
-          comments={posts && posts.comments}
-          postId={posts && posts._id}
-          userId={_id}
-        />
+        <Comments comments={comments} postId={post && post._id} userId={_id} />
       </div>
     </div>
   );
 };
 
-export default connect(null, { deletePost, setCurrent, likePost, deletePic })(
-  PostBody
-);
+const mapStateToProps = (state) => ({
+  post: state.post,
+  auth: state.auth.user,
+});
+
+export default connect(mapStateToProps, {
+  getSinglePost,
+  deletePost,
+  setCurrent,
+  likePost,
+  deletePic,
+})(SinglePage);

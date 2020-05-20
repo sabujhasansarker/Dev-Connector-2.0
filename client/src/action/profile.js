@@ -12,6 +12,8 @@ import {
   DELETE_EDU,
   CLARE_PROFILE,
   GET_REPOS,
+  GET_USER,
+  GET_POST_BY_USERNAME,
 } from "./Type";
 
 import { setAlert } from "./alert";
@@ -33,12 +35,23 @@ export const profileUpdate = (fromdata) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(fromdata);
+
   try {
     const res = await axios.post("/profile/create-profile", body, config);
 
     dispatch({
       type: PROFILE_UPDATE,
       payload: res.data,
+    });
+    const getUser = await axios.get("/user");
+    dispatch({
+      type: GET_USER,
+      payload: getUser.data,
+    });
+    const getUserpost = await axios.get(`/post/${res.data.username}`);
+    dispatch({
+      type: GET_POST_BY_USERNAME,
+      payload: getUserpost.data,
     });
   } catch (err) {
     err.response &&
@@ -201,4 +214,15 @@ export const getrepos = (username) => async (dispatch) => {
       type: GET_PROFILE_ERROR,
     });
   }
+};
+
+export const deletePic = (path) => async () => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify({ picPath: path });
+  console.log(body);
+  await axios.post(`/remove`, body, config);
 };

@@ -13,6 +13,7 @@ import {
   DELETE_COMMENT,
   REPLAY,
   DELETE_REPLAY,
+  SINGLE_POST,
 } from "../action/Type";
 
 const initialState = {
@@ -44,6 +45,12 @@ export default function (state = initialState, action) {
         userPosts: payload,
         loading: false,
       };
+    case SINGLE_POST:
+      return {
+        ...state,
+        post: payload,
+        loading: false,
+      };
     case CREATE_POST:
       return {
         ...state,
@@ -67,6 +74,10 @@ export default function (state = initialState, action) {
         posts: state.posts.map((post) =>
           post._id === payload.postId ? payload.likes : post
         ),
+        userPosts: state.userPosts.map((post) =>
+          post._id === payload.postId ? payload.likes : post
+        ),
+        post: state.post._id === payload.postId ? payload.likes : state.post,
       };
     case CLEARE_POSTS:
       return {

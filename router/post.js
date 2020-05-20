@@ -12,8 +12,11 @@ const {
   deleteReplay,
   getPostByUsername,
   getPostsByLike_Comments,
+  getSinglePost,
 } = require("../controller/postController");
 const auth = require("../middleware/auth");
+
+router.get("/:postId", auth, getSinglePost);
 
 router.get("/:username", getPostByUsername);
 

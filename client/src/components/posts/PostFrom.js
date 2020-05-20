@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import axios from "axios";
 
 import cameraIcon from "../../icons/camera.svg";
 import cross from "../../icons/cross.svg";
 
 // Funtion
 import { createPost, editPost } from "../../action/post";
+import { deletePic } from "../../action/profile";
 
-const PostFrom = ({ createPost, user, current, editPost }) => {
+const PostFrom = ({ createPost, user, current, editPost, deletePic }) => {
   const [toggle, setToggle] = useState(false);
-  const [image, setImage] = useState(true);
-
+  const oldPic = current && current.thumbnail ? current.thumbnail : "";
   const [fromdata, setFromdata] = useState({
     thumbnail: current ? current.thumbnail : "",
     body: current ? current.body : "",
@@ -23,8 +24,34 @@ const PostFrom = ({ createPost, user, current, editPost }) => {
     });
   }, [current]);
 
+  // uploade image
+  const file = useRef("");
+  const fileChange = async (e) => {
+    e.preventDefault();
+    let fileData = file.current.files[0];
+    // setFile(e.target.files[0]);
+    if (fileData) {
+      const formData = new FormData();
+      formData.append("file", fileData);
+      try {
+        const res = await axios.post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        setFromdata({ ...fromdata, thumbnail: res.data.filePath });
+      } catch (err) {
+        if (err.response.status === 500) {
+          console.log("There was a problem with the server");
+        } else {
+          console.log(err.response.data.msg);
+        }
+      }
+    }
+  };
+
   const onChange = (e) => {
-    setFromdata({ ...setFromdata, [e.target.name]: e.target.value });
+    setFromdata({ thumbnail: fromdata.thumbnail, body: e.target.value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -34,6 +61,7 @@ const PostFrom = ({ createPost, user, current, editPost }) => {
       return setFromdata({ thumbnail: "", body: "" });
     }
     createPost(fromdata);
+    console.log(fromdata);
     setFromdata({ thumbnail: "", body: "" });
   };
   return (
@@ -44,20 +72,23 @@ const PostFrom = ({ createPost, user, current, editPost }) => {
         </div>
 
         <form className="form" onSubmit={onSubmit}>
-          {toggle && image && (
+          {toggle && fromdata.thumbnail && (
             <div className="thumbnail">
               <img src={fromdata.thumbnail} alt="" />
               <img
                 src={cross}
                 className="svg-img"
-                onClick={(e) => setImage(false)}
+                onClick={(e) => {
+                  setFromdata({ ...fromdata, thumbnail: "" });
+                  deletePic(fromdata.thumbnail);
+                }}
                 alt=""
               />
             </div>
           )}
           <div
             className="form-group d-flex"
-            style={!image ? { height: "26vh" } : {}}
+            style={!fromdata.thumbnail ? { height: "height: 136px" } : {}}
           >
             <img
               className="userimage"
@@ -80,7 +111,8 @@ const PostFrom = ({ createPost, user, current, editPost }) => {
                 name="thumbnail"
                 id="file-input"
                 className="file-input__input"
-                onChange={(e) => onChange(e)}
+                ref={file}
+                onChange={fileChange}
               />
               <label className="file-input__label" htmlFor="file-input">
                 <img src={cameraIcon} className="svg-img" alt="" />
@@ -108,4 +140,6 @@ const mapStateToProps = (state) => ({
   current: state.post.current,
 });
 
-export default connect(mapStateToProps, { createPost, editPost })(PostFrom);
+export default connect(mapStateToProps, { createPost, editPost, deletePic })(
+  PostFrom
+);

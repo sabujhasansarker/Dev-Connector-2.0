@@ -13,6 +13,7 @@ import UserFrom from "../forms/UserForm";
 
 // Profile
 import Profile from "../profile/Profile";
+import SinglePage from "../posts/SinglePage";
 
 const Routes = ({ auth: { loading, user }, profile }) => {
   return (
@@ -24,11 +25,7 @@ const Routes = ({ auth: { loading, user }, profile }) => {
         <Route exact path="/register" component={RegisterForm} />
         <Route exact path="/login" component={LoginForm} />
         <PrivetRouter exact path="/:username" component={Profile} />
-        {/* <PrivetRouter
-          exact
-          path="/:username/create-profile"
-          component={ProfileFroms}
-        /> */}
+        <PrivetRouter exact path="/post/:postId" component={SinglePage} />
         <PrivetRouter
           exact
           path="/:username/profile-setting"
