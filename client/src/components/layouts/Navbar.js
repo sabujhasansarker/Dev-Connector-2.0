@@ -58,7 +58,6 @@ const Navbar = ({
         <Link to="/" onClick={(e) => clearPostsByUsername()}>
           <img src={logo} alt="logo" />
         </Link>
-        <input type="text" placeholder="Search" />
       </div>
       <div className="left">
         <ul className="d-flex">

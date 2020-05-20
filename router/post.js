@@ -16,9 +16,9 @@ const {
 } = require("../controller/postController");
 const auth = require("../middleware/auth");
 
-router.get("/:postId", auth, getSinglePost);
+router.get("/:username", auth, getPostByUsername);
 
-router.get("/:username", getPostByUsername);
+router.get("/single/:postId", auth, getSinglePost);
 
 router.get("/:username/activity", getPostsByLike_Comments);
 

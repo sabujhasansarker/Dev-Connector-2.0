@@ -1,4 +1,6 @@
 import React, { useState, Fragment } from "react";
+import { Link } from "react-router-dom";
+
 import Replay from "./Replay";
 import { createComment, deleteComment } from "../../action/post";
 import { connect } from "react-redux";
@@ -25,6 +27,7 @@ const Comments = ({
       setFromData({ body: "" });
     }
   };
+
   return (
     <div className="comments">
       {comments &&
@@ -39,11 +42,12 @@ const Comments = ({
               <div className="comment-text">
                 <div className="flex">
                   <p className="text">
-                    <b>
-                      {comment.user &&
-                        comment.user.firstName + " " + comment.user &&
-                        comment.user.lastName}
-                    </b>{" "}
+                    <Link to={`/${comment.user && comment.user.username}`}>
+                      <b>
+                        {comment.user && comment.user.firstName}{" "}
+                        {comment.user && comment.user.lastName}
+                      </b>{" "}
+                    </Link>
                     {comment.body}
                   </p>
                   {comment.user && comment.user._id === userId && (
@@ -71,7 +75,7 @@ const Comments = ({
                     </div>
                   )}
                 </div>
-                <p>{moment(comment.date).startOf("hour").fromNow()}</p>
+                <p>{moment(comment.date).fromNow()}</p>
               </div>
             </div>
             {comment.replies && (

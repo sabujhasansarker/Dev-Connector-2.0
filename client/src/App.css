@@ -287,7 +287,10 @@ input[type="checkbox"] {
 .login {
   height: 100vh;
 }
-
+.comment-text a {
+  color: black;
+  text-transform: capitalize;
+}
 .from-container {
   background: var(--from-color);
   padding: 50px;

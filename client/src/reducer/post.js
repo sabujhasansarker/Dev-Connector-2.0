@@ -30,10 +30,6 @@ export default function (state = initialState, action) {
   switch (type) {
     case GET_ALL_POSTS:
     case DELETE_POST:
-    case COMMENTS:
-    case DELETE_COMMENT:
-    case REPLAY:
-    case DELETE_REPLAY:
       return {
         ...state,
         posts: payload,
@@ -67,6 +63,24 @@ export default function (state = initialState, action) {
         ...state,
         posts: payload,
         current: null,
+        post: payload.find((p) => p._id === state.post._id && p),
+      };
+    case COMMENTS:
+    case DELETE_COMMENT:
+    case REPLAY:
+    case DELETE_REPLAY:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === payload.postId ? payload.comments : post
+        ),
+        userPosts: state.userPosts.map((post) =>
+          post._id === payload.postId ? payload.comments : post
+        ),
+        post:
+          state.post && state.post._id === payload.postId
+            ? payload.comments
+            : state.post,
       };
     case LIKE:
       return {
@@ -77,7 +91,10 @@ export default function (state = initialState, action) {
         userPosts: state.userPosts.map((post) =>
           post._id === payload.postId ? payload.likes : post
         ),
-        post: state.post._id === payload.postId ? payload.likes : state.post,
+        post:
+          state.post && state.post._id === payload.postId
+            ? payload.likes
+            : state.post,
       };
     case CLEARE_POSTS:
       return {

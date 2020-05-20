@@ -1,5 +1,11 @@
 const { serverError } = require("../utils/errors");
-const { postPopulet, siglePostPopulet } = require("../utils/postPopulet");
+const mongoose = require("mongoose");
+mongoose.set("useFindAndModify", false);
+const {
+  postPopulet,
+  siglePostPopulet,
+  userPopulet,
+} = require("../utils/postPopulet");
 
 // ? Model
 const User = require("../model/User");
@@ -80,10 +86,8 @@ exports.editPost = async (req, res) => {
       { $set: { body, thumbnail } },
       { new: true }
     );
-    const posts = await Post.find()
-      .populate("user", ["firstName", "lastName", "username", "profilePic"])
-      .sort({ date: -1 });
-    res.json(posts);
+
+    postPopulet(Post, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -116,31 +120,27 @@ exports.likePost = async (req, res) => {
     // check if the post has already liked
 
     if (
-      post.likes.filter((like) => like.user.toString() === req.user.id).length >
-      0
+      post.likes.filter((like) => like.toString() === req.user.id).length > 0
     ) {
-      post.likes = post.likes.filter(
-        (like) => like.user.toString() !== req.user.id
-      );
-
-      // Profile
-      profile = await Profile.findOneAndUpdate(
-        { user: req.user.id },
-        { $pull: { likes: { _id: req.params.postId } } },
+      post.likes.filter((like) => like.toString() !== req.user.id);
+      console.log("unlike");
+      await Post.findByIdAndUpdate(
+        req.params.postId,
+        {
+          $pull: { likes: req.user.id },
+        },
         { new: true }
       );
-
-      await post.save();
       return siglePostPopulet(Post, req.params.postId, res);
     }
-    post.likes.unshift({ user: req.user.id });
-    await post.save();
-    // Profile
-    profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { $push: { likes: { _id: req.params.postId } } },
+    await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $push: { likes: req.user.id },
+      },
       { new: true }
     );
+
     return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
@@ -181,7 +181,7 @@ exports.commentPost = async (req, res) => {
     );
 
     // comment
-    postPopulet(Post, res);
+    return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -199,7 +199,6 @@ exports.deleteComment = async (req, res) => {
 
     post.comments.splice(removeIndex, 1);
     await post.save();
-    postPopulet(Post, res);
 
     // Profile
     await Profile.findOneAndUpdate(
@@ -208,6 +207,7 @@ exports.deleteComment = async (req, res) => {
       { new: true }
     );
     await Comments.findByIdAndDelete(req.params.comment_id);
+    return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -231,7 +231,7 @@ exports.replayComment = async (req, res) => {
     comments.replies.unshift(newReplay);
     comments.save();
     // comment
-    postPopulet(Post, res);
+    return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -249,7 +249,6 @@ exports.deleteReplay = async (req, res) => {
 
     comments.replies.splice(removeIndex, 1);
     await comments.save();
-    postPopulet(Post, res);
 
     // Profile
     await Profile.findOneAndUpdate(
@@ -257,6 +256,7 @@ exports.deleteReplay = async (req, res) => {
       { $pull: { comments: req.params.postId } },
       { new: true }
     );
+    return siglePostPopulet(Post, req.params.postId, res);
   } catch (err) {
     serverError(res, err);
   }
@@ -265,32 +265,7 @@ exports.deleteReplay = async (req, res) => {
 //
 exports.getPostByUsername = async (req, res) => {
   try {
-    const posts = await Post.find({
-      username: req.params.username,
-    })
-      .populate("user", ["username", "profilePic", "firstName", "lastName"])
-      .populate({
-        path: "comments",
-        model: "Comment",
-        populate: [
-          {
-            path: "user",
-            select: ["username", "profilePic", "firstName", "lastName"],
-            model: "User",
-          },
-          {
-            path: "replies.user",
-            select: ["username", "profilePic", "firstName", "lastName"],
-            model: "User",
-          },
-        ],
-      })
-      .sort({ date: -1 })
-      .exec(function (err, data) {
-        if (!err) {
-          res.json(data);
-        }
-      });
+    return userPopulet(Post, req.params.username, res);
   } catch (err) {
     serverError(res, err);
   }

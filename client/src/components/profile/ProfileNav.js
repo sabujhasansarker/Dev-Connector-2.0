@@ -27,9 +27,6 @@ const ProfileNav = ({ user, username }) => {
               Update Info
             </Link>
           </li>
-          <li>
-            <Link to={`/${username && username}/active-log`}>Active Log</Link>
-          </li>
         </Fragment>
       )}
     </ul>

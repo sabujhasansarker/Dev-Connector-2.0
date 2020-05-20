@@ -15,11 +15,12 @@ import moment from "moment";
 // funtion
 import { deletePost, setCurrent, likePost } from "../../action/post";
 import { deletePic } from "../../action/profile";
+import PostFrom from "./PostFrom";
 
 const SinglePage = ({
   getSinglePost,
   match,
-  post: { post, loading },
+  post: { post, loading, current },
   auth,
   likePost,
   deletePost,
@@ -37,72 +38,79 @@ const SinglePage = ({
   if (loading) {
     return <Spnnier />;
   }
-
+  console.log(post);
   return (
-    <div className="posts shadow">
-      <div className="headr-flex">
-        <Link to={`/${username}`}>
-          <div className="header">
-            <img className="user-head-image" src={profilePic} alt="" />
-            <div className="user-head">
-              <h4>{firstName + " " + lastName}</h4>
-              <p>{moment(date).fromNow()}</p>
+    <div className="container">
+      {current && <PostFrom user={auth} />}
+      <div className="posts shadow">
+        <div className="headr-flex">
+          <Link to={`/${username}`}>
+            <div className="header">
+              <img className="user-head-image" src={profilePic} alt="" />
+              <div className="user-head">
+                <h4>{firstName + " " + lastName}</h4>
+                <p>{moment(date && date).fromNow()}</p>
+              </div>
+            </div>
+          </Link>
+          {post && post.user._id === _id && (
+            <div className="dot-container">
+              <p className="dot" onClick={(e) => setDot(!dot)}>
+                ...
+              </p>
+              {dot && (
+                <div className="dot-body">
+                  <p onClick={(e) => setCurrent(post)}>Edit</p>
+                  <p
+                    onClick={(e) => {
+                      deletePic(thumbnail);
+                      deletePost(post._id);
+                    }}
+                  >
+                    Delete
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="post-body">
+          {thumbnail && thumbnail && (
+            <img src={thumbnail} className="post-thumbli" alt="" />
+          )}
+          <p className="text">{body}</p>
+          <div className="total d-flex">
+            <div className="like ">
+              {likes &&
+              likes.filter((item) => item.toString() === _id).length > 0 ? (
+                <img
+                  src={loveTrue}
+                  className="svg-img"
+                  alt=""
+                  onClick={(e) => likePost(post._id)}
+                />
+              ) : (
+                <img
+                  src={love}
+                  className="svg-img"
+                  alt=""
+                  onClick={(e) => likePost(post._id)}
+                />
+              )}
+
+              <p>{post && likes.length}</p>
+            </div>
+            <div className="comment ">
+              <img src={comm} className="svg-img" alt="" />
+              <p>{post && comments.length}</p>
             </div>
           </div>
-        </Link>
-        {post && post.user._id === _id && (
-          <div className="dot-container">
-            <p className="dot" onClick={(e) => setDot(!dot)}>
-              ...
-            </p>
-            {dot && (
-              <div className="dot-body">
-                <p onClick={(e) => setCurrent(post)}>Edit</p>
-                <p
-                  onClick={(e) => {
-                    deletePic(thumbnail);
-                    deletePost(post._id);
-                  }}
-                >
-                  Delete
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      <div className="post-body">
-        {thumbnail && thumbnail && (
-          <img src={thumbnail} className="post-thumbli" alt="" />
-        )}
-        <p className="text">{body}</p>
-        <div className="total d-flex">
-          <div className="like ">
-            {likes &&
-            likes.filter((item) => item.user.toString() === _id).length > 0 ? (
-              <img
-                src={loveTrue}
-                className="svg-img"
-                alt=""
-                onClick={(e) => likePost(post._id)}
-              />
-            ) : (
-              <img
-                src={love}
-                className="svg-img"
-                alt=""
-                onClick={(e) => likePost(post._id)}
-              />
-            )}
-
-            <p>{post && likes.length}</p>
-          </div>
-          <div className="comment ">
-            <img src={comm} className="svg-img" alt="" />
-            <p>{post && comments.length}</p>
-          </div>
+          <Comments
+            comments={comments}
+            postId={post && post._id}
+            userId={_id}
+          />
         </div>
-        <Comments comments={comments} postId={post && post._id} userId={_id} />
       </div>
     </div>
   );

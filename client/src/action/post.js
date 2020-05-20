@@ -73,7 +73,7 @@ export const getPostByUser = (username) => async (dispatch) => {
 // single post
 export const getSinglePost = (postId) => async (dispatch) => {
   try {
-    const res = await axios.get(`/post/${postId}`);
+    const res = await axios.get(`/post/single/${postId}`);
 
     dispatch({
       type: SINGLE_POST,
@@ -148,6 +148,7 @@ export const deletePost = (postId) => async (dispatch) => {
 export const likePost = (postId) => async (dispatch) => {
   try {
     const res = await axios.put(`/post/like/${postId}`);
+
     dispatch({
       type: LIKE,
       payload: { postId, likes: res.data },
@@ -167,9 +168,10 @@ export const createComment = (postId, fromData) => async (dispatch) => {
   const body = JSON.stringify(fromData);
   try {
     const res = await axios.put(`/post/comment/${postId}`, body, config);
+    console.log(res);
     dispatch({
       type: COMMENTS,
-      payload: res.data,
+      payload: { postId, comments: res.data },
     });
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });
@@ -182,8 +184,9 @@ export const deleteComment = (postId, comment_id) => async (dispatch) => {
     const res = await axios.delete(`/post/${postId}/comment/${comment_id}`);
     dispatch({
       type: DELETE_COMMENT,
-      payload: res.data,
+      payload: { postId, comments: res.data },
     });
+    console.log(res);
   } catch (err) {
     dispatch({ type: POST_ERROR });
   }
@@ -205,9 +208,10 @@ export const createReplay = (postId, commentId, fromData) => async (
       body,
       config
     );
+    console.log(res);
     dispatch({
       type: REPLAY,
-      payload: res.data,
+      payload: { postId, comments: res.data },
     });
   } catch (err) {
     dispatch({ type: CREATE_POST_ERROR });
@@ -224,8 +228,9 @@ export const deleteReplay = (postId, comment_id, replay_id) => async (
     );
     dispatch({
       type: DELETE_REPLAY,
-      payload: res.data,
+      payload: { postId, comments: res.data },
     });
+    console.log(res);
   } catch (err) {
     dispatch({ type: POST_ERROR });
   }

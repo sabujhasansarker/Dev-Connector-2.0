@@ -67,7 +67,7 @@ const PostBody = ({
             <Fragment>
               {body.substring(0, 200)}
               <span>
-                <Link to={`/post/${posts._id}`}>read more .......</Link>
+                <Link to={`/post/${posts._id}`}> read more .......</Link>
               </span>
             </Fragment>
           ) : (
@@ -76,7 +76,7 @@ const PostBody = ({
         </p>
         <div className="total d-flex">
           <div className="like ">
-            {posts.likes.filter((item) => item.user.toString() === _id).length >
+            {posts.likes.filter((item) => item.toString() === _id).length >
             0 ? (
               <img
                 src={loveTrue}
