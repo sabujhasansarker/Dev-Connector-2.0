@@ -34,7 +34,7 @@ const SinglePage = ({
   const [dot, setDot] = useState(false);
   const { user, body, thumbnail, date, likes, comments } = post ? post : "";
   const { firstName, lastName, profilePic, username } = user ? user : "";
-  const { _id } = auth ? auth : "";
+  const { _id, profile } = auth ? auth : "";
 
   if (!post) {
     return <Spnnier />;
@@ -120,6 +120,7 @@ const SinglePage = ({
             comments={comments}
             postId={post && post._id}
             userId={_id}
+            profile={auth && profile}
           />
         </div>
       </div>
