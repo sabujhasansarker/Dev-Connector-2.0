@@ -128,8 +128,6 @@ exports.createProfile = async (req, res) => {
         user: req.user.id,
       }).populate("user", ["firstName", "lastName", "email"]);
 
-      console.log(profile);
-
       await User.findByIdAndUpdate(
         req.user.id,
         { $set: { profile: profile._id } },
