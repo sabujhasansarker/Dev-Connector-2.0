@@ -54,7 +54,7 @@ const PostBody = ({
                 </p>
                 <p
                   onClick={(e) => {
-                    deletePic(thumbnail);
+                    thumbnail && deletePic(thumbnail);
                     deletePost(posts._id);
                     setDot(false);
                   }}
