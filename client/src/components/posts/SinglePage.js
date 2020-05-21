@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import Spnnier from "../layouts/Spnnier";
 
@@ -9,6 +9,7 @@ import love from "../../icons/love.svg";
 import loveTrue from "../../icons/360.svg";
 import comm from "../../icons/comment.svg";
 import Comments from "./Comments";
+import Notfound from "../layouts/Notfound";
 
 import moment from "moment";
 
@@ -35,40 +36,50 @@ const SinglePage = ({
   const { firstName, lastName, profilePic, username } = user ? user : "";
   const { _id } = auth ? auth : "";
 
-  if (loading) {
+  if (!post) {
     return <Spnnier />;
   }
-  console.log(post);
+
+  if (post) {
+    if (post && post._id !== match.params.postId)
+      return <Route component={Notfound} />;
+  }
+
   return (
     <div className="container">
-      {current && <PostFrom user={auth} />}
+      {current && <PostFrom user={auth && auth} />}
       <div className="posts shadow">
         <div className="headr-flex">
-          <Link to={`/${username}`}>
+          <Link to={`/${username && username}`}>
             <div className="header">
-              <img className="user-head-image" src={profilePic} alt="" />
+              <img
+                className="user-head-image"
+                src={profilePic && profilePic}
+                alt=""
+              />
               <div className="user-head">
                 <h4>{firstName + " " + lastName}</h4>
-                <p>{moment(date && date).fromNow()}</p>
+                <p>{moment(post && date).fromNow()}</p>
               </div>
             </div>
           </Link>
-          {post && post.user._id === _id && (
+          {post && post.user && post.user._id === _id && (
             <div className="dot-container">
               <p className="dot" onClick={(e) => setDot(!dot)}>
                 ...
               </p>
               {dot && (
                 <div className="dot-body">
-                  <p onClick={(e) => setCurrent(post)}>Edit</p>
-                  <p
+                  <p onClick={(e) => setCurrent(post && post)}>Edit</p>
+                  <Link
+                    to="/"
                     onClick={(e) => {
                       deletePic(thumbnail);
-                      deletePost(post._id);
+                      deletePost(post && post._id);
                     }}
                   >
                     Delete
-                  </p>
+                  </Link>
                 </div>
               )}
             </div>
@@ -87,22 +98,22 @@ const SinglePage = ({
                   src={loveTrue}
                   className="svg-img"
                   alt=""
-                  onClick={(e) => likePost(post._id)}
+                  onClick={(e) => likePost(post && post._id)}
                 />
               ) : (
                 <img
                   src={love}
                   className="svg-img"
                   alt=""
-                  onClick={(e) => likePost(post._id)}
+                  onClick={(e) => likePost(post && post._id)}
                 />
               )}
 
-              <p>{post && likes.length}</p>
+              <p>{post && post.likes && likes.length}</p>
             </div>
             <div className="comment ">
               <img src={comm} className="svg-img" alt="" />
-              <p>{post && comments.length}</p>
+              <p>{post && post.comments && comments.length}</p>
             </div>
           </div>
           <Comments

@@ -13,6 +13,7 @@ const Comments = ({
   userId,
   deleteComment,
 }) => {
+  const [replaytoggle, setReplaytoggle] = useState(false);
   const [dot, setDot] = useState(false);
   const [fromData, setFromData] = useState({
     body: "",
@@ -27,7 +28,6 @@ const Comments = ({
       setFromData({ body: "" });
     }
   };
-
   return (
     <div className="comments">
       {comments &&
@@ -55,18 +55,35 @@ const Comments = ({
                       <p
                         className="dot"
                         onClick={(e) =>
-                          setDot({ _id: comment.user && comment._id })
+                          setDot(
+                            dot ? false : { _id: comment.user && comment._id }
+                          )
                         }
                       >
                         ...
                       </p>
                       {dot._id === comment._id && (
                         <div className="dot-body">
-                          <p>Replay</p>
                           <p
-                            onClick={(e) =>
-                              deleteComment(postId, comment.user && comment._id)
-                            }
+                            onClick={(e) => {
+                              setReplaytoggle(
+                                replaytoggle
+                                  ? false
+                                  : { _id: comment && comment._id }
+                              );
+                              setDot(false);
+                            }}
+                          >
+                            Replay
+                          </p>
+                          <p
+                            onClick={(e) => {
+                              deleteComment(
+                                postId,
+                                comment.user && comment._id
+                              );
+                              setDot(false);
+                            }}
                           >
                             Delete
                           </p>
@@ -78,7 +95,7 @@ const Comments = ({
                 <p>{moment(comment.date).fromNow()}</p>
               </div>
             </div>
-            {comment.replies && (
+            {replaytoggle._id === comment._id && (
               <Fragment>
                 <div className="replay-section">
                   <Replay

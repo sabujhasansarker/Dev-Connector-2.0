@@ -64,9 +64,10 @@ const Replay = ({
                       {dot._id === replie._id && (
                         <div className="dot-body">
                           <p
-                            onClick={(e) =>
-                              deleteReplay(postId, commentId, replie._id)
-                            }
+                            onClick={(e) => {
+                              deleteReplay(postId, commentId, replie._id);
+                              setDot(false);
+                            }}
                           >
                             Delete
                           </p>
@@ -75,7 +76,7 @@ const Replay = ({
                     </div>
                   )}
                 </div>
-                <p>{moment(replie.date).startOf("hour").fromNow()}</p>
+                <p>{moment(replie.date).fromNow()}</p>
               </div>
             </div>
           </Fragment>

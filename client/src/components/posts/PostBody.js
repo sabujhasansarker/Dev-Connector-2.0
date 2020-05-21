@@ -44,11 +44,19 @@ const PostBody = ({
             </p>
             {dot && (
               <div className="dot-body">
-                <p onClick={(e) => setCurrent(posts)}>Edit</p>
+                <p
+                  onClick={(e) => {
+                    setCurrent(posts);
+                    setDot(false);
+                  }}
+                >
+                  Edit
+                </p>
                 <p
                   onClick={(e) => {
                     deletePic(thumbnail);
                     deletePost(posts._id);
+                    setDot(false);
                   }}
                 >
                   Delete

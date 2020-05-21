@@ -20,7 +20,7 @@ exports.postPopulet = (model, res) => {
     })
     .sort({ date: -1 })
     .exec(function (err, data) {
-      if (err) return handleError(err);
+      if (err) return res.json(err);
       if (!err) {
         res.json(data);
       }
@@ -49,7 +49,7 @@ exports.siglePostPopulet = (model, postId, res) => {
     })
     .sort({ date: -1 })
     .exec(function (err, data) {
-      if (err) return handleError(err);
+      if (err) return res.json(err);
       if (!err) {
         res.json(data);
       }
@@ -78,7 +78,7 @@ exports.userPopulet = (model, user, res) => {
       ],
     })
     .exec(function (err, data) {
-      if (err) return handleError(err);
+      if (err) return res.json(err);
       if (!err) {
         res.json(data);
       }

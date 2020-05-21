@@ -590,3 +590,28 @@ header .left ul li img {
 }
 
 /*# sourceMappingURL=Post.css.map */
+
+.notfound {
+  margin: 0 auto;
+  text-align: center;
+}
+.notfound img {
+  width: auto;
+}
+
+.notfound a.btn {
+  width: 300px !important;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+.top-bottom-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
