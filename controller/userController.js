@@ -6,6 +6,8 @@ const gravatar = require("gravatar");
 
 const User = require("../model/User");
 const Profile = require("../model/Profile");
+const Post = require("../model/Post");
+
 const { serverError, validationErrors } = require("../utils/errors");
 
 // Register user
@@ -219,6 +221,12 @@ exports.updateUser = async (req, res) => {
       );
 
       res.json({ user });
+
+      await Post.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: { username: user.username } },
+        { new: true }
+      );
     }
   } catch (err) {
     serverError(res, err);

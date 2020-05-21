@@ -15,7 +15,7 @@ import { deletePic } from "../../action/profile";
 
 const PostBody = ({
   posts,
-  user: { username, _id, profile },
+  user: { _id, profile },
   deletePost,
   setCurrent,
   likePost,
