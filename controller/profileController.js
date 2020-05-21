@@ -123,10 +123,18 @@ exports.createProfile = async (req, res) => {
 
       // Create Profile
       profile = new Profile(profileFileds);
-      profile.save();
+      await profile.save();
       profile = await Profile.findOne({
         user: req.user.id,
       }).populate("user", ["firstName", "lastName", "email"]);
+
+      console.log(profile);
+
+      await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: { profile: profile._id } },
+        { new: true }
+      );
       return res.status(200).json(profile);
     }
 

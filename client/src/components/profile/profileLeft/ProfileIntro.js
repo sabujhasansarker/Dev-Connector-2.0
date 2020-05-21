@@ -43,7 +43,7 @@ const ProfileIntro = ({ profile, user, profileUpdate, deletePic }) => {
     githubusername,
   } = profile ? profile : "";
 
-  let { firstName, lastName } = profile ? profile.user : "";
+  let { firstName, lastName } = profile && profile.user ? profile.user : "";
 
   firstName = firstName ? firstName : user && user.firstName;
   lastName = lastName ? lastName : user && user.lastName;
