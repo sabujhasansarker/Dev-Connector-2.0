@@ -15,7 +15,7 @@ import { deletePic } from "../../action/profile";
 
 const PostBody = ({
   posts,
-  user: { username, _id },
+  user: { username, _id, profile },
   deletePost,
   setCurrent,
   likePost,
@@ -84,22 +84,23 @@ const PostBody = ({
         </p>
         <div className="total d-flex">
           <div className="like ">
-            {posts.likes.filter((item) => item.toString() === _id).length >
-            0 ? (
-              <img
-                src={loveTrue}
-                className="svg-img"
-                alt=""
-                onClick={(e) => likePost(posts._id)}
-              />
-            ) : (
-              <img
-                src={love}
-                className="svg-img"
-                alt=""
-                onClick={(e) => likePost(posts._id)}
-              />
-            )}
+            {posts.likes.filter((item) => item.toString() === _id).length > 0
+              ? profile && (
+                  <img
+                    src={loveTrue}
+                    className="svg-img"
+                    alt=""
+                    onClick={(e) => likePost(posts._id)}
+                  />
+                )
+              : profile && (
+                  <img
+                    src={love}
+                    className="svg-img"
+                    alt=""
+                    onClick={(e) => likePost(posts._id)}
+                  />
+                )}
 
             <p>{posts.likes.length}</p>
           </div>
@@ -112,6 +113,7 @@ const PostBody = ({
           comments={posts && posts.comments}
           postId={posts && posts._id}
           userId={_id}
+          profile={profile}
         />
       </div>
     </div>

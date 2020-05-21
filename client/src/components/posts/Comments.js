@@ -12,6 +12,7 @@ const Comments = ({
   createComment,
   userId,
   deleteComment,
+  profile,
 }) => {
   const [replaytoggle, setReplaytoggle] = useState(false);
   const [dot, setDot] = useState(false);
@@ -103,23 +104,26 @@ const Comments = ({
                     postId={postId}
                     commentId={comment._id}
                     userId={userId}
+                    profile={profile}
                   />
                 </div>
               </Fragment>
             )}
           </Fragment>
         ))}
-      <form className="form" onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Enter your comment"
-            name="body"
-            onChange={(e) => onChange(e)}
-            value={fromData.body}
-          />
-        </div>
-      </form>
+      {profile && (
+        <form className="form" onSubmit={onSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Enter your comment"
+              name="body"
+              onChange={(e) => onChange(e)}
+              value={fromData.body}
+            />
+          </div>
+        </form>
+      )}
     </div>
   );
 };

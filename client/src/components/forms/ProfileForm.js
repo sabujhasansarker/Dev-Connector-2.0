@@ -87,9 +87,9 @@ const ProfileForm = ({
     }
   };
   if (redirect) {
-    return <Redirect to={`/${profile.username}`} />;
+    return <Redirect to={`/${profile && profile.username}`} />;
   }
-  if (profile.username !== user.username) {
+  if (profile && profile.username !== user.username) {
     return <Redirect to={`/${profile.username}`} />;
   }
 

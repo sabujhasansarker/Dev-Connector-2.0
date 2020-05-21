@@ -10,6 +10,7 @@ const Replay = ({
   userId,
   createReplay,
   deleteReplay,
+  profile,
 }) => {
   const [dot, setDot] = useState(false);
   const [fromData, setFromData] = useState({
@@ -27,17 +28,19 @@ const Replay = ({
   };
   return (
     <div className="comments">
-      <form className="form" onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Enter your Replay"
-            name="body"
-            onChange={(e) => onChange(e)}
-            value={fromData.body}
-          />
-        </div>
-      </form>
+      {profile && (
+        <form className="form" onSubmit={onSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Enter your Replay"
+              name="body"
+              onChange={(e) => onChange(e)}
+              value={fromData.body}
+            />
+          </div>
+        </form>
+      )}
       {replies &&
         replies.map((replie) => (
           <Fragment key={replie._id}>

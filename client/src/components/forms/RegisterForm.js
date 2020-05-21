@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 
 import { setAlert } from "../../action/alert";
 import { register } from "../../action/auth";
-
 import "./Form.css";
-
-const RegisterForm = ({ setAlert, register, isAutination }) => {
+const RegisterFrom = ({ setAlert, register, isAutination }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -28,7 +26,7 @@ const RegisterForm = ({ setAlert, register, isAutination }) => {
     }
   };
   if (isAutination) {
-    return <Redirect to="/deshboard" />;
+    return <Redirect to="/" />;
   }
   return (
     <div className="from-container register">
@@ -37,43 +35,43 @@ const RegisterForm = ({ setAlert, register, isAutination }) => {
         <form action="" className="form" onSubmit={onsubmite}>
           <div className="form-group d-flex">
             <input
-            type="text"
-            name="firstName"
-            value={firstName}
-            placeholder="Enter Your First Name"
-            onChange={(e) => onchange(e)}
-          />{" "}
-          <input
-            type="text"
-            name="lastName"
-            value={lastName}
-            placeholder="Enter Your Last Name"
-            onChange={(e) => onchange(e)}
-          />
+              type="text"
+              name="firstName"
+              value={firstName}
+              placeholder="Enter Your First Name"
+              onChange={(e) => onchange(e)}
+            />{" "}
+            <input
+              type="text"
+              name="lastName"
+              value={lastName}
+              placeholder="Enter Your Last Name"
+              onChange={(e) => onchange(e)}
+            />
           </div>
           <div className="form-group ">
             <input
-            type="email"
-            value={email}
-            name="email"
-            placeholder="Enter Your Valid Email"
-            onChange={(e) => onchange(e)}
-          />
-            </div>
+              type="email"
+              value={email}
+              name="email"
+              placeholder="Enter Your Valid Email"
+              onChange={(e) => onchange(e)}
+            />
+          </div>
           <div className="form-group d-flex">
-             <input
-            type="password"
-            placeholder="Inter your password"
-            name="password"
-            onChange={(e) => onchange(e)}
-          />{" "}
-          <input
-            type="password"
-            placeholder="Enter your confirm password"
-            name="password2"
-            onChange={(e) => onchange(e)}
-          />
-           </div>
+            <input
+              type="password"
+              placeholder="Inter your password"
+              name="password"
+              onChange={(e) => onchange(e)}
+            />{" "}
+            <input
+              type="password"
+              placeholder="Enter your confirm password"
+              name="password2"
+              onChange={(e) => onchange(e)}
+            />
+          </div>
           <div className="form-group float-right">
             <input type="submit" value="Register" className="btn btn-large" />
           </div>
@@ -87,4 +85,8 @@ const RegisterForm = ({ setAlert, register, isAutination }) => {
   );
 };
 
-export default RegisterForm;
+const mapToStateProps = (state) => ({
+  isAutination: state.auth.isAutination,
+});
+
+export default connect(mapToStateProps, { setAlert, register })(RegisterFrom);
